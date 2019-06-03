@@ -9,13 +9,15 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "NODE_ENV=development nodemon --exec ts-node --files src/server.ts",
-    "test": "jest --watchAll",
+    "test": "NODE_ENV=testing jest --watchAll",
     "build": "tsc src/server.ts"
   },
   "dependencies": {
     "@rddt/common": "^1.0.0",
+    "@types/compression": "^0.0.36",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "express": "^4.17.1",
     "express-validator": "^5.3.1",
     "helmet": "^3.18.0",
