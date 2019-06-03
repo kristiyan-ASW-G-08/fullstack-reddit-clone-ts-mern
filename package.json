@@ -1,0 +1,31 @@
+{
+  "name": "rddt",
+  "version": "1.0.0",
+  "description": "fullstack reddit clone",
+  "main": "index.js",
+  "author": "Kristiyan Todorov",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@lerna/filter-options": "^3.14.0",
+    "lerna": "^3.14.1"
+  },
+  "scripts": {
+    "test": "lerna run test --since --ignore @rddt/common",
+    "start": "lerna run start --stream --ignore @rddt/common",
+    "build": "lerna run build  --ignore @rddt/common",
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap",
+    "new-version": "lerna version --conventional-commits --yes",
+    "diff": "lerna diff"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/jest",
+      "**/jest/**"
+    ]
+  }
+}
