@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "start": "NODE_ENV=development nodemon --exec ts-node --files src/server.ts",
-    "test": "NODE_ENV=testing jest --watchAll",
+    "start": " nodemon --exec ts-node --files src/server.ts NODE_ENV=development",
+    "test": "jest  --watchAll --runInBand",
     "build": "tsc src/server.ts"
   },
   "dependencies": {
@@ -43,14 +43,17 @@
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "concurrently": "^4.1.0",
+    "dotenv": "^8.0.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
     "prettier": "^1.17.1",
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.2.0",
     "typescript": "^3.4.5"
+
   }
 }
