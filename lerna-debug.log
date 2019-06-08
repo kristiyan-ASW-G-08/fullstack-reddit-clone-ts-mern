@@ -7,26 +7,137 @@
 0 silly argv   '$0': 'node_modules\\lerna\\cli.js' }
 1 notice cli v3.14.1
 2 verbose rootPath C:\Users\PC\Desktop\fullstack-reddit-clone
-3 info current version 0.0.0
+3 info current version 1.0.1
 4 silly isAnythingCommitted
 5 verbose isAnythingCommitted 1
 6 silly currentBranch
 7 verbose currentBranch master
 8 silly remoteBranchExists
 9 silly isBehindUpstream
-10 error Error: Command failed: git remote update
-10 error git@github.com: Permission denied (publickey).
-10 error fatal: Could not read from remote repository.
-10 error
-10 error Please make sure you have the correct access rights
-10 error and the repository exists.
-10 error error: Could not fetch origin
-10 error
-10 error Fetching origin
-10 error
-10 error     at makeError (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\execa\index.js:174:9)
-10 error     at Function.module.exports.sync (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\execa\index.js:338:15)
-10 error     at Object.execSync (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\@lerna\child-process\index.js:23:16)
-10 error     at updateRemote (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\@lerna\version\lib\is-behind-upstream.js:26:16)
-10 error     at isBehindUpstream (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\@lerna\version\lib\is-behind-upstream.js:11:3)
-10 error     at VersionCommand.initialize (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\@lerna\version\index.js:152:9)
+10 silly isBehindUpstream master is behind origin/master by 0 commit(s) and ahead by 1
+11 silly hasTags
+12 verbose hasTags true
+13 silly git-describe.sync "v1.0.1-1-gab998cc" => {"lastTagName":"v1.0.1","lastVersion":"v1.0.1","refCount":"1","sha":"ab998cc","isDirty":false}
+14 info Looking for changed packages since v1.0.1
+15 silly checking diff packages/common
+16 silly no diff found in @rddt/common
+17 silly checking diff packages/server
+18 silly found diff in packages/server/.gitignore
+18 silly found diff in packages/server/jest.config.js
+18 silly found diff in packages/server/package.json
+18 silly found diff in packages/server/src/app.ts
+18 silly found diff in packages/server/src/classes/ErrorREST.ts
+18 silly found diff in packages/server/src/config/db.ts
+18 silly found diff in packages/server/src/controllers/user.ts
+18 silly found diff in packages/server/src/models/Saved.ts
+18 silly found diff in packages/server/src/models/User.ts
+18 silly found diff in packages/server/src/models/Vote.ts
+18 silly found diff in packages/server/src/routes/user.ts
+18 silly found diff in packages/server/src/server.ts
+18 silly found diff in packages/server/src/services/passErrorToNext.ts
+18 silly found diff in packages/server/src/services/sendConfirmationEmail.ts
+18 silly found diff in packages/server/src/services/sendEmail.ts
+18 silly found diff in packages/server/src/services/userServices.ts
+18 silly found diff in packages/server/src/tests/routes/user.test.ts
+18 silly found diff in packages/server/src/tests/services/userServices.test.ts
+18 silly found diff in packages/server/src/tests/utilities/checkUserConfirmation.test.ts
+18 silly found diff in packages/server/src/tests/utilities/comparePasswords.test.ts
+18 silly found diff in packages/server/src/types/ErrorContent.ts
+18 silly found diff in packages/server/src/types/MailOptions.ts
+18 silly found diff in packages/server/src/types/Saved.ts
+18 silly found diff in packages/server/src/types/User.ts
+18 silly found diff in packages/server/src/types/ValidationError.ts
+18 silly found diff in packages/server/src/types/Vote.ts
+18 silly found diff in packages/server/src/utilities/checkUserConfirmation.ts
+18 silly found diff in packages/server/src/utilities/comparePasswords.ts
+18 silly found diff in packages/server/src/utilities/isEmpty.ts
+18 silly found diff in packages/server/src/utilities/signLoginToken.ts
+18 silly found diff in packages/server/src/utilities/verifyToken.ts
+19 verbose filtered diff [ 'packages/server/.gitignore',
+19 verbose filtered diff   'packages/server/jest.config.js',
+19 verbose filtered diff   'packages/server/package.json',
+19 verbose filtered diff   'packages/server/src/app.ts',
+19 verbose filtered diff   'packages/server/src/classes/ErrorREST.ts',
+19 verbose filtered diff   'packages/server/src/config/db.ts',
+19 verbose filtered diff   'packages/server/src/controllers/user.ts',
+19 verbose filtered diff   'packages/server/src/models/Saved.ts',
+19 verbose filtered diff   'packages/server/src/models/User.ts',
+19 verbose filtered diff   'packages/server/src/models/Vote.ts',
+19 verbose filtered diff   'packages/server/src/routes/user.ts',
+19 verbose filtered diff   'packages/server/src/server.ts',
+19 verbose filtered diff   'packages/server/src/services/passErrorToNext.ts',
+19 verbose filtered diff   'packages/server/src/services/sendConfirmationEmail.ts',
+19 verbose filtered diff   'packages/server/src/services/sendEmail.ts',
+19 verbose filtered diff   'packages/server/src/services/userServices.ts',
+19 verbose filtered diff   'packages/server/src/tests/routes/user.test.ts',
+19 verbose filtered diff   'packages/server/src/tests/services/userServices.test.ts',
+19 verbose filtered diff   'packages/server/src/tests/utilities/checkUserConfirmation.test.ts',
+19 verbose filtered diff   'packages/server/src/tests/utilities/comparePasswords.test.ts',
+19 verbose filtered diff   'packages/server/src/types/ErrorContent.ts',
+19 verbose filtered diff   'packages/server/src/types/MailOptions.ts',
+19 verbose filtered diff   'packages/server/src/types/Saved.ts',
+19 verbose filtered diff   'packages/server/src/types/User.ts',
+19 verbose filtered diff   'packages/server/src/types/ValidationError.ts',
+19 verbose filtered diff   'packages/server/src/types/Vote.ts',
+19 verbose filtered diff   'packages/server/src/utilities/checkUserConfirmation.ts',
+19 verbose filtered diff   'packages/server/src/utilities/comparePasswords.ts',
+19 verbose filtered diff   'packages/server/src/utilities/isEmpty.ts',
+19 verbose filtered diff   'packages/server/src/utilities/signLoginToken.ts',
+19 verbose filtered diff   'packages/server/src/utilities/verifyToken.ts' ]
+20 silly checking diff packages/web
+21 silly no diff found in @rddt/web
+22 verbose updated @rddt/server
+23 verbose git-describe undefined => "v1.0.1-1-gab998cc"
+24 silly git-describe parsed => {"lastTagName":"v1.0.1","lastVersion":"v1.0.1","refCount":"1","sha":"ab998cc","isDirty":false}
+25 silly fixed for @rddt/server at C:\Users\PC\Desktop\fullstack-reddit-clone\packages\server
+26 verbose getChangelogConfig using preset "conventional-changelog-angular"
+27 silly npa { type: 'tag',
+27 silly npa   registry: true,
+27 silly npa   where: undefined,
+27 silly npa   raw: 'conventional-changelog-angular',
+27 silly npa   name: 'conventional-changelog-angular',
+27 silly npa   escapedName: 'conventional-changelog-angular',
+27 silly npa   scope: undefined,
+27 silly npa   rawSpec: '',
+27 silly npa   saveSpec: null,
+27 silly npa   fetchSpec: 'latest',
+27 silly npa   gitRange: undefined,
+27 silly npa   gitCommittish: undefined,
+27 silly npa   hosted: undefined }
+28 verbose getChangelogConfig Attempting to resolve preset "conventional-changelog-angular"
+29 info getChangelogConfig Successfully resolved preset "conventional-changelog-angular"
+30 verbose fixed increment 1.0.1 by patch
+31 info auto-confirmed
+32 info execute Skipping GitHub releases
+33 silly lifecycle No script for "preversion" in "rddt", continuing
+34 silly lifecycle No script for "preversion" in "@rddt/server", continuing
+35 silly lifecycle No script for "version" in "@rddt/server", continuing
+36 silly fixed for @rddt/server at C:\Users\PC\Desktop\fullstack-reddit-clone\packages\server
+37 silly fixed writing new entry: "## [1.0.2](https://github.com/krisScript/fullstack-reddit-clone-ts-mern/compare/v1.0.1...v1.0.2) (2019-06-08)\n\n**Note:** Version bump only for package @rddt/server\n\n\n\n"
+38 verbose fixed wrote C:\Users\PC\Desktop\fullstack-reddit-clone\packages\server\CHANGELOG.md
+39 silly root for rddt at C:\Users\PC\Desktop\fullstack-reddit-clone
+40 silly root writing new entry: "## [1.0.2](https://github.com/krisScript/fullstack-reddit-clone-ts-mern/compare/v1.0.1...v1.0.2) (2019-06-08)\n\n**Note:** Version bump only for package rddt\n\n\n\n"
+41 verbose root wrote C:\Users\PC\Desktop\fullstack-reddit-clone\CHANGELOG.md
+42 silly lifecycle No script for "version" in "rddt", continuing
+43 silly gitAdd [ 'C:\\Users\\PC\\Desktop\\fullstack-reddit-clone\\packages\\server\\package.json',
+43 silly gitAdd   'C:\\Users\\PC\\Desktop\\fullstack-reddit-clone\\packages\\server\\CHANGELOG.md',
+43 silly gitAdd   'C:\\Users\\PC\\Desktop\\fullstack-reddit-clone\\CHANGELOG.md',
+43 silly gitAdd   'C:\\Users\\PC\\Desktop\\fullstack-reddit-clone\\lerna.json' ]
+44 silly gitCommit v1.0.2
+45 verbose git [ 'commit', '-m', 'v1.0.2' ]
+46 silly gitTag v1.0.2
+47 verbose git [ 'tag', 'v1.0.2', '-m', 'v1.0.2' ]
+48 silly lifecycle No script for "postversion" in "@rddt/server", continuing
+49 silly lifecycle No script for "postversion" in "rddt", continuing
+50 info git Pushing tags...
+51 silly gitPush origin master
+52 error Error: Command failed: git push --follow-tags --no-verify origin master
+52 error Received disconnect from 140.82.118.3 port 22:11: Bye Bye
+52 error Disconnected from 140.82.118.3 port 22
+52 error fatal: Could not read from remote repository.
+52 error
+52 error Please make sure you have the correct access rights
+52 error and the repository exists.
+52 error
+52 error     at makeError (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\execa\index.js:174:9)
+52 error     at Promise.all.then.arr (C:\Users\PC\Desktop\fullstack-reddit-clone\node_modules\execa\index.js:278:16)

@@ -16,7 +16,7 @@ const sendConfirmationEmail = (userId: string, email: string): void => {
     from: appEmail,
     to: email,
     subject: 'Email confirmation.',
-    html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+    html: `Confirm your account: <a href="${url}">${url}</a>`,
   };
   sendEmail(mailOptions);
 };
