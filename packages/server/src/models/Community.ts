@@ -1,0 +1,28 @@
+import Community from '../types/Community';
+import mongoose, { Schema } from 'mongoose';
+const CommunitySchema: Schema = new Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  subscribers: {
+    type: Number,
+    default: 0,
+  },
+  theme: {
+    icon: { type: String, default: '/default/icon.svg' },
+    colors: {
+      base: { type: String, default: '#1890ff' },
+      highlight: { type: String, default: '#1890ff' },
+    },
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+export default mongoose.model<Community>('Community', CommunitySchema);

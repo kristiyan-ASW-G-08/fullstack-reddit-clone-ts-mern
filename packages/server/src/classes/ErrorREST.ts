@@ -15,6 +15,10 @@ const Errors = {
     status: 404,
     message: 'Resource  not found.',
   },
+  UnprocessableEntity: {
+    status: 422,
+    message: "Request can't be processed",
+  },
   InternalServerError: {
     status: 500,
     message: 'Internal server error',

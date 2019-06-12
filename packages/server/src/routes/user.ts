@@ -8,10 +8,7 @@ const router = express.Router();
 router.post(
   '/users',
   [
-    body(
-      'username',
-      'Please choose another username. It should be at least 4 characters long.',
-    )
+    body('username', 'Username should be at least 4  characters long.')
       .isLength({ min: 4 })
       .isString()
       .trim()
@@ -19,9 +16,7 @@ router.post(
         (username: string, { req }): Promise<void> => {
           return User.findOne({ username }).then(userDoc => {
             if (userDoc) {
-              return Promise.reject(
-                'Another user with this username already exists.',
-              );
+              return Promise.reject('User with this username already exists.');
             }
             return Promise.resolve();
           });
@@ -33,15 +28,13 @@ router.post(
         (email, { req }): Promise<void> => {
           return User.findOne({ email }).then(userDoc => {
             if (userDoc) {
-              return Promise.reject(
-                'Another user with this email already exists.',
-              );
+              return Promise.reject('User with this email already exists.');
             }
             return Promise.resolve();
           });
         },
       ),
-    body('password', 'Your password should be at least 12 characters long.')
+    body('password', 'Password should be at least 12 characters long.')
       .isLength({ min: 12 })
       .isAlphanumeric()
       .trim()
@@ -70,15 +63,13 @@ router.post(
         (email, { req }): Promise<void> => {
           return User.findOne({ email }).then(userDoc => {
             if (userDoc) {
-              return Promise.reject(
-                'Email is already used,please user another one',
-              );
+              return Promise.reject('Email is already taken.');
             }
             return Promise.resolve();
           });
         },
       ),
-    body('password', 'Your password should be at least 12 characters long.')
+    body('password', 'Password should be at least 12 characters long.')
       .isLength({ min: 12 })
       .isAlphanumeric()
       .trim()

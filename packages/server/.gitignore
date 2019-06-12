@@ -2,3 +2,5 @@ node_modules
 nodemon.json
 dist
 .env
+/src/assets/images
+/src/assets/videos

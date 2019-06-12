@@ -7,14 +7,11 @@ import comparePasswords from '../utilities/comparePasswords';
 import checkUserConfirmation from '../utilities/checkUserConfirmation';
 import signLoginToken from '../utilities/signLoginToken';
 import verifyToken from '../utilities/verifyToken';
-interface CreateUserResponse {
-  userId: string;
-}
 const createUser = async (
   email: string,
   username: string,
   password: string,
-): Promise<CreateUserResponse> => {
+): Promise<string> => {
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new User({
@@ -24,12 +21,11 @@ const createUser = async (
     });
     const userId = user._id.toString();
     await user.save();
-    return { userId };
+    return userId;
   } catch (err) {
     throw err;
   }
 };
-export default createUser;
 
 const getUserByEmail = async (email: string): Promise<UserType> => {
   try {
@@ -90,7 +86,7 @@ const authenticateUser = async (
     throw err;
   }
 };
-const confirmUser = async (token: string): Promise<any> => {
+const confirmUser = async (token: string): Promise<void> => {
   try {
     const userId = verifyToken(token);
     const user = await getUserById(userId);

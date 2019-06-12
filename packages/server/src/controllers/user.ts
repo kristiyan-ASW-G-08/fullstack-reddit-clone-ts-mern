@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import sendConfirmationEmail from '../services/sendConfirmationEmail';
-import passErrorToNext from '../services/passErrorToNext';
+import passErrorToNext from '../utilities/passErrorToNext';
 import {
   createUser,
   getUserByEmail,
@@ -18,7 +18,7 @@ export const signUp = async (
   try {
     isEmpty(validationResult(req));
     const { email, username, password } = req.body;
-    const { userId } = await createUser(email, username, password);
+    const userId = await createUser(email, username, password);
     sendConfirmationEmail(userId, email);
     res.status(200).json({ message: 'User created!' });
   } catch (err) {

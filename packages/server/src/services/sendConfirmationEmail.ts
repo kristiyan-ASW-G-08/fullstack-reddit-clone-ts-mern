@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import sendEmail from './sendEmail';
+import sendEmail from '../utilities/sendEmail';
 import MailOptions from '../types/MailOptions';
 const sendConfirmationEmail = (userId: string, email: string): void => {
   const secret: any = process.env.SECRET;
@@ -16,7 +16,7 @@ const sendConfirmationEmail = (userId: string, email: string): void => {
     from: appEmail,
     to: email,
     subject: 'Email confirmation.',
-    html: `Confirm your account: <a href="${url}">${url}</a>`,
+    html: `Confirm your email: <a href="${url}">${url}</a>`,
   };
   sendEmail(mailOptions);
 };

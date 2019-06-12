@@ -38,7 +38,7 @@ describe('userServices', (): void => {
       const email = 'newEmail@mail.com';
       const username = 'username';
       const password = 'password';
-      const { userId } = await createUser(email, username, password);
+      const userId = await createUser(email, username, password);
       expect(userId).toBeTruthy();
       const user = await User.findById(userId);
       if (!user) {
@@ -67,9 +67,7 @@ describe('userServices', (): void => {
       expect(user.username).toMatch(username);
     });
 
-    it(`shouldn't throw an error if user isn't found`, async (): Promise<
-      void
-    > => {
+    it(`should throw an error if user isn't found`, async (): Promise<void> => {
       const email = 'newEmail@mail.com';
       const { status, message } = Errors.NotFound;
       const error = new ErrorREST(status, message, null);

@@ -1,10 +1,13 @@
 import express from 'express';
 import { Request, Response, NextFunction, Application } from 'express';
+import path from 'path';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import compression from 'compression';
 import { ErrorREST } from './classes/ErrorREST';
 import userRoutes from './routes/user';
+import communityRoutes from './routes/community';
+import multer from 'multer';
 const app: Application = express();
 
 app.use(helmet());
@@ -25,7 +28,39 @@ app.use(
   },
 );
 
+const fileStorage = multer.diskStorage({
+  //@ts-ignore:Problem with multer and typescript
+  destination: (req: Request, file, cb): any => {
+    cb(null, 'images');
+  },
+  filename: (req: Request, file, cb) => {
+    cb(
+      null,
+      `${new Date().toISOString().replace(/:/g, '-')}-${file.originalname}`,
+    );
+  },
+});
+
+const fileFilter = (req: Request, file: any, cb: any) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/svg+xml'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'),
+);
+app.use('/assets/images', express.static(path.join(__dirname, 'images')));
+app.use('/assets/videos', express.static(path.join(__dirname, 'videos')));
 app.use(userRoutes);
+app.use(communityRoutes);
 app.use(
   (error: ErrorREST, req: Request, res: Response, next: NextFunction): void => {
     console.log(error);
