@@ -5,7 +5,7 @@ const passErrorToNext = (err: any, next: NextFunction): void => {
   let error = err;
   if (!err.status) {
     const { status, message } = Errors.InternalServerError;
-    error = new ErrorREST(status, message, null);
+    error = new ErrorREST(status, message);
   }
   next(error);
 };

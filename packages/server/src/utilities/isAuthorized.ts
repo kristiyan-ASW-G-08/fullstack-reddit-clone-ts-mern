@@ -1,8 +1,8 @@
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 const isAuthorized = (authorizedUserId: string, userId: string): void => {
-  if (authorizedUserId !== userId) {
+  if (authorizedUserId.toString() !== userId.toString()) {
     const { status, message } = Errors.Unauthorized;
-    const error = new ErrorREST(status, message, null);
+    const error = new ErrorREST(status, message);
     throw error;
   }
 };

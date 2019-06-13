@@ -28,8 +28,8 @@ const Errors = {
 class ErrorREST extends Error {
   public status: number;
   public message: string;
-  public data: any;
-  public constructor(status: number, message: string, data: any) {
+  public data?: any;
+  public constructor(status: number, message: string, data?: any) {
     super();
     Object.setPrototypeOf(this, ErrorREST.prototype);
     (this.status = status), (this.message = message), (this.data = data);

@@ -13,7 +13,7 @@ router.post(
   '/communities',
   [
     body('name', 'Name should be at least 4 characters long.')
-      .isLength({ min: 4 })
+      .isLength({ min: 4, max: 40 })
       .isString()
       .trim()
       .custom(
@@ -28,9 +28,9 @@ router.post(
       ),
     body(
       'description',
-      'Description should be at between 20 and 40 characters long.',
+      'Description should be at between 20 and 100 characters long.',
     )
-      .isLength({ min: 20, max: 40 })
+      .isLength({ min: 20, max: 100 })
       .isString()
       .trim(),
   ],

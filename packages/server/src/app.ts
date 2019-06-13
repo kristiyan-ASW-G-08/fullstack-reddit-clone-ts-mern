@@ -5,8 +5,9 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import compression from 'compression';
 import { ErrorREST } from './classes/ErrorREST';
-import userRoutes from './routes/user';
-import communityRoutes from './routes/community';
+import userRoutes from './routes/userRoutes';
+import communityRoutes from './routes/communityRoutes';
+import ruleRoutes from './routes/ruleRoutes';
 import multer from 'multer';
 const app: Application = express();
 
@@ -59,8 +60,11 @@ app.use(
 );
 app.use('/assets/images', express.static(path.join(__dirname, 'images')));
 app.use('/assets/videos', express.static(path.join(__dirname, 'videos')));
+
 app.use(userRoutes);
 app.use(communityRoutes);
+app.use(ruleRoutes);
+
 app.use(
   (error: ErrorREST, req: Request, res: Response, next: NextFunction): void => {
     console.log(error);

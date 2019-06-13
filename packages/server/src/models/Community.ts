@@ -1,8 +1,8 @@
 import Community from '../types/Community';
 import mongoose, { Schema } from 'mongoose';
 const CommunitySchema: Schema = new Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
+  name: { type: String, required: true, min: 4, max: 40 },
+  description: { type: String, required: true, min: 20, max: 100 },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

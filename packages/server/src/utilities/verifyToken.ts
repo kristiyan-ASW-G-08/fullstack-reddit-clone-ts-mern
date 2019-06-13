@@ -8,7 +8,7 @@ const verifyToken = (token: string) => {
     (err: any, decoded: any) => {
       if (err) {
         const { status, message } = Errors.Unauthorized;
-        const error = new ErrorREST(status, message, null);
+        const error = new ErrorREST(status, message);
         throw error;
       } else {
         return decoded;

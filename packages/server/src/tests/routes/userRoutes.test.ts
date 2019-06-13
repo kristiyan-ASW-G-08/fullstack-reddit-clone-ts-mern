@@ -69,7 +69,7 @@ describe('user routes', (): void => {
           password,
           matchPassword: password,
         });
-      expect(response.status).toEqual(401);
+      expect(response.status).toEqual(400);
     });
   });
 

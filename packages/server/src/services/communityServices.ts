@@ -31,7 +31,7 @@ const getCommunityById = async (
     const community = await Community.findById(communityId);
     if (!community) {
       const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message, {});
+      const error = new ErrorREST(status, message);
       throw error;
     }
     return community;

@@ -1,9 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 import User from '../types/User';
 const UserSchema: Schema = new Schema({
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true, min: 4 },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, min: 12 },
   confirmed: { type: Boolean, default: false },
   avatar: { type: String, default: '/default/avatar.svg' },
   communities: [
