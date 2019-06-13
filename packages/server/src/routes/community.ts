@@ -20,9 +20,7 @@ router.post(
         (name: string, { req }): Promise<void> => {
           return Community.findOne({ name }).then(CommunityDoc => {
             if (CommunityDoc) {
-              return Promise.reject(
-                'Another user with this username already exists.',
-              );
+              return Promise.reject('Name is already taken.');
             }
             return Promise.resolve();
           });

@@ -16,7 +16,7 @@ router.post(
         (username: string, { req }): Promise<void> => {
           return User.findOne({ username }).then(userDoc => {
             if (userDoc) {
-              return Promise.reject('User with this username already exists.');
+              return Promise.reject('Username is already taken.');
             }
             return Promise.resolve();
           });
