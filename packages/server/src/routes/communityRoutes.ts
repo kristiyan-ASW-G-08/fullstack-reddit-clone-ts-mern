@@ -6,6 +6,8 @@ import {
   postCommunity,
   patchCommunity,
   patchCommunityTheme,
+  getCommunity,
+  getCommunityNames,
 } from '../controllers/community';
 const router = express.Router();
 
@@ -40,4 +42,6 @@ router.post(
 
 router.patch('/communities/:communityId', isAuth, patchCommunity);
 router.patch('/communities/:communityId/themes', isAuth, patchCommunityTheme);
+router.get('/communities/:communityId', getCommunity);
+router.get('/communities/:searchTerm/names', getCommunityNames);
 export default router;

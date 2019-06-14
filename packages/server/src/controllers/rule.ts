@@ -63,7 +63,7 @@ export const deleteRule = async (
     const rule = await getRuleById(ruleId);
     isAuthorized(rule.user, userId);
     rule.remove();
-    res.status(200).json({});
+    res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);
   }

@@ -24,5 +24,5 @@ const CommunitySchema: Schema = new Schema({
     default: Date.now,
   },
 });
-
+CommunitySchema.index({ name: 'text' });
 export default mongoose.model<Community>('Community', CommunitySchema);

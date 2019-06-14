@@ -4,6 +4,7 @@ import {
   editCommunityColors,
   editCommunityIcon,
   getCommunityById,
+  getCommunityNamesBySearchTerm,
 } from '../../services/communityServices';
 import Community from '../../models/Community';
 import { ErrorREST, Errors } from '../../classes/ErrorREST';
@@ -48,6 +49,33 @@ describe('userServices', (): void => {
       expect(community.user.toString()).toMatch(userId);
     });
   });
+  describe('getCommunityNamesBySearchTerm', (): void => {
+    it(`should return a community`, async (): Promise<void> => {
+      const communitiesArr = [
+        {
+          name: 'testOne',
+          description: 'Testing',
+          user: mongoose.Types.ObjectId().toString(),
+        },
+        {
+          name: 'testTwo',
+          description: 'Testing',
+          user: mongoose.Types.ObjectId().toString(),
+        },
+        {
+          name: 'Something',
+          description: 'Something',
+          user: mongoose.Types.ObjectId().toString(),
+        },
+      ];
+
+      await Community.insertMany(communitiesArr);
+      const searchTerm = 'test';
+      const communities = await getCommunityNamesBySearchTerm(searchTerm);
+      expect(communities.length).toEqual(2);
+    });
+  });
+
   describe('getCommunityById', (): void => {
     it(`should return a community`, async (): Promise<void> => {
       const name = 'testName';
@@ -78,22 +106,7 @@ describe('userServices', (): void => {
       await expect(getCommunityById(communityId)).rejects.toThrow(error);
     });
   });
-  describe('createCommunity', (): void => {
-    it(`should create new community`, async (): Promise<void> => {
-      const name = 'testName';
-      const description = 'testDescription';
-      const userId = mongoose.Types.ObjectId().toString();
-      const communityId = await createCommunity(name, description, userId);
-      expect(communityId).toBeTruthy();
-      const community = await Community.findById(communityId);
-      if (!community) {
-        return;
-      }
-      expect(community.name).toMatch(name);
-      expect(community.description).toMatch(description);
-      expect(community.user.toString()).toMatch(userId);
-    });
-  });
+
   describe('editCommunityInfo', (): void => {
     it(`should  edit the name and description of  community`, async (): Promise<
       void

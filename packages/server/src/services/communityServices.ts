@@ -1,8 +1,6 @@
 import Community from '../models/Community';
 import CommunityType from '../types/Community';
-import mongoose from 'mongoose';
-import UserType from '../types/User';
-import ValidationError from '../types/ValidationError';
+import SearchTermResult from '@rddt/common/types/SearchTermResult';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import Colors from '@rddt/common/types/Colors';
@@ -39,25 +37,6 @@ const getCommunityById = async (
     throw err;
   }
 };
-// const editCommunityById = async (
-//   communityId: string,
-//   editObject: EditObject,
-// ): Promise<void> => {
-//   try {
-//     const community = await Community.findByIdAndUpdate(
-//       communityId,
-//       editObject,
-//     );
-//     if (!community) {
-//       const { status, message } = Errors.NotFound;
-//       const error = new ErrorREST(status, message, {});
-//       throw error;
-//     }
-//     await community.save();
-//   } catch (err) {
-//     throw err;
-//   }
-// };
 const editCommunityInfo = async (
   communityId: string,
   name: string,
@@ -97,10 +76,45 @@ const editCommunityColors = async (
     throw err;
   }
 };
+const getCommunityNamesBySearchTerm = async (
+  searchTerm: string,
+): Promise<SearchTermResult[]> => {
+  try {
+    const communityDocs = await Community.find(
+      {
+        $text: { $search: searchTerm },
+      },
+      'name subscribers',
+    )
+      .select({ score: { $meta: 'textScore' } })
+      .limit(10)
+      .exec();
+    if (communityDocs.length === 0) {
+      const { status, message } = Errors.NotFound;
+      const error = new ErrorREST(status, message);
+      throw error;
+    }
+    const mappedCommunityDocs = communityDocs.map(
+      (communityDoc: CommunityType): SearchTermResult => {
+        return {
+          data: communityDoc,
+          links: {
+            self: `http://localhost:8000/communities/${communityDoc._id}`,
+          },
+        };
+      },
+    );
+    console.log(mappedCommunityDocs);
+    return mappedCommunityDocs;
+  } catch (err) {
+    throw err;
+  }
+};
 export {
   createCommunity,
   editCommunityInfo,
   editCommunityColors,
   editCommunityIcon,
   getCommunityById,
+  getCommunityNamesBySearchTerm,
 };

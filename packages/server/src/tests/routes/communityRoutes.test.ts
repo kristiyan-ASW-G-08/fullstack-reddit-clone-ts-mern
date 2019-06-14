@@ -12,7 +12,6 @@ describe('community routes', (): void => {
     async (): Promise<void> => {
       await mongoose.connect(mongoURI, { useNewUrlParser: true });
       app.listen(port);
-      await Community.deleteMany({}).exec();
     },
   );
   beforeEach(
@@ -75,7 +74,7 @@ describe('community routes', (): void => {
       expect(response.status).toEqual(400);
     });
   });
-  describe('/communities/:communityId', (): void => {
+  describe('patch /communities/:communityId', (): void => {
     it('should change the name and description of community', async (): Promise<
       void
     > => {
@@ -97,7 +96,7 @@ describe('community routes', (): void => {
         });
       expect(response.status).toEqual(200);
     });
-    it("should return 404 if the community isn't found", async (): Promise<
+    it("should return 404 if  community isn't found", async (): Promise<
       void
     > => {
       const communityId = mongoose.Types.ObjectId();
@@ -132,9 +131,9 @@ describe('community routes', (): void => {
           base,
           highlight,
         });
-      expect(response.status).toEqual(200);
+      expect(response.status).toEqual(204);
     });
-    it("should return 404 if the community isn't found", async (): Promise<
+    it("should return 404 if  community isn't found", async (): Promise<
       void
     > => {
       const communityId = mongoose.Types.ObjectId();
@@ -148,6 +147,48 @@ describe('community routes', (): void => {
           description: newDescription,
         });
       expect(response.status).toEqual(404);
+    });
+  });
+  describe('get /communities/:communityId', (): void => {
+    it('should get community', async (): Promise<void> => {
+      const community = new Community({
+        name,
+        description,
+        user: userId,
+      });
+      await community.save();
+      const { _id } = community;
+      const response = await request(app)
+        .get(`/communities/${_id}`)
+        .set('Authorization', 'Bearer ' + token);
+
+      expect(response.status).toEqual(200);
+    });
+    it("should return 404 if  community isn't found", async (): Promise<
+      void
+    > => {
+      const communityId = mongoose.Types.ObjectId();
+      const response = await request(app)
+        .get(`/communities/${communityId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(404);
+    });
+  });
+  describe('get /communities/:searchTerm/names', (): void => {
+    const searchTerm = 'test';
+    it('should get community', async (): Promise<void> => {
+      const community = new Community({
+        name,
+        description,
+        user: userId,
+      });
+      await community.save();
+
+      const response = await request(app)
+        .get(`/communities/${searchTerm}/names`)
+        .set('Authorization', 'Bearer ' + token);
+
+      expect(response.status).toEqual(200);
     });
   });
 });

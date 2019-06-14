@@ -116,9 +116,6 @@ describe('rule routes', (): void => {
   describe('delete /communities/rules/:ruleId', (): void => {
     it('should delete rule', async (): Promise<void> => {
       const communityId = mongoose.Types.ObjectId();
-      const newName = 'newTestName';
-      const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
-      const newScope = 'Comments only';
       const rule = new Rule({
         name,
         description,
@@ -131,21 +128,13 @@ describe('rule routes', (): void => {
       const response = await request(app)
         .delete(`/communities/rules/${_id}`)
         .set('Authorization', 'Bearer ' + token);
-      expect(response.status).toEqual(200);
+      expect(response.status).toEqual(204);
     });
     it("should return 404 if rule isn't found", async (): Promise<void> => {
       const ruleId = mongoose.Types.ObjectId();
-      const newName = 'newTestName';
-      const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
-      const newScope = 'Comments only';
       const response = await request(app)
         .delete(`/communities/rules/${ruleId}`)
-        .set('Authorization', 'Bearer ' + token)
-        .send({
-          name: newName,
-          description: newDescription,
-          scope: newScope,
-        });
+        .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(404);
     });
   });

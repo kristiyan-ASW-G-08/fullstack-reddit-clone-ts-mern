@@ -7,6 +7,7 @@ import {
   getCommunityById,
   editCommunityColors,
   editCommunityIcon,
+  getCommunityNamesBySearchTerm,
 } from '../services/communityServices';
 import isAuthorized from '../utilities/isAuthorized';
 import {
@@ -71,7 +72,41 @@ export const patchCommunityTheme = async (
       const colors = { base, highlight };
       editCommunityColors(community, colors);
     }
-    res.status(200).json({});
+    res.sendStatus(204);
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
+export const getCommunityNames = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { searchTerm } = req.params;
+    const communities = await getCommunityNamesBySearchTerm(searchTerm);
+    res.status(200).json({ communities });
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
+export const getCommunity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { communityId } = req.params;
+    const community = await getCommunityById(communityId);
+    const links = {
+      self: `http://localhost:8000/communities/${communityId}`,
+      related: {
+        href: 'http://localhost:8000/posts',
+      },
+    };
+    res.status(200).json({ data: community, links });
   } catch (err) {
     passErrorToNext(err, next);
   }

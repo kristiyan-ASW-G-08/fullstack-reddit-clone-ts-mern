@@ -1,4 +1,3 @@
-import bcrypt, { compare } from 'bcryptjs';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import ValidationError from '../types/ValidationError';
 import UserType from '../types/User';
