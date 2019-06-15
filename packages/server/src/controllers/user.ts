@@ -20,7 +20,7 @@ export const signUp = async (
     const { email, username, password } = req.body;
     const userId = await createUser(email, username, password);
     sendConfirmationEmail(userId, email);
-    res.status(200).json({ message: 'User created!' });
+    res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);
   }
@@ -35,7 +35,7 @@ export const login = async (
     const { email, password } = req.body;
     const user = await getUserByEmail(email);
     const { token, userData } = await authenticateUser(user, password);
-    res.status(200).json({ token, user: userData });
+    res.status(200).json({ data: { token, user: userData } });
   } catch (err) {
     passErrorToNext(err, next);
   }
@@ -48,9 +48,7 @@ export const confirm = async (
   try {
     const { token } = req.params;
     await confirmUser(token);
-    res.status(200).json({
-      confirmed: true,
-    });
+    res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);
   }

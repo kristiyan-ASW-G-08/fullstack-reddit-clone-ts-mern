@@ -27,7 +27,8 @@
     "multer": "^1.4.1",
     "nodemailer": "^6.2.1",
     "pm2": "^3.5.1",
-    "rate-limiter-flexible": "^1.0.1"
+    "rate-limiter-flexible": "^1.0.1",
+    "url-regex": "^5.0.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

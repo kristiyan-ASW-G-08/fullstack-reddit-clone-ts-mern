@@ -187,7 +187,6 @@ describe('community routes', (): void => {
       const response = await request(app)
         .get(`/communities/${searchTerm}/names`)
         .set('Authorization', 'Bearer ' + token);
-
       expect(response.status).toEqual(200);
     });
   });

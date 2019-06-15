@@ -3,7 +3,11 @@ import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import passErrorToNext from '../utilities/passErrorToNext';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
-import { createRule, getRuleById } from '../services/ruleServices';
+import {
+  createRule,
+  getRuleById,
+  deleteRuleById,
+} from '../services/ruleServices';
 import isAuthorized from '../utilities/isAuthorized';
 import { getCommunityById } from '../services/communityServices';
 export const postRule = async (
@@ -25,12 +29,12 @@ export const postRule = async (
       communityId,
       userId,
     );
-    res.status(200).json({ ruleId });
+    res.status(200).json({ data: { ruleId } });
   } catch (err) {
     passErrorToNext(err, next);
   }
 };
-export const putRule = async (
+export const patchRule = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -46,7 +50,7 @@ export const putRule = async (
     rule.description = description;
     rule.scope = scope;
     await rule.save();
-    res.status(200).json({ rule });
+    res.status(200).json({ data: { rule } });
   } catch (err) {
     passErrorToNext(err, next);
   }
@@ -57,12 +61,9 @@ export const deleteRule = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    isEmpty(validationResult(req));
     const { userId } = req;
     const { ruleId } = req.params;
-    const rule = await getRuleById(ruleId);
-    isAuthorized(rule.user, userId);
-    rule.remove();
+    deleteRuleById(ruleId, userId);
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);

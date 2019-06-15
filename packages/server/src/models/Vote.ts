@@ -1,7 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
 import Vote from '../types/Vote';
 const VoteSchema: Schema = new Schema({
-  user: Schema.Types.ObjectId,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   voteType: {
     type: String,
     required: true,

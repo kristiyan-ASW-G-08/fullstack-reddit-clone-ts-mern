@@ -1,9 +1,9 @@
 import express from 'express';
 import { body } from 'express-validator/check';
 import isAuth from '../middleware/isAuth';
-import { postRule, putRule, deleteRule } from '../controllers/rule';
+import { postRule, patchRule, deleteRule } from '../controllers/rule';
 const router = express.Router();
-const ruleValidationArr = [
+const ruleValidation = [
   body('name', 'Name should be between 1 and 100 characters long.')
     .isLength({ min: 1, max: 100 })
     .isString()
@@ -21,11 +21,11 @@ const ruleValidationArr = [
 ];
 router.post(
   '/communities/:communityId/rules',
-  ruleValidationArr,
+  ruleValidation,
   isAuth,
   postRule,
 );
 
-router.put('/communities/rules/:ruleId', ruleValidationArr, isAuth, putRule);
+router.patch('/communities/rules/:ruleId', ruleValidation, isAuth, patchRule);
 router.delete('/communities/rules/:ruleId', isAuth, deleteRule);
 export default router;

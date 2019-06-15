@@ -14,6 +14,7 @@ import {
   createCommunity,
   editCommunityInfo,
 } from '../services/communityServices';
+import deleteFile from '../utilities/deleteFile';
 export const postCommunity = async (
   req: Request,
   res: Response,
@@ -54,6 +55,7 @@ export const patchCommunityTheme = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
+    isEmpty(validationResult(req));
     const { patchType } = req.query;
     const { communityId } = req.params;
     const { userId } = req;
@@ -61,16 +63,20 @@ export const patchCommunityTheme = async (
     isAuthorized(community.user.toString(), userId);
     if (patchType === 'icon') {
       if (!req.file) {
-        const { status, message } = Errors.UnprocessableEntity;
+        const { status, message } = Errors.BadRequest;
         const error = new ErrorREST(status, message, {});
         throw error;
       }
       const imageUrl = req.file.path;
-      editCommunityIcon(community, imageUrl);
+      const oldImageUrl = community.theme.icon;
+      await editCommunityIcon(community, imageUrl);
+      if (oldImageUrl !== '/assets/default/icon.svg') {
+        deleteFile(oldImageUrl);
+      }
     } else if (patchType === 'colors') {
       const { base, highlight } = req.body;
       const colors = { base, highlight };
-      editCommunityColors(community, colors);
+      await editCommunityColors(community, colors);
     }
     res.sendStatus(204);
   } catch (err) {
@@ -106,7 +112,7 @@ export const getCommunity = async (
         href: 'http://localhost:8000/posts',
       },
     };
-    res.status(200).json({ data: community, links });
+    res.status(200).json({ data: { community }, links });
   } catch (err) {
     passErrorToNext(err, next);
   }
