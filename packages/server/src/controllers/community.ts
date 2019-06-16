@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
+import ValidationError from '../types/ValidationError';
 import passErrorToNext from '../utilities/passErrorToNext';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import {
@@ -63,8 +64,14 @@ export const patchCommunityTheme = async (
     isAuthorized(community.user.toString(), userId);
     if (patchType === 'icon') {
       if (!req.file) {
+        const errorData: ValidationError = {
+          location: 'body',
+          param: 'image',
+          msg: 'Submit an image.',
+          value: 'image',
+        };
         const { status, message } = Errors.BadRequest;
-        const error = new ErrorREST(status, message, {});
+        const error = new ErrorREST(status, message, errorData);
         throw error;
       }
       const imageUrl = req.file.path;
@@ -92,7 +99,7 @@ export const getCommunityNames = async (
   try {
     const { searchTerm } = req.params;
     const communities = await getCommunityNamesBySearchTerm(searchTerm);
-    res.status(200).json({ communities });
+    res.status(200).json({ data: { communities } });
   } catch (err) {
     passErrorToNext(err, next);
   }

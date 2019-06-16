@@ -2,7 +2,7 @@ interface Post {
   type: string;
   title: string;
   text?: string;
-  link?: string;
+  linkUrl?: string;
   image?: string;
   user: string;
   community: string;

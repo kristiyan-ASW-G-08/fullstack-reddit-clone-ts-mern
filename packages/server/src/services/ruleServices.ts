@@ -38,17 +38,5 @@ const getRuleById = async (ruleId: string): Promise<RuleType> => {
     throw err;
   }
 };
-const deleteRuleById = async (
-  ruleId: string,
-  userId: string,
-): Promise<void> => {
-  try {
-    const rule = await getRuleById(ruleId);
-    isAuthorized(rule.user, userId);
-    rule.remove();
-    await rule.save();
-  } catch (err) {
-    throw err;
-  }
-};
-export { createRule, getRuleById, deleteRuleById };
+
+export { createRule, getRuleById };

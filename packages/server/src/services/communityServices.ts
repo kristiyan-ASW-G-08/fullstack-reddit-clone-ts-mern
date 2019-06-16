@@ -89,11 +89,7 @@ const getCommunityNamesBySearchTerm = async (
       .select({ score: { $meta: 'textScore' } })
       .limit(10)
       .exec();
-    if (communityDocs.length === 0) {
-      const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message);
-      throw error;
-    }
+
     const mappedCommunityDocs = communityDocs.map(
       (communityDoc: CommunityType): SearchTermResult => {
         return {

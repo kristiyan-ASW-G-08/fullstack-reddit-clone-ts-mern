@@ -4,7 +4,7 @@ const PostSchema: Schema = new Schema({
   type: { type: String, required: true, enum: ['text', 'link', 'image'] },
   title: { type: String, required: true, min: 1, max: 300 },
   text: { type: String, min: 1, max: 10000 },
-  link: { type: String, min: 3, max: 2100 },
+  linkUrl: { type: String, min: 3, max: 2100 },
   image: { type: String, min: 1 },
   date: {
     type: Date,

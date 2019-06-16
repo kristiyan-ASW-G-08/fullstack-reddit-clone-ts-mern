@@ -7,11 +7,12 @@ import app from '../../app';
 import sendConfirmationEmail from '../../services/sendConfirmationEmail';
 import jwt from 'jsonwebtoken';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
-const port = process.env.PORT || 8080;
+const port = 8080;
 jest.mock('../../services/sendConfirmationEmail');
 describe('user routes', (): void => {
   beforeAll(
     async (): Promise<void> => {
+      await mongoose.disconnect();
       await mongoose.connect(mongoURI, { useNewUrlParser: true });
       app.listen(port);
       await User.deleteMany({}).exec();
@@ -46,7 +47,7 @@ describe('user routes', (): void => {
           password,
           matchPassword: password,
         });
-      expect(response.status).toEqual(200);
+      expect(response.status).toEqual(204);
       expect(sendConfirmationEmail).toBeCalledTimes(1);
     });
     it('should throw an error if username or email are already used', async (): Promise<
@@ -167,7 +168,7 @@ describe('user routes', (): void => {
         { expiresIn: '1h' },
       );
       const response = await request(app).patch(`/users/${token}`);
-      expect(response.status).toEqual(200);
+      expect(response.status).toEqual(204);
     });
     it("should return 404 if user doesn't exist", async (): Promise<void> => {
       const email = 'testMail@mail.com';

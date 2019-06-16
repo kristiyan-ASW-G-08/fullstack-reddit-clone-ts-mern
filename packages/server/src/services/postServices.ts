@@ -27,7 +27,7 @@ const createPost = async (
         post = new Post({
           type,
           title,
-          link: content,
+          linkUrl: content,
           community: communityId,
           user: userId,
         });
@@ -40,6 +40,7 @@ const createPost = async (
           community: communityId,
           user: userId,
         });
+        break;
       default:
         post = new Post({
           type,
@@ -72,24 +73,23 @@ const getPostById = async (postId: string): Promise<PostType> => {
 };
 const getPostContent = (type: string, req: Request): string => {
   let content: string;
-
   switch (type) {
     case 'text':
       content = req.body.text;
       break;
     case 'link':
-      content = req.body.link;
+      content = req.body.linkUrl;
       break;
     case 'image':
       if (!req.file) {
         const errorData: ValidationError = {
           location: 'body',
           param: 'image',
-          msg: 'User with this email does not exist!',
+          msg: 'Submit an image.',
           value: 'image',
         };
         const { status, message } = Errors.BadRequest;
-        const error = new ErrorREST(status, message, {});
+        const error = new ErrorREST(status, message, errorData);
         throw error;
       }
       content = req.file.path;
@@ -113,7 +113,7 @@ const editPost = async (
         post.text = content;
         break;
       case 'link':
-        post.link = content;
+        post.linkUrl = content;
         break;
       case 'image':
         post.image = content;
@@ -125,17 +125,4 @@ const editPost = async (
     throw err;
   }
 };
-const deletePostById = async (
-  postId: string,
-  userId: string,
-): Promise<void> => {
-  try {
-    const post = await getPostById(postId);
-    isAuthorized(post.user, userId);
-    post.remove();
-    await post.save();
-  } catch (err) {
-    throw err;
-  }
-};
-export { createPost, getPostById, deletePostById, getPostContent, editPost };
+export { createPost, getPostById, getPostContent, editPost };

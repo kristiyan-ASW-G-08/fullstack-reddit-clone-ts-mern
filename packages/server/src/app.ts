@@ -8,6 +8,7 @@ import { ErrorREST } from './classes/ErrorREST';
 import userRoutes from './routes/userRoutes';
 import communityRoutes from './routes/communityRoutes';
 import ruleRoutes from './routes/ruleRoutes';
+import postRoutes from './routes/postRoutes';
 import multer from 'multer';
 const app: Application = express();
 
@@ -32,7 +33,7 @@ app.use(
 const fileStorage = multer.diskStorage({
   //@ts-ignore:Problem with multer and typescript
   destination: (req: Request, file, cb): any => {
-    cb(null, 'images');
+    cb(null, 'assets/images');
   },
   filename: (req: Request, file, cb) => {
     cb(
@@ -58,12 +59,16 @@ const fileFilter = (req: Request, file: any, cb: any) => {
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'),
 );
-app.use('/assets/images', express.static(path.join(__dirname, 'images')));
+app.use(
+  '/assets/images',
+  express.static(path.join(__dirname, 'assets/images')),
+);
 app.use('/assets/videos', express.static(path.join(__dirname, 'videos')));
 
 app.use(userRoutes);
 app.use(communityRoutes);
 app.use(ruleRoutes);
+app.use(postRoutes);
 
 app.use(
   (error: ErrorREST, req: Request, res: Response, next: NextFunction): void => {

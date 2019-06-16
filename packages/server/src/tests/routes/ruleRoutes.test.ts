@@ -6,10 +6,11 @@ import { mongoURI } from '../../config/db';
 import app from '../../app';
 import jwt from 'jsonwebtoken';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
-const port = process.env.PORT || 8080;
+const port = 8080;
 describe('rule routes', (): void => {
   beforeAll(
     async (): Promise<void> => {
+      await mongoose.disconnect();
       await mongoose.connect(mongoURI, { useNewUrlParser: true });
       app.listen(port);
       await Community.deleteMany({}).exec();
@@ -88,7 +89,7 @@ describe('rule routes', (): void => {
       await rule.save();
       const { _id } = rule;
       const response = await request(app)
-        .put(`/communities/rules/${_id}`)
+        .patch(`/communities/rules/${_id}`)
         .set('Authorization', 'Bearer ' + token)
         .send({
           name: newName,
@@ -103,7 +104,7 @@ describe('rule routes', (): void => {
       const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
       const newScope = 'Comments only';
       const response = await request(app)
-        .put(`/communities/rules/${ruleId}`)
+        .patch(`/communities/rules/${ruleId}`)
         .set('Authorization', 'Bearer ' + token)
         .send({
           name: newName,

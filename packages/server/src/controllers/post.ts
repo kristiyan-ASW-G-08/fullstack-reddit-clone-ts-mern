@@ -3,10 +3,10 @@ import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import passErrorToNext from '../utilities/passErrorToNext';
 import deleteFile from '../utilities/deleteFile';
+import isAuthorized from '../utilities/isAuthorized';
 import {
   createPost,
   editPost,
-  deletePostById,
   getPostContent,
   getPostById,
 } from '../services/postServices';
@@ -19,6 +19,7 @@ export const postPost = async (
     isEmpty(validationResult(req));
     const { communityId } = req.params;
     const { type } = req.query;
+    console.log(type, req.query);
     const { userId } = req;
     const { title } = req.body;
     const content = getPostContent(type, req);
@@ -49,7 +50,7 @@ export const patchPost = async (
     if (post.type === 'image') {
       deleteFile(oldImageUrl);
     }
-    res.status(200).json();
+    res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);
   }
@@ -62,7 +63,10 @@ export const deletePost = async (
   try {
     const { userId } = req;
     const { postId } = req.params;
-    await deletePostById(postId, userId);
+    const post = await getPostById(postId);
+    isAuthorized(post.user, userId);
+    post.remove();
+    await post.save();
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);

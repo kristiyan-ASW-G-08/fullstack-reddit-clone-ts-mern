@@ -5,11 +5,12 @@ import { mongoURI } from '../../config/db';
 import app from '../../app';
 import jwt from 'jsonwebtoken';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
-const port = process.env.PORT || 8080;
+const port = 8080;
 jest.mock('../../services/sendConfirmationEmail');
 describe('community routes', (): void => {
   beforeAll(
     async (): Promise<void> => {
+      await mongoose.disconnect();
       await mongoose.connect(mongoURI, { useNewUrlParser: true });
       app.listen(port);
     },
@@ -176,14 +177,13 @@ describe('community routes', (): void => {
   });
   describe('get /communities/:searchTerm/names', (): void => {
     const searchTerm = 'test';
-    it('should get community', async (): Promise<void> => {
+    it('should get community names', async (): Promise<void> => {
       const community = new Community({
         name,
         description,
         user: userId,
       });
       await community.save();
-
       const response = await request(app)
         .get(`/communities/${searchTerm}/names`)
         .set('Authorization', 'Bearer ' + token);

@@ -3,11 +3,7 @@ import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import passErrorToNext from '../utilities/passErrorToNext';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
-import {
-  createRule,
-  getRuleById,
-  deleteRuleById,
-} from '../services/ruleServices';
+import { createRule, getRuleById } from '../services/ruleServices';
 import isAuthorized from '../utilities/isAuthorized';
 import { getCommunityById } from '../services/communityServices';
 export const postRule = async (
@@ -63,7 +59,9 @@ export const deleteRule = async (
   try {
     const { userId } = req;
     const { ruleId } = req.params;
-    deleteRuleById(ruleId, userId);
+    const rule = await getRuleById(ruleId);
+    isAuthorized(rule.user, userId);
+    rule.remove();
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);
