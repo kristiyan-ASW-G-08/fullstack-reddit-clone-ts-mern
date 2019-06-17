@@ -39,7 +39,6 @@ describe('Post routes', (): void => {
   const communityId = mongoose.Types.ObjectId().toString();
   const secret: any = process.env.SECRET;
   const email = 'testEmail@email.com';
-  const link = 'https"://testLink.com';
   const token = jwt.sign(
     {
       email,
@@ -112,7 +111,7 @@ describe('Post routes', (): void => {
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(204);
     });
-    it("should return 404 if rule isn't found", async (): Promise<void> => {
+    it('should return 404 response', async (): Promise<void> => {
       const postId = mongoose.Types.ObjectId();
       const response = await request(app)
         .delete(`/posts/${postId}`)
@@ -143,7 +142,7 @@ describe('Post routes', (): void => {
         });
       expect(response.status).toEqual(204);
     });
-    it("should return 404 if  post isn't found", async (): Promise<void> => {
+    it('should return 404 response', async (): Promise<void> => {
       const postId = mongoose.Types.ObjectId();
       const response = await request(app)
         .patch(`/posts/${postId}`)

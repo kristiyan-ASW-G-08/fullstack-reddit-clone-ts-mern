@@ -1,7 +1,7 @@
 import express from 'express';
 import { body } from 'express-validator/check';
 import isAuth from '../middleware/isAuth';
-import { postRule, patchRule, deleteRule } from '../controllers/rule';
+import { postRule, patchRule, deleteRule, getRules } from '../controllers/rule';
 const router = express.Router();
 const ruleValidation = [
   body('name', 'Name should be between 1 and 100 characters long.')
@@ -28,4 +28,5 @@ router.post(
 
 router.patch('/communities/rules/:ruleId', ruleValidation, isAuth, patchRule);
 router.delete('/communities/rules/:ruleId', isAuth, deleteRule);
+router.get('/communities/:communityId/rules', getRules);
 export default router;

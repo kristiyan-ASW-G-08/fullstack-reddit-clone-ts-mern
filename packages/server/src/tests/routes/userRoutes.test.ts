@@ -170,7 +170,7 @@ describe('user routes', (): void => {
       const response = await request(app).patch(`/users/${token}`);
       expect(response.status).toEqual(204);
     });
-    it("should return 404 if user doesn't exist", async (): Promise<void> => {
+    it('should return 404 response', async (): Promise<void> => {
       const email = 'testMail@mail.com';
       const userId = mongoose.Types.ObjectId().toString();
       const secret: any = process.env.SECRET;

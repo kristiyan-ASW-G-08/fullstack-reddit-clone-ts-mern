@@ -1,4 +1,8 @@
-import { createRule, getRuleById } from '../../services/ruleServices';
+import {
+  createRule,
+  getRuleById,
+  getRulesByCommunityId,
+} from '../../services/ruleServices';
 import Rule from '../../models/Rule';
 import { ErrorREST, Errors } from '../../classes/ErrorREST';
 import mongoose from 'mongoose';
@@ -78,6 +82,50 @@ describe('ruleServices', (): void => {
       const { status, message } = Errors.NotFound;
       const error = new ErrorREST(status, message, null);
       await expect(getRuleById(id)).rejects.toThrow(error);
+    });
+  });
+  describe('getRulesByCommunityId', (): void => {
+    it(`should return a list of rules`, async (): Promise<void> => {
+      const secondCommunityId = mongoose.Types.ObjectId().toString();
+      const rulesArr = [
+        {
+          name,
+          description,
+          scope,
+          community: communityId,
+          user: userId,
+        },
+        {
+          name,
+          description,
+          scope,
+          community: communityId,
+          user: userId,
+        },
+        {
+          name,
+          description,
+          scope,
+          community: secondCommunityId,
+          user: userId,
+        },
+      ];
+
+      await Rule.insertMany(rulesArr);
+      const communityRules = await getRulesByCommunityId(communityId);
+      const secondCommunityRules = await getRulesByCommunityId(
+        secondCommunityId,
+      );
+      expect(communityRules.length).toBe(2);
+      expect(secondCommunityRules.length).toBe(1);
+    });
+
+    it(`shouldn't throw an error if no rules are found found`, async (): Promise<
+      void
+    > => {
+      const { status, message } = Errors.NotFound;
+      const error = new ErrorREST(status, message, null);
+      await expect(getRulesByCommunityId(communityId)).rejects.toThrow(error);
     });
   });
 });

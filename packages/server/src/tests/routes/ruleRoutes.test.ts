@@ -98,7 +98,7 @@ describe('rule routes', (): void => {
         });
       expect(response.status).toEqual(200);
     });
-    it("should return 404 if rule isn't found", async (): Promise<void> => {
+    it('should return 404 response ', async (): Promise<void> => {
       const ruleId = mongoose.Types.ObjectId();
       const newName = 'newTestName';
       const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
@@ -131,10 +131,36 @@ describe('rule routes', (): void => {
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(204);
     });
-    it("should return 404 if rule isn't found", async (): Promise<void> => {
+    it("should return status of 404 if rule isn't found", async (): Promise<
+      void
+    > => {
       const ruleId = mongoose.Types.ObjectId();
       const response = await request(app)
         .delete(`/communities/rules/${ruleId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(404);
+    });
+  });
+  describe('get /communities/:communityId/rules', (): void => {
+    it('should get a list of rules', async (): Promise<void> => {
+      const communityId = mongoose.Types.ObjectId();
+      const rule = new Rule({
+        name,
+        description,
+        scope,
+        user: userId,
+        community: communityId,
+      });
+      await rule.save();
+      const response = await request(app)
+        .get(`/communities/${communityId}/rules`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(200);
+    });
+    it('should return 404 response', async (): Promise<void> => {
+      const communityId = mongoose.Types.ObjectId();
+      const response = await request(app)
+        .get(`/communities/${communityId}/rules`)
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(404);
     });

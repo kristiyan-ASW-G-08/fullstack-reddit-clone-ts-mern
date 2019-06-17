@@ -30,7 +30,7 @@ const getRuleById = async (ruleId: string): Promise<RuleType> => {
     const rule = await Rule.findById(ruleId);
     if (!rule) {
       const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message, {});
+      const error = new ErrorREST(status, message);
       throw error;
     }
     return rule;
@@ -38,5 +38,19 @@ const getRuleById = async (ruleId: string): Promise<RuleType> => {
     throw err;
   }
 };
-
-export { createRule, getRuleById };
+const getRulesByCommunityId = async (
+  communityId: string,
+): Promise<RuleType[]> => {
+  try {
+    const rules = await Rule.find({ community: communityId });
+    if (!rules || rules.length === 0) {
+      const { status, message } = Errors.NotFound;
+      const error = new ErrorREST(status, message);
+      throw error;
+    }
+    return rules;
+  } catch (err) {
+    throw err;
+  }
+};
+export { createRule, getRuleById, getRulesByCommunityId };
