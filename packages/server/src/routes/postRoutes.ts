@@ -1,9 +1,14 @@
 import express from 'express';
-import { body } from 'express-validator/check';
+import { body, query } from 'express-validator/check';
 import isAuth from '../middleware/isAuth';
-import { postPost, patchPost, deletePost } from '../controllers/post';
+import {
+  postPost,
+  patchPost,
+  deletePost,
+  getPostsByCommunity,
+} from '../controllers/post';
 const router = express.Router();
-const postValidation = [
+const postBodyValidation = [
   body('title', 'Title should be between 1 and 100 characters long.')
     .isLength({ min: 1, max: 100 })
     .isString()
@@ -20,12 +25,41 @@ const postValidation = [
     .isURL()
     .trim(),
 ];
+const postQueryValidation = [
+  query('limit')
+    .optional()
+    .isNumeric()
+    .isLength({ min: 1, max: 2 })
+    .trim(),
+  query('page')
+    .optional()
+    .isNumeric()
+    .isLength({ min: 1 })
+    .trim(),
+  query('sort')
+    .optional()
+    .isAlpha()
+    .trim()
+    .matches(/(new | top | comments)/),
+];
 router.post(
   '/communities/:communityId/posts',
-  postValidation,
+  body('type')
+    .isLength({ min: 4, max: 5 })
+    .isString()
+    .isAlpha()
+    .trim()
+    .matches(/(text|image|link)/),
+
+  postBodyValidation,
   isAuth,
   postPost,
 );
-router.patch('/posts/:postId', postValidation, isAuth, patchPost);
+router.patch('/posts/:postId', postBodyValidation, isAuth, patchPost);
 router.delete('/posts/:postId', isAuth, deletePost);
+router.get(
+  '/communities/:communityId/posts',
+  postQueryValidation,
+  getPostsByCommunity,
+);
 export default router;

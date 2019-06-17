@@ -116,8 +116,8 @@ describe('ruleServices', (): void => {
       const secondCommunityRules = await getRulesByCommunityId(
         secondCommunityId,
       );
-      expect(communityRules.length).toBe(2);
-      expect(secondCommunityRules.length).toBe(1);
+      expect(communityRules).toHaveLength(2);
+      expect(secondCommunityRules).toHaveLength(1);
     });
 
     it(`shouldn't throw an error if no rules are found found`, async (): Promise<

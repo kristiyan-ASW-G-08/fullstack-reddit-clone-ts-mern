@@ -57,11 +57,12 @@ describe('Post routes', (): void => {
       const type = 'text';
 
       const response = await request(app)
-        .post(`/communities/${communityId}/posts?type=${type}`)
+        .post(`/communities/${communityId}/posts`)
         .set('Authorization', 'Bearer ' + token)
         .send({
           title,
           text,
+          type,
         });
       expect(response.status).toEqual(200);
     });
@@ -69,11 +70,12 @@ describe('Post routes', (): void => {
       const type = 'link';
       const linkUrl = 'https://testLink.com';
       const response = await request(app)
-        .post(`/communities/${communityId}/posts?type=${type}`)
+        .post(`/communities/${communityId}/posts`)
         .set('Authorization', 'Bearer ' + token)
         .send({
           title,
           linkUrl,
+          type,
         });
       expect(response.status).toEqual(200);
     });
@@ -85,13 +87,37 @@ describe('Post routes', (): void => {
       });
       const type = 'image';
       const response = await request(app)
-        .post(`/communities/${communityId}/posts?type=${type}`)
+        .post(`/communities/${communityId}/posts`)
         .attach('image', 'assets/images/test.jpg')
         .set('Authorization', 'Bearer ' + token)
         .field({
           title,
+          type,
         });
       expect(response.status).toEqual(200);
+    });
+  });
+  describe('get communities/communityId/posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
+    it('should delete a post', async (): Promise<void> => {
+      const type = 'text';
+      const post = new Post({
+        type,
+        title,
+        text,
+        user: userId,
+        community: communityId,
+      });
+      await post.save();
+      const response = await request(app).get(
+        `/communities/${communityId}/posts?sort=new&limit=10&page=1`,
+      );
+      expect(response.status).toEqual(200);
+    });
+    it('should return 404 response', async (): Promise<void> => {
+      const response = await request(app).get(
+        `/communities/${communityId}/posts?sort=new&limit=10&page=1`,
+      );
+      expect(response.status).toEqual(404);
     });
   });
   describe('delete posts/:postId', (): void => {

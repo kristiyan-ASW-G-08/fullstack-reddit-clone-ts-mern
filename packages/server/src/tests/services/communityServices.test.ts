@@ -72,7 +72,7 @@ describe('userServices', (): void => {
       await Community.insertMany(communitiesArr);
       const searchTerm = 'test';
       const communities = await getCommunityNamesBySearchTerm(searchTerm);
-      expect(communities.length).toEqual(2);
+      expect(communities).toHaveLength(2);
     });
   });
 

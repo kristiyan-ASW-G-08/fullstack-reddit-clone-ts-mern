@@ -125,4 +125,63 @@ const editPost = async (
     throw err;
   }
 };
-export { createPost, getPostById, getPostContent, editPost };
+interface GetPostsByCommunityIdResponse {
+  posts: PostType[];
+  postsCount: number;
+}
+const getPostsByCommunityId = async (
+  communityId: string,
+  sort: string,
+  limit: number,
+  page: number,
+): Promise<GetPostsByCommunityIdResponse> => {
+  let posts: PostType[];
+  switch (sort) {
+    case 'top':
+      posts = await Post.find()
+        .countDocuments()
+        .find({ community: communityId })
+        .sort('-upvotes')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    case 'new':
+      posts = await Post.find()
+        .countDocuments()
+        .find({ community: communityId })
+        .sort({ date: 'descending' })
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    case 'comments':
+      posts = await Post.find()
+        .countDocuments()
+        .find({ community: communityId })
+        .sort('-comments')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    default:
+      posts = await Post.find()
+        .countDocuments()
+        .find({ community: communityId })
+        .sort('-upvotes')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+  }
+  if (posts.length < 1) {
+    const { status, message } = Errors.NotFound;
+    const error = new ErrorREST(status, message);
+    throw error;
+  }
+  const postsCount = (await Post.countDocuments()) - page * limit;
+  return { posts, postsCount };
+};
+export {
+  createPost,
+  getPostById,
+  getPostContent,
+  editPost,
+  getPostsByCommunityId,
+};

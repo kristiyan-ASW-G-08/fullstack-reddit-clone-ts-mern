@@ -4,11 +4,13 @@ import isEmpty from '../utilities/isEmpty';
 import passErrorToNext from '../utilities/passErrorToNext';
 import deleteFile from '../utilities/deleteFile';
 import isAuthorized from '../utilities/isAuthorized';
+import checkLimit from '../utilities/checkLimit';
 import {
   createPost,
   editPost,
   getPostContent,
   getPostById,
+  getPostsByCommunityId,
 } from '../services/postServices';
 export const postPost = async (
   req: Request,
@@ -18,10 +20,8 @@ export const postPost = async (
   try {
     isEmpty(validationResult(req));
     const { communityId } = req.params;
-    const { type } = req.query;
-    console.log(type, req.query);
     const { userId } = req;
-    const { title } = req.body;
+    const { title, type } = req.body;
     const content = getPostContent(type, req);
     const postId = await createPost(type, title, content, communityId, userId);
     const port = process.env.PORT || 8080;
@@ -33,6 +33,7 @@ export const postPost = async (
     passErrorToNext(err, next);
   }
 };
+
 export const patchPost = async (
   req: Request,
   res: Response,
@@ -51,6 +52,33 @@ export const patchPost = async (
       deleteFile(oldImageUrl);
     }
     res.sendStatus(204);
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+export const getPostsByCommunity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { communityId } = req.params;
+    const sort = req.query.sort || 'top';
+    const limit = parseInt(req.query.limit) || 25;
+    const page = parseInt(req.query.page) || 1;
+    checkLimit(limit);
+    const { posts, postsCount } = await getPostsByCommunityId(
+      communityId,
+      sort,
+      limit,
+      page,
+    );
+    res.status(200).json({
+      data: {
+        posts,
+        postsCount,
+      },
+    });
   } catch (err) {
     passErrorToNext(err, next);
   }

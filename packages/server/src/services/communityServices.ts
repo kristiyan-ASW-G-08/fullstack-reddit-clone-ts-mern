@@ -106,6 +106,7 @@ const getCommunityNamesBySearchTerm = async (
     throw err;
   }
 };
+
 export {
   createCommunity,
   editCommunityInfo,

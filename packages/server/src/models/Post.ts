@@ -10,6 +10,10 @@ const PostSchema: Schema = new Schema({
     type: Date,
     default: Date.now,
   },
+  comments: {
+    type: Number,
+    default: 0,
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -20,8 +24,8 @@ const PostSchema: Schema = new Schema({
     ref: 'Community',
     required: true,
   },
-  upvote: { type: Number, default: 0 },
-  downvote: { type: Number, default: 0 },
+  upvotes: { type: Number, default: 0 },
+  downvotes: { type: Number, default: 0 },
 });
 
 export default mongoose.model<Post>('Post', PostSchema);
