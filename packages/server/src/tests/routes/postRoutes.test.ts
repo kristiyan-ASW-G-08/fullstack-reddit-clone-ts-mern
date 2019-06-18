@@ -98,7 +98,9 @@ describe('Post routes', (): void => {
     });
   });
   describe('get communities/communityId/posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
-    it('should delete a post', async (): Promise<void> => {
+    it('should get a list of posts by community Id', async (): Promise<
+      void
+    > => {
       const type = 'text';
       const post = new Post({
         type,
@@ -116,6 +118,29 @@ describe('Post routes', (): void => {
     it('should return 404 response', async (): Promise<void> => {
       const response = await request(app).get(
         `/communities/${communityId}/posts?sort=new&limit=10&page=1`,
+      );
+      expect(response.status).toEqual(404);
+    });
+  });
+  describe('get posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
+    it('should get a list of posts', async (): Promise<void> => {
+      const type = 'text';
+      const post = new Post({
+        type,
+        title,
+        text,
+        user: userId,
+        community: communityId,
+      });
+      await post.save();
+      const response = await request(app).get(
+        `/posts?sort=new&limit=10&page=1`,
+      );
+      expect(response.status).toEqual(200);
+    });
+    it('should return 404 response', async (): Promise<void> => {
+      const response = await request(app).get(
+        `/posts?sort=new&limit=10&page=1`,
       );
       expect(response.status).toEqual(404);
     });

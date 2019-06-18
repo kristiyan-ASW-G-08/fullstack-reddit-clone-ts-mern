@@ -47,7 +47,8 @@ describe('checkUserConfirmation', (): void => {
       password,
       username,
     });
-    await user.confirm();
+    user.confirmed = true;
+    await user.save();
     await expect(checkUserConfirmation(user)).toEqual(Promise.resolve({}));
   });
 });

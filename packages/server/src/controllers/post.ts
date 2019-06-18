@@ -10,6 +10,7 @@ import {
   editPost,
   getPostContent,
   getPostById,
+  getPosts,
   getPostsByCommunityId,
 } from '../services/postServices';
 export const postPost = async (
@@ -52,6 +53,27 @@ export const patchPost = async (
       deleteFile(oldImageUrl);
     }
     res.sendStatus(204);
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+export const getPostsFromAll = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const sort = req.query.sort || 'top';
+    const limit = parseInt(req.query.limit) || 25;
+    const page = parseInt(req.query.page) || 1;
+    checkLimit(limit);
+    const { posts, postsCount } = await getPosts(sort, limit, page);
+    res.status(200).json({
+      data: {
+        posts,
+        postsCount,
+      },
+    });
   } catch (err) {
     passErrorToNext(err, next);
   }

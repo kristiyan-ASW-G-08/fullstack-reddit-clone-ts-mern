@@ -6,6 +6,7 @@ import {
   patchPost,
   deletePost,
   getPostsByCommunity,
+  getPostsFromAll,
 } from '../controllers/post';
 const router = express.Router();
 const postBodyValidation = [
@@ -62,4 +63,5 @@ router.get(
   postQueryValidation,
   getPostsByCommunity,
 );
+router.get('/posts', postQueryValidation, getPostsFromAll);
 export default router;

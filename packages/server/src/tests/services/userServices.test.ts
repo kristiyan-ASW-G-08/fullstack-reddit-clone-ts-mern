@@ -148,7 +148,8 @@ describe('userServices', (): void => {
           password: hashedPassword,
           username,
         });
-        await newUser.confirm();
+       newUser.confirmed = true
+       await newUser.save()
       },
     );
     it(`should return a token and userData`, async (): Promise<void> => {

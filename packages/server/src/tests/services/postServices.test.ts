@@ -1,6 +1,7 @@
 import {
   createPost,
   getPostById,
+  getPosts,
   getPostsByCommunityId,
 } from '../../services/postServices';
 import Post from '../../models/Post';
@@ -281,6 +282,145 @@ describe('postServices', (): void => {
         limit,
         page,
       );
+      if (!posts) {
+        return;
+      }
+      expect(posts).toHaveLength(3);
+      expect(posts[0].title).toMatch('first');
+      expect(posts[1].title).toMatch('second');
+      expect(posts[2].title).toMatch('third');
+    });
+    it(`shouldn't throw an error if no posts are found`, async (): Promise<
+      void
+    > => {
+      const sort = 'top';
+      const { status, message } = Errors.NotFound;
+      const error = new ErrorREST(status, message, null);
+      await expect(
+        getPostsByCommunityId(communityId, sort, limit, page),
+      ).rejects.toThrow(error);
+    });
+  });
+
+  describe('getPosts', (): void => {
+    const limit = 25;
+    const page = 1;
+    const type = 'text';
+    it(`should return a list of posts by upvotes(top)`, async (): Promise<
+      void
+    > => {
+      const sort = 'top';
+
+      const postsArr = [
+        {
+          title,
+          type,
+          text,
+          upvotes: 100,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          upvotes: 300,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          upvotes: 200,
+          community: communityId,
+          user: userId,
+        },
+        ,
+      ];
+
+      await Post.insertMany(postsArr);
+      const { posts, postsCount } = await getPosts(sort, limit, page);
+      if (!posts) {
+        return;
+      }
+      expect(posts).toHaveLength(3);
+      expect(posts[0].upvotes).toBe(300);
+      expect(posts[1].upvotes).toBe(200);
+      expect(posts[2].upvotes).toBe(100);
+    });
+    it(`should return a list of posts sorted by comments`, async (): Promise<
+      void
+    > => {
+      const sort = 'comments';
+      const postsArr = [
+        {
+          title,
+          type,
+          text,
+          comments: 40,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          comments: 20,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          comments: 30,
+          community: communityId,
+          user: userId,
+        },
+      ];
+
+      await Post.insertMany(postsArr);
+      const { posts, postsCount } = await getPosts(sort, limit, page);
+      if (!posts) {
+        return;
+      }
+      expect(posts).toHaveLength(3);
+      expect(posts[0].comments).toBe(40);
+      expect(posts[1].comments).toBe(30);
+      expect(posts[2].comments).toBe(20);
+    });
+    it(`should return a list of posts sorted by new`, async (): Promise<
+      void
+    > => {
+      const sort = 'new';
+
+      const postsArr = [
+        {
+          title: 'first',
+          type,
+          text,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title: 'second',
+          type,
+          text,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title: 'third',
+          type,
+          text,
+          community: communityId,
+          user: userId,
+        },
+      ];
+
+      await Post.insertMany(postsArr);
+      const { posts, postsCount } = await getPosts(sort, limit, page);
       if (!posts) {
         return;
       }

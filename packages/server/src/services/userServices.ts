@@ -90,7 +90,8 @@ const confirmUser = async (token: string): Promise<void> => {
   try {
     const userId = verifyToken(token);
     const user = await getUserById(userId);
-    await user.confirm();
+    user.confirmed = true;
+    await user.save();
   } catch (err) {
     throw err;
   }

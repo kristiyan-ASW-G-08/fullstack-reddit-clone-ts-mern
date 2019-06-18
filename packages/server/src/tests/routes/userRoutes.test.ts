@@ -85,7 +85,8 @@ describe('user routes', (): void => {
         username,
         password: hashedPassword,
       });
-      await user.confirm();
+      user.confirmed = true;
+      await user.save();
       const response = await request(app)
         .post('/users/token')
         .send({
@@ -107,7 +108,8 @@ describe('user routes', (): void => {
         username,
         password: hashedPassword,
       });
-      await user.confirm();
+      user.confirmed = true;
+      await user.save();
       const response = await request(app)
         .post('/users/token')
         .send({
@@ -129,7 +131,8 @@ describe('user routes', (): void => {
         username,
         password: hashedPassword,
       });
-      await user.confirm();
+      user.confirmed = true;
+      await user.save();
       const response = await request(app)
         .post('/users/token')
         .send({

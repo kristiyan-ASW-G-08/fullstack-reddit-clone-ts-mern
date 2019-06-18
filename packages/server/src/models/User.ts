@@ -27,8 +27,5 @@ const UserSchema: Schema = new Schema({
     default: 0,
   },
 });
-UserSchema.methods.confirm = function(): void {
-  this.confirmed = true;
-  this.save();
-};
+
 export default mongoose.model<User>('User', UserSchema);

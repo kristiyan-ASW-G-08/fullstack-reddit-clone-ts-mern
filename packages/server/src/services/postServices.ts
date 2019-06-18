@@ -1,5 +1,6 @@
 import Post from '../models/Post';
 import PostType from '../types/Post';
+import { Model } from 'mongoose';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import ValidationError from '../types/ValidationError';
@@ -125,21 +126,65 @@ const editPost = async (
     throw err;
   }
 };
-interface GetPostsByCommunityIdResponse {
+interface GetPostsResponse {
   posts: PostType[];
   postsCount: number;
 }
+const getPosts = async (
+  sort: string,
+  limit: number,
+  page: number,
+): Promise<GetPostsResponse> => {
+  let posts: PostType[];
+  switch (sort) {
+    case 'top':
+      posts = await Post.countDocuments()
+        .find()
+        .sort('-upvotes')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    case 'new':
+      posts = await Post.find()
+        .countDocuments()
+        .find()
+        .sort({ date: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    case 'comments':
+      posts = await Post.countDocuments()
+        .find()
+        .sort('-comments')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    default:
+      posts = await Post.countDocuments()
+        .find()
+        .sort('-upvotes')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+  }
+  if (posts.length < 1) {
+    const { status, message } = Errors.NotFound;
+    const error = new ErrorREST(status, message);
+    throw error;
+  }
+  const postsCount = (await Post.countDocuments()) - page * limit;
+  return { posts, postsCount };
+};
 const getPostsByCommunityId = async (
   communityId: string,
   sort: string,
   limit: number,
   page: number,
-): Promise<GetPostsByCommunityIdResponse> => {
+): Promise<GetPostsResponse> => {
   let posts: PostType[];
   switch (sort) {
     case 'top':
-      posts = await Post.find()
-        .countDocuments()
+      posts = await Post.countDocuments()
         .find({ community: communityId })
         .sort('-upvotes')
         .skip((page - 1) * limit)
@@ -149,13 +194,12 @@ const getPostsByCommunityId = async (
       posts = await Post.find()
         .countDocuments()
         .find({ community: communityId })
-        .sort({ date: 'descending' })
+        .sort({ date: -1 })
         .skip((page - 1) * limit)
         .limit(limit);
       break;
     case 'comments':
-      posts = await Post.find()
-        .countDocuments()
+      posts = await Post.countDocuments()
         .find({ community: communityId })
         .sort('-comments')
         .skip((page - 1) * limit)
@@ -183,5 +227,6 @@ export {
   getPostById,
   getPostContent,
   editPost,
+  getPosts,
   getPostsByCommunityId,
 };
