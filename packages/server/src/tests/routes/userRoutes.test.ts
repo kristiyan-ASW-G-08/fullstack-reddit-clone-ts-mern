@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 import bcrypt from 'bcryptjs';
 import app from '../../app';
-import sendConfirmationEmail from '../../services/sendConfirmationEmail';
+import sendConfirmationEmail from '../../utilities/sendConfirmationEmail';
 import jwt from 'jsonwebtoken';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 const port = 8080;

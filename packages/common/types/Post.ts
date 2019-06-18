@@ -7,7 +7,7 @@ interface Post {
   user: string;
   community: string;
   date: string;
-  comments:number;
+  comments: number;
   upvotes: number;
   downvotes: number;
   _id: string;

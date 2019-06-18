@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
-import sendConfirmationEmail from '../services/sendConfirmationEmail';
+import sendConfirmationEmail from '../utilities/sendConfirmationEmail';
 import passErrorToNext from '../utilities/passErrorToNext';
 import {
   createUser,

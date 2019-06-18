@@ -114,13 +114,13 @@ export const deletePost = async (
     const { userId } = req;
     const { postId } = req.params;
     const post = await getPostById(postId);
+    isAuthorized(post.user, userId);
     if (post.type === 'image') {
       if (!post.image) {
         throw '';
       }
       deleteFile(post.image);
     }
-    isAuthorized(post.user, userId);
     post.remove();
     await post.save();
     res.sendStatus(204);

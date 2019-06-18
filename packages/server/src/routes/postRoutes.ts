@@ -7,7 +7,7 @@ import {
   deletePost,
   getPostsByCommunity,
   getPostsFromAll,
-} from '../controllers/post';
+} from '../controllers/postsController';
 const router = express.Router();
 const postBodyValidation = [
   body('title', 'Title should be between 1 and 100 characters long.')
@@ -46,7 +46,6 @@ const postQueryValidation = [
 router.post(
   '/communities/:communityId/posts',
   body('type')
-    .isLength({ min: 4, max: 5 })
     .isString()
     .isAlpha()
     .trim()

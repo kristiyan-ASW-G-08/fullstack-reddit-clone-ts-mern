@@ -1,6 +1,5 @@
 import Rule from '../models/Rule';
 import RuleType from '../types/Rule';
-import isAuthorized from '../utilities/isAuthorized';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 const createRule = async (
   name: string,

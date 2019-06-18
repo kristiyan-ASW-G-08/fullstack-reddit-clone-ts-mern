@@ -1,6 +1,5 @@
 import Post from '../models/Post';
 import PostType from '../types/Post';
-import { Model } from 'mongoose';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import ValidationError from '../types/ValidationError';

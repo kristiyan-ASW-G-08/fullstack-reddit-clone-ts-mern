@@ -8,7 +8,7 @@ import {
   patchCommunityTheme,
   getCommunity,
   getCommunityNames,
-} from '../controllers/community';
+} from '../controllers/communitiesController';
 const router = express.Router();
 
 router.post(

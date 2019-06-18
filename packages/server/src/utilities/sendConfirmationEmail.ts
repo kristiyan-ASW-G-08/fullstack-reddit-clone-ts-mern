@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import sendEmail from '../utilities/sendEmail';
+import sendEmail from './sendEmail';
 import MailOptions from '../types/MailOptions';
 const sendConfirmationEmail = (userId: string, email: string): void => {
   const secret: any = process.env.SECRET;

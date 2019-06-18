@@ -2,7 +2,7 @@ import express from 'express';
 import { body } from 'express-validator/check';
 import User from '../models/User';
 
-import { login, signUp, confirm } from '../controllers/user';
+import { login, signUp, confirm } from '../controllers/usersController';
 const router = express.Router();
 
 router.post(

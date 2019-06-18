@@ -1,7 +1,12 @@
 import express from 'express';
 import { body } from 'express-validator/check';
 import isAuth from '../middleware/isAuth';
-import { postRule, patchRule, deleteRule, getRules } from '../controllers/rule';
+import {
+  postRule,
+  patchRule,
+  deleteRule,
+  getRules,
+} from '../controllers/rulesController';
 const router = express.Router();
 const ruleValidation = [
   body('name', 'Name should be between 1 and 100 characters long.')
