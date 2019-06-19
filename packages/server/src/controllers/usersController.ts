@@ -2,13 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import sendConfirmationEmail from '../utilities/sendConfirmationEmail';
+import includesObjectId from '../utilities/includesObjectId';
 import passErrorToNext from '../utilities/passErrorToNext';
 import {
   createUser,
   getUserByEmail,
   authenticateUser,
   confirmUser,
+  getUserById,
 } from '../services/userServices';
+import removeFromArr from '../utilities/removeFromArr';
 
 export const signUp = async (
   req: Request,
@@ -48,6 +51,47 @@ export const confirm = async (
   try {
     const { token } = req.params;
     await confirmUser(token);
+    res.sendStatus(204);
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+export const savePost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { postId } = req.params;
+    const { userId } = req;
+    const user = await getUserById(userId);
+    if (!includesObjectId(user.savedPosts, postId)) {
+      user.savedPosts.push(postId);
+    } else {
+      user.savedPosts = removeFromArr(user.savedPosts, postId);
+    }
+    await user.save();
+    res.sendStatus(204);
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
+export const saveComment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { commentId } = req.params;
+    const { userId } = req;
+    const user = await getUserById(userId);
+    if (!includesObjectId(user.savedPosts, commentId)) {
+      user.savedPosts.push(commentId);
+    } else {
+      user.savedPosts = removeFromArr(user.savedPosts, commentId);
+    }
+    await user.save();
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);

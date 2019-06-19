@@ -96,6 +96,15 @@ const confirmUser = async (token: string): Promise<void> => {
     throw err;
   }
 };
+const savePost = async (user: UserType, itemId: string): Promise<void> => {
+  try {
+    user.savedPosts.push(itemId);
+    await user.save();
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createUser,
   getUserByEmail,

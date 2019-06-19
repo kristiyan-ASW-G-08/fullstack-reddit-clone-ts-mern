@@ -26,6 +26,18 @@ const UserSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
+  savedPosts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
+  savedComments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 });
 
 export default mongoose.model<User>('User', UserSchema);

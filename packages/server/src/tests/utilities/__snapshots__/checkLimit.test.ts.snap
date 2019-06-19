@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checkLimit should throw an error 1`] = `"Request has wrong format."`;
+
+exports[`checkLimit should throw an error 2`] = `"Request has wrong format."`;

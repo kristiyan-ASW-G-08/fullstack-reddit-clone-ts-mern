@@ -2,7 +2,7 @@ import { ErrorREST, Errors } from '../classes/ErrorREST';
 import ValidationError from '../types/ValidationError';
 const checkLimit = (limit: number): void => {
   try {
-    if (limit > 50 || limit < 0) {
+    if (limit > 50 || limit < 1) {
       const errorData: ValidationError = {
         location: 'query',
         param: '',

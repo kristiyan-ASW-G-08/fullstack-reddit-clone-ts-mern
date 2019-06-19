@@ -34,11 +34,11 @@ describe('user routes', (): void => {
       await mongoose.disconnect();
     },
   );
+  const username = 'test2UserName';
+  const email = 'testMail@mail.com';
+  const password = '1234567891011';
   describe('/users', (): void => {
     it('should sign up a new user', async (): Promise<void> => {
-      const username = 'test2UserName';
-      const email = 'testMail@mail.com';
-      const password = '1234567891011';
       const response = await request(app)
         .post('/users')
         .send({
@@ -53,9 +53,6 @@ describe('user routes', (): void => {
     it('should throw an error if username or email are already used', async (): Promise<
       void
     > => {
-      const username = 'test2UserName';
-      const email = 'testMail@mail.com';
-      const password = '1234567891011';
       const user = new User({
         email,
         username,
@@ -76,9 +73,6 @@ describe('user routes', (): void => {
 
   describe('/users/token', (): void => {
     it('should return token', async (): Promise<void> => {
-      const username = 'test2UserName';
-      const email = 'testMail@mail.com';
-      const password = '1234567891011';
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({
         email,
@@ -98,9 +92,6 @@ describe('user routes', (): void => {
     it("should throw an error if user doesn't exist", async (): Promise<
       void
     > => {
-      const username = 'test2UserName';
-      const email = 'testMail@mail.com';
-      const password = '1234567891011';
       const hashedPassword = await bcrypt.hash(password, 12);
       const wrongEmail = 'wrong@mail.com';
       const user = new User({
@@ -121,9 +112,6 @@ describe('user routes', (): void => {
     it('should throw an error if password is incorrect', async (): Promise<
       void
     > => {
-      const username = 'test2UserName';
-      const email = 'testMail@mail.com';
-      const password = '1234567891011';
       const hashedPassword = await bcrypt.hash(password, 12);
       const wrongPassword = 'wrong';
       const user = new User({
@@ -187,6 +175,113 @@ describe('user routes', (): void => {
       );
       const response = await request(app).post(`/users/${token}`);
       expect(response.status).toEqual(404);
+    });
+  });
+
+  describe('patch /users/posts/:postId', (): void => {
+    it('should save a post', async (): Promise<void> => {
+      const postId = mongoose.Types.ObjectId().toString();
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new User({
+        email,
+        username,
+        password: hashedPassword,
+      });
+
+      await user.save();
+      const userId = user._id;
+      const secret: any = process.env.SECRET;
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/posts/${postId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+    });
+    it('should remove a saved  post', async (): Promise<void> => {
+      const postId = mongoose.Types.ObjectId().toString();
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new User({
+        email,
+        username,
+        password: hashedPassword,
+      });
+      user.savedPosts.push(postId);
+      await user.save();
+      const userId = user._id;
+      const secret: any = process.env.SECRET;
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/posts/${postId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+
+    });
+  });
+  describe('patch /users/comments/:commentId', (): void => {
+    it('should save a comment', async (): Promise<void> => {
+      const commentId = mongoose.Types.ObjectId().toString();
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new User({
+        email,
+        username,
+        password: hashedPassword,
+      });
+
+      await user.save();
+      const userId = user._id;
+      const secret: any = process.env.SECRET;
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/comments/${commentId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+
+    });
+    it('should remove a saved comment', async (): Promise<void> => {
+      const commentId = mongoose.Types.ObjectId().toString();
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new User({
+        email,
+        username,
+        password: hashedPassword,
+      });
+      user.savedComments.push(commentId);
+      await user.save();
+      const userId = user._id;
+      const secret: any = process.env.SECRET;
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/comments/${commentId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
     });
   });
 });

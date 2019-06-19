@@ -1,8 +1,14 @@
 import express from 'express';
 import { body } from 'express-validator/check';
 import User from '../models/User';
-
-import { login, signUp, confirm } from '../controllers/usersController';
+import isAuth from '../middleware/isAuth';
+import {
+  login,
+  signUp,
+  confirm,
+  savePost,
+  saveComment,
+} from '../controllers/usersController';
 const router = express.Router();
 
 router.post(
@@ -57,7 +63,7 @@ router.post(
 router.post(
   '/users/token',
   [
-    body('email', 'Please enter valid email!')
+    body('email', 'Enter a valid email address.')
       .isEmail()
       .custom(
         (email, { req }): Promise<void> => {
@@ -79,4 +85,7 @@ router.post(
 );
 
 router.patch('/users/:token', confirm);
+router.patch('/users/posts/:postId', isAuth, savePost);
+router.patch('/users/comments/:commentId', isAuth, saveComment);
+
 export default router;

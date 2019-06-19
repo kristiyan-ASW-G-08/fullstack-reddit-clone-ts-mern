@@ -1,5 +1,5 @@
 import { ErrorREST, Errors } from '../classes/ErrorREST';
-const isEmpty = (validationResult: any): never | void => {
+const isEmpty = (validationResult: any): void => {
   const errors = validationResult;
   if (!errors.isEmpty()) {
     const errorData = errors.array();
