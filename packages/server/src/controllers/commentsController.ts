@@ -57,7 +57,7 @@ export const patchComment = async (
     const comment = await getCommentById(commentId);
     isAuthorized(comment.user, userId);
     comment.text = text;
-    await text.save();
+    await comment.save();
     res.status(200).json({ data: { comment } });
   } catch (err) {
     passErrorToNext(err, next);
@@ -91,8 +91,13 @@ export const getComments = async (
     const page = parseInt(req.query.page) || 1;
     checkLimit(limit);
     const sourceId = req.params.postId || req.params.commentId;
-    const comments = await getCommentsBySourceId(sourceId, sort, limit, page);
-    res.status(200).json({ data: { comments } });
+    const { comments, commentsCount } = await getCommentsBySourceId(
+      sourceId,
+      sort,
+      limit,
+      page,
+    );
+    res.status(200).json({ data: { comments, commentsCount } });
   } catch (err) {
     passErrorToNext(err, next);
   }

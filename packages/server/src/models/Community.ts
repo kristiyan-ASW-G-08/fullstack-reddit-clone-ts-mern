@@ -25,4 +25,5 @@ const CommunitySchema: Schema = new Schema({
   },
 });
 CommunitySchema.index({ name: 'text' });
+
 export default mongoose.model<Community>('Community', CommunitySchema);

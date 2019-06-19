@@ -1,4 +1,7 @@
 import Comment from '@rddt/common/types/Comment';
-import mongoose, { Schema, Document } from 'mongoose';
-type CommentType = Comment & Document;
+import { Document } from 'mongoose';
+interface ExtendedComment extends Comment {
+  user: string;
+}
+type CommentType = ExtendedComment & Document;
 export default CommentType;

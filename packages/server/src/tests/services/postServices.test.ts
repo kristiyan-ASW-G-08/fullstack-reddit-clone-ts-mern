@@ -6,36 +6,40 @@ import {
 } from '../../services/postServices';
 import Post from '../../models/Post';
 import { ErrorREST, Errors } from '../../classes/ErrorREST';
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import { mongoURI } from '../../config/db';
+import User from '../../models/User';
+import Community from '../../models/Community';
+
 describe('postServices', (): void => {
   beforeAll(
     async (): Promise<void> => {
       mongoose.connect(mongoURI, { useNewUrlParser: true });
+      await Community.deleteMany({}).exec();
+      await User.deleteMany({}).exec();
       await Post.deleteMany({}).exec();
-    },
-  );
-  beforeEach(
-    async (): Promise<void> => {
-      await Post.deleteMany({});
     },
   );
   afterEach(
     async (): Promise<void> => {
+      await Community.deleteMany({}).exec();
+      await User.deleteMany({}).exec();
       await Post.deleteMany({}).exec();
     },
   );
   afterAll(
     async (): Promise<void> => {
+      await User.deleteMany({}).exec();
       await Post.deleteMany({}).exec();
       await mongoose.disconnect();
     },
   );
   const title = 'testName';
   const text = 'Lorem ipsum dolor sit amet, consectetur';
-  const userId = mongoose.Types.ObjectId().toString();
-  const communityId = mongoose.Types.ObjectId().toString();
+
   describe('createPost', (): void => {
+    const userId = mongoose.Types.ObjectId().toString();
+    const communityId = mongoose.Types.ObjectId().toString();
     it(`should create a new text post`, async (): Promise<void> => {
       const type = 'text';
       const content = text;
@@ -95,6 +99,8 @@ describe('postServices', (): void => {
     });
   });
   describe('getPostById', (): void => {
+    const userId = mongoose.Types.ObjectId();
+    const communityId = mongoose.Types.ObjectId();
     it(`should return a post`, async (): Promise<void> => {
       const type = 'text';
       const newPost = new Post({
@@ -125,36 +131,73 @@ describe('postServices', (): void => {
       await expect(getPostById(id)).rejects.toThrow(error);
     });
   });
+
   describe('getPostsByCommunityId', (): void => {
+    let userId: string;
+    let communityId: string;
+    let secondCommunityId: string;
+    beforeEach(
+      async (): Promise<void> => {
+        const email = 'newEmail@mail.com';
+        const username = 'username';
+        const password = 'password';
+        const newUser = new User({
+          email,
+          password,
+          username,
+        });
+        await newUser.save();
+        const name = 'name';
+        const description = 'Test Description';
+        userId = newUser._id;
+        const firstCommunity = new Community({
+          name,
+          description,
+          user: userId,
+        });
+        const secondCommunity = new Community({
+          name,
+          description,
+          user: userId,
+        });
+        await secondCommunity.save();
+        await firstCommunity.save();
+
+        communityId = firstCommunity._id;
+        secondCommunityId = secondCommunity._id;
+      },
+    );
     const limit = 25;
     const page = 1;
+
     const type = 'text';
     it(`should return a list of posts by upvotes(top)`, async (): Promise<
       void
     > => {
-      const sort = 'top';
-      const secondCommunityId = mongoose.Types.ObjectId().toString();
       const postsArr = [
         {
-          title,
+          title: 'first',
           type,
           text,
           upvotes: 100,
+          comments: 40,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'second',
           type,
           text,
           upvotes: 300,
+          comments: 20,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'third',
           type,
           text,
+          comments: 30,
           upvotes: 200,
           community: communityId,
           user: userId,
@@ -167,7 +210,8 @@ describe('postServices', (): void => {
           user: userId,
         },
       ];
-
+      const sort = 'top';
+      console.log(postsArr);
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPostsByCommunityId(
         communityId,
@@ -187,29 +231,31 @@ describe('postServices', (): void => {
       void
     > => {
       const sort = 'comments';
-      const secondCommunityId = mongoose.Types.ObjectId().toString();
       const postsArr = [
         {
-          title,
+          title: 'first',
           type,
           text,
+          upvotes: 100,
           comments: 40,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'second',
           type,
           text,
+          upvotes: 300,
           comments: 20,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'third',
           type,
           text,
           comments: 30,
+          upvotes: 200,
           community: communityId,
           user: userId,
         },
@@ -217,12 +263,10 @@ describe('postServices', (): void => {
           title,
           type,
           text,
-          comments: 1,
           community: secondCommunityId,
           user: userId,
         },
       ];
-
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPostsByCommunityId(
         communityId,
@@ -241,13 +285,13 @@ describe('postServices', (): void => {
     it(`should return a list of posts sorted by new`, async (): Promise<
       void
     > => {
-      const sort = 'new';
-      const secondCommunityId = mongoose.Types.ObjectId().toString();
       const postsArr = [
         {
           title: 'first',
           type,
           text,
+          upvotes: 100,
+          comments: 40,
           community: communityId,
           user: userId,
         },
@@ -255,6 +299,8 @@ describe('postServices', (): void => {
           title: 'second',
           type,
           text,
+          upvotes: 300,
+          comments: 20,
           community: communityId,
           user: userId,
         },
@@ -262,6 +308,8 @@ describe('postServices', (): void => {
           title: 'third',
           type,
           text,
+          comments: 30,
+          upvotes: 200,
           community: communityId,
           user: userId,
         },
@@ -269,12 +317,11 @@ describe('postServices', (): void => {
           title,
           type,
           text,
-          comments: 1,
           community: secondCommunityId,
           user: userId,
         },
       ];
-
+      const sort = 'new';
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPostsByCommunityId(
         communityId,
@@ -293,6 +340,42 @@ describe('postServices', (): void => {
     it(`shouldn't throw an error if no posts are found`, async (): Promise<
       void
     > => {
+      const postsArr = [
+        {
+          title: 'first',
+          type,
+          text,
+          upvotes: 100,
+          comments: 40,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title: 'second',
+          type,
+          text,
+          upvotes: 300,
+          comments: 20,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title: 'third',
+          type,
+          text,
+          comments: 30,
+          upvotes: 200,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          community: secondCommunityId,
+          user: userId,
+        },
+      ];
       const sort = 'top';
       const { status, message } = Errors.NotFound;
       const error = new ErrorREST(status, message, null);
@@ -303,48 +386,89 @@ describe('postServices', (): void => {
   });
 
   describe('getPosts', (): void => {
+    let userId: string;
+    let communityId: string;
+    let secondCommunityId: string;
+    beforeEach(
+      async (): Promise<void> => {
+        const email = 'newEmail@mail.com';
+        const username = 'username';
+        const password = 'password';
+        const newUser = new User({
+          email,
+          password,
+          username,
+        });
+        await newUser.save();
+        const name = 'name';
+        const description = 'Test Description';
+        userId = newUser._id;
+        const firstCommunity = new Community({
+          name,
+          description,
+          user: userId,
+        });
+        const secondCommunity = new Community({
+          name,
+          description,
+          user: userId,
+        });
+        await secondCommunity.save();
+        await firstCommunity.save();
+
+        communityId = firstCommunity._id;
+        secondCommunityId = secondCommunity._id;
+      },
+    );
     const limit = 25;
     const page = 1;
     const type = 'text';
     it(`should return a list of posts by upvotes(top)`, async (): Promise<
       void
     > => {
-      const sort = 'top';
-
       const postsArr = [
         {
-          title,
+          title: 'first',
           type,
           text,
           upvotes: 100,
+          comments: 40,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'second',
           type,
           text,
           upvotes: 300,
+          comments: 20,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'third',
           type,
           text,
+          comments: 30,
           upvotes: 200,
           community: communityId,
           user: userId,
         },
-        ,
+        {
+          title,
+          type,
+          text,
+          community: secondCommunityId,
+          user: userId,
+        },
       ];
-
+      const sort = 'top';
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPosts(sort, limit, page);
       if (!posts) {
         return;
       }
-      expect(posts).toHaveLength(3);
+      expect(posts).toHaveLength(4);
       expect(posts[0].upvotes).toBe(300);
       expect(posts[1].upvotes).toBe(200);
       expect(posts[2].upvotes).toBe(100);
@@ -355,18 +479,29 @@ describe('postServices', (): void => {
       const sort = 'comments';
       const postsArr = [
         {
-          title,
+          title: 'first',
           type,
           text,
+          upvotes: 100,
           comments: 40,
           community: communityId,
           user: userId,
         },
         {
-          title,
+          title: 'second',
           type,
           text,
+          upvotes: 300,
           comments: 20,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title: 'third',
+          type,
+          text,
+          comments: 30,
+          upvotes: 200,
           community: communityId,
           user: userId,
         },
@@ -374,18 +509,16 @@ describe('postServices', (): void => {
           title,
           type,
           text,
-          comments: 30,
-          community: communityId,
+          community: secondCommunityId,
           user: userId,
         },
       ];
-
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPosts(sort, limit, page);
       if (!posts) {
         return;
       }
-      expect(posts).toHaveLength(3);
+      expect(posts).toHaveLength(4);
       expect(posts[0].comments).toBe(40);
       expect(posts[1].comments).toBe(30);
       expect(posts[2].comments).toBe(20);
@@ -394,12 +527,13 @@ describe('postServices', (): void => {
       void
     > => {
       const sort = 'new';
-
       const postsArr = [
         {
           title: 'first',
           type,
           text,
+          upvotes: 100,
+          comments: 40,
           community: communityId,
           user: userId,
         },
@@ -407,6 +541,8 @@ describe('postServices', (): void => {
           title: 'second',
           type,
           text,
+          upvotes: 300,
+          comments: 20,
           community: communityId,
           user: userId,
         },
@@ -414,17 +550,25 @@ describe('postServices', (): void => {
           title: 'third',
           type,
           text,
+          comments: 30,
+          upvotes: 200,
           community: communityId,
           user: userId,
         },
+        {
+          title,
+          type,
+          text,
+          community: secondCommunityId,
+          user: userId,
+        },
       ];
-
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPosts(sort, limit, page);
       if (!posts) {
         return;
       }
-      expect(posts).toHaveLength(3);
+      expect(posts).toHaveLength(4);
       expect(posts[0].title).toMatch('first');
       expect(posts[1].title).toMatch('second');
       expect(posts[2].title).toMatch('third');

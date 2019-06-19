@@ -147,7 +147,7 @@ const getPosts = async (
       posts = await Post.find()
         .countDocuments()
         .find()
-        .sort({ date: -1 })
+        .sort('-date')
         .skip((page - 1) * limit)
         .limit(limit);
       break;
@@ -193,7 +193,7 @@ const getPostsByCommunityId = async (
       posts = await Post.find()
         .countDocuments()
         .find({ community: communityId })
-        .sort({ date: -1 })
+        .sort('-date')
         .skip((page - 1) * limit)
         .limit(limit);
       break;
@@ -219,6 +219,7 @@ const getPostsByCommunityId = async (
     throw error;
   }
   const postsCount = (await Post.countDocuments()) - page * limit;
+  console.log(posts);
   return { posts, postsCount };
 };
 export {

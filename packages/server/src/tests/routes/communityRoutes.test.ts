@@ -6,7 +6,6 @@ import app from '../../app';
 import jwt from 'jsonwebtoken';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 const port = 8080;
-jest.mock('../../services/sendConfirmationEmail');
 describe('community routes', (): void => {
   beforeAll(
     async (): Promise<void> => {

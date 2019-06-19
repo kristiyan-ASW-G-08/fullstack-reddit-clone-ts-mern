@@ -1,6 +1,5 @@
 interface Comment {
   text: string;
-  user: string;
   date: string;
   comments: number;
   upvotes: number;

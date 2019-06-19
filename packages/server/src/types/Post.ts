@@ -1,4 +1,8 @@
 import Post from '@rddt/common/types/Post';
-import mongoose, { Schema, Document } from 'mongoose';
-type PostType = Post & Document;
+import { Document } from 'mongoose';
+interface ExtendedPost extends Post {
+  user: string;
+  community: string;
+}
+type PostType = ExtendedPost & Document;
 export default PostType;

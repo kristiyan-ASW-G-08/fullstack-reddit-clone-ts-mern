@@ -138,7 +138,7 @@ describe('Post routes', (): void => {
       );
       expect(response.status).toEqual(200);
     });
-    it('should return 404 response', async (): Promise<void> => {
+    it('should return  404 response', async (): Promise<void> => {
       const response = await request(app).get(
         `/posts?sort=new&limit=10&page=1`,
       );

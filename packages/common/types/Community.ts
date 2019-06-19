@@ -6,5 +6,6 @@ interface Community {
   theme: Theme;
   subscribers: number;
   date: string;
+  _id: string;
 }
 export default Community;

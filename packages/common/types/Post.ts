@@ -4,8 +4,6 @@ interface Post {
   text?: string;
   linkUrl?: string;
   image?: string;
-  user: string;
-  community: string;
   date: string;
   comments: number;
   upvotes: number;

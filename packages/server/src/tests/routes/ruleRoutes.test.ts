@@ -71,14 +71,14 @@ describe('rule routes', (): void => {
       expect(response.status).toEqual(200);
     });
   });
-  describe('put /communities/rules/:ruleId', (): void => {
+  describe('patch /communities/rules/:ruleId', (): void => {
+    const newName = 'newTestName';
+    const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
+    const newScope = 'Comments only';
     it('should change the name, description and scope of community', async (): Promise<
       void
     > => {
       const communityId = mongoose.Types.ObjectId();
-      const newName = 'newTestName';
-      const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
-      const newScope = 'Comments only';
       const rule = new Rule({
         name,
         description,
@@ -100,9 +100,7 @@ describe('rule routes', (): void => {
     });
     it('should return 404 response ', async (): Promise<void> => {
       const ruleId = mongoose.Types.ObjectId();
-      const newName = 'newTestName';
-      const newDescription = 'Test.Lorem ipsum dolor sit amet, consectetur';
-      const newScope = 'Comments only';
+
       const response = await request(app)
         .patch(`/communities/rules/${ruleId}`)
         .set('Authorization', 'Bearer ' + token)

@@ -33,12 +33,16 @@ const getCommentById = async (commentId: string): Promise<CommentType> => {
     throw err;
   }
 };
+interface GetCommentsResponse {
+  comments: CommentType[];
+  commentsCount: number;
+}
 const getCommentsBySourceId = async (
   sourceId: string,
   sort: string,
   limit: number,
   page: number,
-): Promise<CommentType[]> => {
+): Promise<GetCommentsResponse> => {
   try {
     let comments: CommentType[];
     switch (sort) {
@@ -77,7 +81,8 @@ const getCommentsBySourceId = async (
       const error = new ErrorREST(status, message);
       throw error;
     }
-    return comments;
+    const commentsCount = (await Comment.countDocuments()) - page * limit;
+    return { comments, commentsCount };
   } catch (err) {
     throw err;
   }

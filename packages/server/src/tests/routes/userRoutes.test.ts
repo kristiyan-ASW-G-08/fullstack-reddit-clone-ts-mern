@@ -8,7 +8,7 @@ import sendConfirmationEmail from '../../utilities/sendConfirmationEmail';
 import jwt from 'jsonwebtoken';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 const port = 8080;
-jest.mock('../../services/sendConfirmationEmail');
+jest.mock('../../utilities/sendConfirmationEmail');
 describe('user routes', (): void => {
   beforeAll(
     async (): Promise<void> => {
