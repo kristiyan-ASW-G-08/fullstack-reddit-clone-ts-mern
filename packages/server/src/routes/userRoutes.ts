@@ -1,5 +1,5 @@
 import express from 'express';
-import { body } from 'express-validator/check';
+import { body, query } from 'express-validator/check';
 import User from '../models/User';
 import isAuth from '../middleware/isAuth';
 import {
@@ -8,6 +8,8 @@ import {
   confirm,
   savePost,
   saveComment,
+  voteForPost,
+  voteForComment,
 } from '../controllers/usersController';
 const router = express.Router();
 
@@ -85,7 +87,18 @@ router.post(
 );
 
 router.patch('/users/:token', confirm);
-router.patch('/users/posts/:postId', isAuth, savePost);
-router.patch('/users/comments/:commentId', isAuth, saveComment);
+router.patch('/users/posts/:postId/save', isAuth, savePost);
+router.patch('/users/comments/:commentId/save', isAuth, saveComment);
 
+const voteQuery = query('type')
+  .isAlpha()
+  .trim()
+  .matches(/(upvote|downvote)/);
+router.patch('/users/posts/:postId/vote', voteQuery, isAuth, voteForPost);
+router.patch(
+  '/users/comments/:commentId/vote',
+  voteQuery,
+  isAuth,
+  voteForComment,
+);
 export default router;

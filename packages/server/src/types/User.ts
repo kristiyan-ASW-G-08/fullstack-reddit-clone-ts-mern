@@ -9,6 +9,10 @@ interface User extends Document {
   banned: Schema.Types.ObjectId[];
   karma: number;
   date: string;
+  upvotedPosts: string[];
+  downvotedPosts: string[];
+  upvotedComments: string[];
+  downvotedComments: string[];
   savedPosts: string[];
   savedComments: string[];
   confirm: () => void;

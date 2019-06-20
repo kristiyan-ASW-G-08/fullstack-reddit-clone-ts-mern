@@ -87,7 +87,7 @@ export const getComments = async (
 ): Promise<void> => {
   try {
     const sort: string = req.query.sort || 'top';
-    const limit = parseInt(req.query.limit) || 5;
+    const limit = parseInt(req.query.limit) || 25;
     const page = parseInt(req.query.page) || 1;
     checkLimit(limit);
     const sourceId = req.params.postId || req.params.commentId;

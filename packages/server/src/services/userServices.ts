@@ -7,6 +7,10 @@ import comparePasswords from '../utilities/comparePasswords';
 import checkUserConfirmation from '../utilities/checkUserConfirmation';
 import signLoginToken from '../utilities/signLoginToken';
 import verifyToken from '../utilities/verifyToken';
+import removeFromArr from '../utilities/removeFromArr';
+import includesObjectId from '../utilities/includesObjectId';
+import Comment from '../types/Comment';
+import Post from '../types/Post';
 const createUser = async (
   email: string,
   username: string,
@@ -96,9 +100,120 @@ const confirmUser = async (token: string): Promise<void> => {
     throw err;
   }
 };
-const savePost = async (user: UserType, itemId: string): Promise<void> => {
+
+const upvotePost = async (
+  user: UserType,
+  postId: string,
+  post: Post,
+): Promise<void> => {
   try {
-    user.savedPosts.push(itemId);
+    if (includesObjectId(user.upvotedPosts, postId)) {
+      const filteredUpvotedPosts = removeFromArr(user.upvotedPosts, postId);
+      user.upvotedPosts = filteredUpvotedPosts;
+      post.upvotes--;
+    } else if (includesObjectId(user.downvotedPosts, postId)) {
+      const filteredDownvotedPosts = removeFromArr(user.downvotedPosts, postId);
+      user.downvotedPosts = filteredDownvotedPosts;
+      user.upvotedPosts.push(postId);
+      post.downvotes--;
+      post.upvotes++;
+    } else {
+      user.upvotedPosts.push(postId);
+      post.upvotes++;
+    }
+    await post.save();
+    await user.save();
+  } catch (err) {
+    throw err;
+  }
+};
+
+const downvotePost = async (
+  user: UserType,
+  postId: string,
+  post: Post,
+): Promise<void> => {
+  try {
+    if (includesObjectId(user.downvotedPosts, postId)) {
+      const filteredDownvotedPosts = removeFromArr(user.downvotedPosts, postId);
+      user.downvotedPosts = filteredDownvotedPosts;
+      post.downvotes--;
+    } else if (includesObjectId(user.upvotedPosts, postId)) {
+      const filteredUpvotedPosts = removeFromArr(user.upvotedPosts, postId);
+      user.upvotedPosts = filteredUpvotedPosts;
+      user.downvotedPosts.push(postId);
+      post.upvotes--;
+      post.downvotes++;
+    } else {
+      user.downvotedPosts.push(postId);
+      post.downvotes++;
+    }
+    await post.save();
+    await user.save();
+  } catch (err) {
+    throw err;
+  }
+};
+
+const upvoteComment = async (
+  user: UserType,
+  commentId: string,
+  comment: Comment,
+): Promise<void> => {
+  try {
+    if (includesObjectId(user.upvotedComments, commentId)) {
+      const filteredUpvotedComments = removeFromArr(
+        user.upvotedComments,
+        commentId,
+      );
+      user.upvotedComments = filteredUpvotedComments;
+      comment.upvotes--;
+    } else if (includesObjectId(user.downvotedComments, commentId)) {
+      const filteredDownvotedComments = removeFromArr(
+        user.downvotedComments,
+        commentId,
+      );
+      user.downvotedComments = filteredDownvotedComments;
+      user.upvotedComments.push(commentId);
+      comment.downvotes--;
+      comment.upvotes++;
+    } else {
+      user.upvotedComments.push(commentId);
+      comment.upvotes++;
+    }
+    await comment.save();
+    await user.save();
+  } catch (err) {
+    throw err;
+  }
+};
+const downvoteComment = async (
+  user: UserType,
+  commentId: string,
+  comment: Comment,
+): Promise<void> => {
+  try {
+    if (includesObjectId(user.downvotedComments, commentId)) {
+      const filteredDownvotedComments = removeFromArr(
+        user.downvotedComments,
+        commentId,
+      );
+      user.downvotedComments = filteredDownvotedComments;
+      comment.downvotes--;
+    } else if (includesObjectId(user.upvotedComments, commentId)) {
+      const filteredUpvotedComments = removeFromArr(
+        user.upvotedComments,
+        commentId,
+      );
+      user.upvotedComments = filteredUpvotedComments;
+      user.downvotedComments.push(commentId);
+      comment.upvotes--;
+      comment.downvotes++;
+    } else {
+      user.downvotedComments.push(commentId);
+      comment.downvotes++;
+    }
+    await comment.save();
     await user.save();
   } catch (err) {
     throw err;
@@ -106,6 +221,10 @@ const savePost = async (user: UserType, itemId: string): Promise<void> => {
 };
 
 export {
+  upvotePost,
+  downvotePost,
+  upvoteComment,
+  downvoteComment,
   createUser,
   getUserByEmail,
   getUserById,

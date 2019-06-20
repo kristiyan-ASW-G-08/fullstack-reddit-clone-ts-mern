@@ -26,6 +26,30 @@ const UserSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
+  upvotedPosts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
+  downvotedPosts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
+  upvotedComments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
+  downvotedComments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
   savedPosts: [
     {
       type: Schema.Types.ObjectId,

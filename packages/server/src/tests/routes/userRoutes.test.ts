@@ -6,6 +6,8 @@ import bcrypt from 'bcryptjs';
 import app from '../../app';
 import sendConfirmationEmail from '../../utilities/sendConfirmationEmail';
 import jwt from 'jsonwebtoken';
+import Post from '../../models/Post';
+import Comment from '../../models/Comment';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 const port = 8080;
 jest.mock('../../utilities/sendConfirmationEmail');
@@ -200,7 +202,7 @@ describe('user routes', (): void => {
         { expiresIn: '1h' },
       );
       const response = await request(app)
-        .patch(`/users/posts/${postId}`)
+        .patch(`/users/posts/${postId}/save`)
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(204);
     });
@@ -225,10 +227,9 @@ describe('user routes', (): void => {
         { expiresIn: '1h' },
       );
       const response = await request(app)
-        .patch(`/users/posts/${postId}`)
+        .patch(`/users/posts/${postId}/save`)
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(204);
-
     });
   });
   describe('patch /users/comments/:commentId', (): void => {
@@ -253,10 +254,9 @@ describe('user routes', (): void => {
         { expiresIn: '1h' },
       );
       const response = await request(app)
-        .patch(`/users/comments/${commentId}`)
+        .patch(`/users/comments/${commentId}/save`)
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(204);
-
     });
     it('should remove a saved comment', async (): Promise<void> => {
       const commentId = mongoose.Types.ObjectId().toString();
@@ -279,7 +279,122 @@ describe('user routes', (): void => {
         { expiresIn: '1h' },
       );
       const response = await request(app)
-        .patch(`/users/comments/${commentId}`)
+        .patch(`/users/comments/${commentId}/save`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+    });
+  });
+  describe('patch /users/posts/:postId/vote', (): void => {
+    let userId: string;
+    let postId: string;
+    const secret: any = process.env.SECRET;
+    beforeEach(
+      async (): Promise<void> => {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const user = new User({
+          email,
+          username,
+          password: hashedPassword,
+        });
+        await user.save();
+        userId = user._id;
+        const type = 'text';
+        const title = 'test';
+        const text = 'text';
+        const post = new Post({
+          type,
+          title,
+          text,
+          community: mongoose.Types.ObjectId(),
+          user: userId,
+        });
+        await post.save();
+        postId = post._id;
+      },
+    );
+    it('should upvote a post', async (): Promise<void> => {
+      const type = 'upvote';
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/posts/${postId}/vote?type=${type}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+    });
+    it('should downvote a post', async (): Promise<void> => {
+      const type = 'downvote';
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/posts/${postId}/vote?type=${type}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+    });
+  });
+  describe('patch /users/comments/:commentId/vote', (): void => {
+    let userId: string;
+    let commentId: string;
+    const secret: any = process.env.SECRET;
+    beforeEach(
+      async (): Promise<void> => {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const user = new User({
+          email,
+          username,
+          password: hashedPassword,
+        });
+        await user.save();
+        userId = user._id;
+        const text = 'text';
+        const comment = new Comment({
+          text,
+          source: mongoose.Types.ObjectId(),
+          onModel: 'Post',
+          user: userId,
+        });
+        await comment.save();
+        commentId = comment._id;
+      },
+    );
+    it('should upvote a comment', async (): Promise<void> => {
+      const type = 'upvote';
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/comments/${commentId}/vote?type=${type}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+    });
+    it('should downvote a comment', async (): Promise<void> => {
+      const type = 'downvote';
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/comments/${commentId}/vote?type=${type}`)
         .set('Authorization', 'Bearer ' + token);
       expect(response.status).toEqual(204);
     });

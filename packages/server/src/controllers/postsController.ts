@@ -26,9 +26,18 @@ export const postPost = async (
     const content = getPostContent(type, req);
     const postId = await createPost(type, title, content, communityId, userId);
     const port = process.env.PORT || 8080;
+    const links = {
+      self: `http://localhost:${port}/posts/${postId}`,
+      related: {
+        href: `http://localhost:${port}/posts/${postId}/comments`,
+        meta: {
+          count: 25,
+        },
+      },
+    };
     res.status(200).json({
       data: { postId },
-      links: { self: `http://localhost:${port}/posts/${postId}` },
+      links,
     });
   } catch (err) {
     passErrorToNext(err, next);
