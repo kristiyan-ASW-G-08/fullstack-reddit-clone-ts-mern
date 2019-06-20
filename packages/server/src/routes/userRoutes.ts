@@ -10,6 +10,7 @@ import {
   saveComment,
   voteForPost,
   voteForComment,
+  subscribeToCommunity,
 } from '../controllers/usersController';
 const router = express.Router();
 
@@ -101,4 +102,5 @@ router.patch(
   isAuth,
   voteForComment,
 );
+router.patch('/users/communities/:communityId', isAuth, subscribeToCommunity);
 export default router;

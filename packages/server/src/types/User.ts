@@ -5,7 +5,7 @@ interface User extends Document {
   email: string;
   avatar: string;
   confirmed: boolean;
-  communities: Schema.Types.ObjectId[];
+  communities: string[];
   banned: Schema.Types.ObjectId[];
   karma: number;
   date: string;

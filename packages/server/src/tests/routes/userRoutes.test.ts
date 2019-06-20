@@ -399,4 +399,35 @@ describe('user routes', (): void => {
       expect(response.status).toEqual(204);
     });
   });
+  describe('patch /users/communities/:communityId', (): void => {
+    let userId: string;
+    const secret: any = process.env.SECRET;
+    beforeEach(
+      async (): Promise<void> => {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const user = new User({
+          email,
+          username,
+          password: hashedPassword,
+        });
+        await user.save();
+        userId = user._id;
+      },
+    );
+    it('should subscribe user to community', async (): Promise<void> => {
+      const communityId = mongoose.Types.ObjectId().toString();
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .patch(`/users/communities/${communityId}`)
+        .set('Authorization', 'Bearer ' + token);
+      expect(response.status).toEqual(204);
+    });
+  });
 });

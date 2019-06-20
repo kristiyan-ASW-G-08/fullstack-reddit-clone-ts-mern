@@ -108,12 +108,10 @@ const upvotePost = async (
 ): Promise<void> => {
   try {
     if (includesObjectId(user.upvotedPosts, postId)) {
-      const filteredUpvotedPosts = removeFromArr(user.upvotedPosts, postId);
-      user.upvotedPosts = filteredUpvotedPosts;
+      user.upvotedPosts = removeFromArr(user.upvotedPosts, postId);
       post.upvotes--;
     } else if (includesObjectId(user.downvotedPosts, postId)) {
-      const filteredDownvotedPosts = removeFromArr(user.downvotedPosts, postId);
-      user.downvotedPosts = filteredDownvotedPosts;
+      user.downvotedPosts = removeFromArr(user.downvotedPosts, postId);
       user.upvotedPosts.push(postId);
       post.downvotes--;
       post.upvotes++;
@@ -135,12 +133,10 @@ const downvotePost = async (
 ): Promise<void> => {
   try {
     if (includesObjectId(user.downvotedPosts, postId)) {
-      const filteredDownvotedPosts = removeFromArr(user.downvotedPosts, postId);
-      user.downvotedPosts = filteredDownvotedPosts;
+      user.downvotedPosts = removeFromArr(user.downvotedPosts, postId);
       post.downvotes--;
     } else if (includesObjectId(user.upvotedPosts, postId)) {
-      const filteredUpvotedPosts = removeFromArr(user.upvotedPosts, postId);
-      user.upvotedPosts = filteredUpvotedPosts;
+      user.upvotedPosts = removeFromArr(user.upvotedPosts, postId);
       user.downvotedPosts.push(postId);
       post.upvotes--;
       post.downvotes++;
@@ -162,18 +158,10 @@ const upvoteComment = async (
 ): Promise<void> => {
   try {
     if (includesObjectId(user.upvotedComments, commentId)) {
-      const filteredUpvotedComments = removeFromArr(
-        user.upvotedComments,
-        commentId,
-      );
-      user.upvotedComments = filteredUpvotedComments;
+      user.upvotedComments = removeFromArr(user.upvotedComments, commentId);
       comment.upvotes--;
     } else if (includesObjectId(user.downvotedComments, commentId)) {
-      const filteredDownvotedComments = removeFromArr(
-        user.downvotedComments,
-        commentId,
-      );
-      user.downvotedComments = filteredDownvotedComments;
+      user.downvotedComments = removeFromArr(user.downvotedComments, commentId);
       user.upvotedComments.push(commentId);
       comment.downvotes--;
       comment.upvotes++;
@@ -194,18 +182,10 @@ const downvoteComment = async (
 ): Promise<void> => {
   try {
     if (includesObjectId(user.downvotedComments, commentId)) {
-      const filteredDownvotedComments = removeFromArr(
-        user.downvotedComments,
-        commentId,
-      );
-      user.downvotedComments = filteredDownvotedComments;
+      user.downvotedComments = removeFromArr(user.downvotedComments, commentId);
       comment.downvotes--;
     } else if (includesObjectId(user.upvotedComments, commentId)) {
-      const filteredUpvotedComments = removeFromArr(
-        user.upvotedComments,
-        commentId,
-      );
-      user.upvotedComments = filteredUpvotedComments;
+      user.upvotedComments = removeFromArr(user.upvotedComments, commentId);
       user.downvotedComments.push(commentId);
       comment.upvotes--;
       comment.downvotes++;
@@ -220,6 +200,21 @@ const downvoteComment = async (
   }
 };
 
+const subscribe = async (
+  user: UserType,
+  communityId: string,
+): Promise<void> => {
+  try {
+    if (includesObjectId(user.communities, communityId)) {
+      user.communities = removeFromArr(user.communities, communityId);
+    } else {
+      user.communities.push(communityId);
+    }
+    await user.save();
+  } catch (err) {
+    throw err;
+  }
+};
 export {
   upvotePost,
   downvotePost,
@@ -230,4 +225,5 @@ export {
   getUserById,
   authenticateUser,
   confirmUser,
+  subscribe,
 };

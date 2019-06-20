@@ -15,6 +15,7 @@ import {
   downvotePost,
   upvoteComment,
   downvoteComment,
+  subscribe,
 } from '../services/userServices';
 
 import { getPostById } from '../services/postServices';
@@ -144,6 +145,22 @@ export const voteForComment = async (
       downvoteComment(user, commentId, comment);
     }
     await user.save();
+    res.sendStatus(204);
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
+export const subscribeToCommunity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { communityId } = req.params;
+    const { userId } = req;
+    const user = await getUserById(userId);
+    await subscribe(user, communityId);
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);

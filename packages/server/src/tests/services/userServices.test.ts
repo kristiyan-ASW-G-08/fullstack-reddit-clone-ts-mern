@@ -7,6 +7,7 @@ import {
   getUserByEmail,
   getUserById,
   authenticateUser,
+  subscribe,
 } from '../../services/userServices';
 import User from '../../models/User';
 import UserType from '../../types/User';
@@ -541,6 +542,46 @@ describe('userServices', (): void => {
       expect(comment.upvotes).toBe(0);
       expect(user.downvotedComments).toHaveLength(1);
       expect(comment.downvotes).toBe(1);
+    });
+  });
+  describe('subscribe', (): void => {
+    let user: UserType;
+    beforeEach(
+      async (): Promise<void> => {
+        const email = 'newEmail@mail.com';
+        const username = 'username';
+        const password = 'password';
+        const hashedPassword = await bcrypt.hash(password, 12);
+        user = new User({
+          email,
+          password: hashedPassword,
+          username,
+        });
+        user.confirmed = true;
+        await user.save();
+      },
+    );
+    it(`should add communityId to the communities property of user`, async (): Promise<
+      void
+    > => {
+      expect(user.communities).toHaveLength(0);
+      const communityId = mongoose.Types.ObjectId().toString();
+      await subscribe(user, communityId);
+      expect(user.communities).toHaveLength(1);
+      expect(user.communities[0].toString()).toMatch(communityId);
+    });
+
+    it(`should remove communityId from the communities property of user`, async (): Promise<
+      void
+    > => {
+      expect(user.communities).toHaveLength(0);
+      const communityId = mongoose.Types.ObjectId().toString();
+      user.communities.push(communityId);
+      await user.save();
+      expect(user.communities).toHaveLength(1);
+      expect(user.communities[0].toString()).toMatch(communityId);
+      await subscribe(user, communityId);
+      expect(user.communities).toHaveLength(0);
     });
   });
 });
