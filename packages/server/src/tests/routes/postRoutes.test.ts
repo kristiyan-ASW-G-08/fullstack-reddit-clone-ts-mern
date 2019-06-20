@@ -5,6 +5,7 @@ import { mongoURI } from '../../config/db';
 import app from '../../app';
 import jwt from 'jsonwebtoken';
 import mock from 'mock-fs';
+import User from '../../models/User';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 const port = 8080;
 describe('Post routes', (): void => {
@@ -122,7 +123,7 @@ describe('Post routes', (): void => {
       expect(response.status).toEqual(404);
     });
   });
-  describe('get posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
+  describe('get /posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
     it('should get a list of posts', async (): Promise<void> => {
       const type = 'text';
       const post = new Post({
@@ -142,6 +143,84 @@ describe('Post routes', (): void => {
       const response = await request(app).get(
         `/posts?sort=new&limit=10&page=1`,
       );
+      expect(response.status).toEqual(404);
+    });
+  });
+  describe('get communities/communityId/posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
+    it('should get a list of posts by community Id', async (): Promise<
+      void
+    > => {
+      const type = 'text';
+      const post = new Post({
+        type,
+        title,
+        text,
+        user: userId,
+        community: communityId,
+      });
+      await post.save();
+      const response = await request(app).get(
+        `/communities/${communityId}/posts?sort=new&limit=10&page=1`,
+      );
+      expect(response.status).toEqual(200);
+    });
+    it('should return 404 response', async (): Promise<void> => {
+      const response = await request(app).get(
+        `/communities/${communityId}/posts?sort=new&limit=10&page=1`,
+      );
+      expect(response.status).toEqual(404);
+    });
+  });
+  describe('get /users/posts?sort=${new,top,comments}&limit=${0-50}&page=${page}', (): void => {
+    it('should get a list of posts', async (): Promise<void> => {
+      const newUser = new User({
+        username: 'newTestUser',
+        email: 'someTest@test.com',
+        password: '1231231231231231',
+      });
+      newUser.communities = [communityId];
+      await newUser.save();
+      const newToken = jwt.sign(
+        {
+          email,
+          userId: newUser._id.toString(),
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const type = 'text';
+      const post = new Post({
+        type,
+        title,
+        text,
+        user: userId,
+        community: communityId,
+      });
+      await post.save();
+      const response = await request(app)
+        .get(`/users/posts?sort=new&limit=10&page=1`)
+        .set('Authorization', 'Bearer ' + newToken);
+      expect(response.status).toEqual(200);
+    });
+    it('should return  404 response', async (): Promise<void> => {
+      const newUser = new User({
+        username: 'someNewTestUser',
+        email: 'someNewTest@test.com',
+        password: '1231231231231231',
+      });
+      newUser.communities = [communityId];
+      await newUser.save();
+      const newToken = jwt.sign(
+        {
+          email,
+          userId: newUser._id.toString(),
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
+      const response = await request(app)
+        .get(`/users/posts?sort=new&limit=10&page=1`)
+        .set('Authorization', 'Bearer ' + newToken);
       expect(response.status).toEqual(404);
     });
   });

@@ -4,6 +4,7 @@ import { ErrorREST, Errors } from '../classes/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import ValidationError from '../types/ValidationError';
 import { Request } from 'express';
+import mongoose from 'mongoose';
 const createPost = async (
   type: string,
   title: string,
@@ -222,6 +223,55 @@ const getPostsByCommunityId = async (
   console.log(posts);
   return { posts, postsCount };
 };
+
+const getPostsByUserSubscriptions = async (
+  subscriptions: string[],
+  sort: string,
+  limit: number,
+  page: number,
+): Promise<GetPostsResponse> => {
+  let posts: PostType[];
+  switch (sort) {
+    case 'top':
+      posts = await Post.countDocuments()
+        .find({ community: { $in: subscriptions } })
+        .sort('-upvotes')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    case 'new':
+      posts = await Post.find()
+        .countDocuments()
+        .find({ community: { $in: subscriptions } })
+        .sort('-date')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    case 'comments':
+      posts = await Post.countDocuments()
+        .find({ community: { $in: subscriptions } })
+        .sort('-comments')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+    default:
+      posts = await Post.find()
+        .countDocuments()
+        .find({ community: { $in: subscriptions } })
+        .sort('-upvotes')
+        .skip((page - 1) * limit)
+        .limit(limit);
+      break;
+  }
+  if (posts.length < 1) {
+    const { status, message } = Errors.NotFound;
+    const error = new ErrorREST(status, message);
+    throw error;
+  }
+  const postsCount = (await Post.countDocuments()) - page * limit;
+  console.log(posts);
+  return { posts, postsCount };
+};
 export {
   createPost,
   getPostById,
@@ -229,4 +279,5 @@ export {
   editPost,
   getPosts,
   getPostsByCommunityId,
+  getPostsByUserSubscriptions,
 };

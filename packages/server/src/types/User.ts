@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 interface User extends Document {
   username: string;
   password: string;
@@ -6,7 +6,7 @@ interface User extends Document {
   avatar: string;
   confirmed: boolean;
   communities: string[];
-  banned: Schema.Types.ObjectId[];
+  banned: mongoose.Types.ObjectId[];
   karma: number;
   date: string;
   upvotedPosts: string[];
@@ -15,6 +15,5 @@ interface User extends Document {
   downvotedComments: string[];
   savedPosts: string[];
   savedComments: string[];
-  confirm: () => void;
 }
 export default User;

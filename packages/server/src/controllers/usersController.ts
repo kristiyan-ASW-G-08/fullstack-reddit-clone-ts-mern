@@ -121,7 +121,7 @@ export const voteForPost = async (
     } else if (type === 'downvote') {
       await downvotePost(user, postId, post);
     }
-    await user.save();
+
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);
@@ -142,9 +142,8 @@ export const voteForComment = async (
     if (type === 'upvote') {
       await upvoteComment(user, commentId, comment);
     } else if (type === 'downvote') {
-      downvoteComment(user, commentId, comment);
+      await downvoteComment(user, commentId, comment);
     }
-    await user.save();
     res.sendStatus(204);
   } catch (err) {
     passErrorToNext(err, next);

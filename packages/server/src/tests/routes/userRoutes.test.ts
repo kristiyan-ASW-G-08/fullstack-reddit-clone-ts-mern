@@ -134,12 +134,8 @@ describe('user routes', (): void => {
   });
   describe('/users/:token', (): void => {
     let userId: string;
-    let email: string;
     beforeEach(
       async (): Promise<void> => {
-        const username = 'test2UserName';
-        email = 'testMail@mail.com';
-        const password = '1234567891011';
         const hashedPassword = await bcrypt.hash(password, 12);
         const user = new User({
           email,

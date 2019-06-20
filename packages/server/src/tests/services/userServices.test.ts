@@ -40,11 +40,11 @@ describe('userServices', (): void => {
       await mongoose.disconnect();
     },
   );
+  const email = 'newEmail@mail.com';
+  const username = 'username';
+  const password = 'password';
   describe('createUser', (): void => {
     it(`should create new user`, async (): Promise<void> => {
-      const email = 'newEmail@mail.com';
-      const username = 'username';
-      const password = 'password';
       const userId = await createUser(email, username, password);
       expect(userId).toBeTruthy();
       const user = await User.findById(userId);
@@ -57,9 +57,6 @@ describe('userServices', (): void => {
   });
   describe('getUserByEmail', (): void => {
     it(`should return a user`, async (): Promise<void> => {
-      const email = 'newEmail@mail.com';
-      const username = 'username';
-      const password = 'password';
       const newUser = new User({
         email,
         password,
@@ -83,9 +80,6 @@ describe('userServices', (): void => {
   });
   describe('getUserById', (): void => {
     it(`should return a user`, async (): Promise<void> => {
-      const email = 'newEmail@mail.com';
-      const username = 'username';
-      const password = 'password';
       const newUser = new User({
         email,
         password,
@@ -113,9 +107,6 @@ describe('userServices', (): void => {
   });
   describe('getUserByEmail', (): void => {
     it(`should return a user`, async (): Promise<void> => {
-      const email = 'newEmail@mail.com';
-      const username = 'username';
-      const password = 'password';
       const newUser = new User({
         email,
         password,

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`isAuth should throw an error if req doesn't have Authorization header 1`] = `"Authentication credentials not valid."`;

@@ -12,7 +12,9 @@ import {
   getPostById,
   getPosts,
   getPostsByCommunityId,
+  getPostsByUserSubscriptions,
 } from '../services/postServices';
+import { getUserById } from '../services/userServices';
 export const postPost = async (
   req: Request,
   res: Response,
@@ -114,6 +116,34 @@ export const getPostsByCommunity = async (
     passErrorToNext(err, next);
   }
 };
+export const getSubscriptionPosts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { userId } = req;
+    const sort = req.query.sort || 'top';
+    const limit = parseInt(req.query.limit) || 25;
+    const page = parseInt(req.query.page) || 1;
+    const user = await getUserById(userId);
+    const { posts, postsCount } = await getPostsByUserSubscriptions(
+      user.communities,
+      sort,
+      limit,
+      page,
+    );
+    res.status(200).json({
+      data: {
+        posts,
+        postsCount,
+      },
+    });
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
 export const deletePost = async (
   req: Request,
   res: Response,
