@@ -14,7 +14,7 @@ import {
   getPostsByCommunityId,
   getPostsByUserSubscriptions,
 } from '../services/postServices';
-import { getUserById } from '../services/userServices';
+import { getUserById, isBanned } from '../services/userServices';
 export const postPost = async (
   req: Request,
   res: Response,
@@ -25,6 +25,8 @@ export const postPost = async (
     const { communityId } = req.params;
     const { userId } = req;
     const { title, type } = req.body;
+    const user = await getUserById(userId);
+    isBanned(user.bans, communityId);
     const content = getPostContent(type, req);
     const postId = await createPost(type, title, content, communityId, userId);
     const port = process.env.PORT || 8080;

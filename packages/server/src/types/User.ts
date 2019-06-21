@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import { Document } from 'mongoose';
 interface User extends Document {
   username: string;
   password: string;
@@ -6,7 +6,7 @@ interface User extends Document {
   avatar: string;
   confirmed: boolean;
   communities: string[];
-  banned: mongoose.Types.ObjectId[];
+  bans: string[];
   karma: number;
   date: string;
   upvotedPosts: string[];
@@ -15,5 +15,6 @@ interface User extends Document {
   downvotedComments: string[];
   savedPosts: string[];
   savedComments: string[];
+  reports: string[];
 }
 export default User;

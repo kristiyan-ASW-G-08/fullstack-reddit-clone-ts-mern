@@ -1,4 +1,5 @@
 interface Comment {
+  hidden: boolean;
   text: string;
   date: string;
   comments: number;

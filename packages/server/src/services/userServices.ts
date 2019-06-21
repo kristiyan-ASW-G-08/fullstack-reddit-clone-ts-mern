@@ -53,7 +53,6 @@ const getUserByEmail = async (email: string): Promise<UserType> => {
 
 const getUserById = async (userId: string): Promise<UserType> => {
   try {
-    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       const errorData: ValidationError = {
@@ -215,6 +214,17 @@ const subscribe = async (
     throw err;
   }
 };
+const isBanned = (bans: string[], communityId: string): void => {
+  try {
+    if (includesObjectId(bans, communityId)) {
+      const { status, message } = Errors.Forbidden;
+      const error = new ErrorREST(status, message);
+      throw error;
+    }
+  } catch (err) {
+    throw err;
+  }
+};
 export {
   upvotePost,
   downvotePost,
@@ -226,4 +236,5 @@ export {
   authenticateUser,
   confirmUser,
   subscribe,
+  isBanned,
 };

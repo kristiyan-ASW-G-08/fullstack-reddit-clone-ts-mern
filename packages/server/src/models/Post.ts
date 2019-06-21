@@ -11,6 +11,10 @@ const PostSchema: Schema = new Schema({
     type: Date,
     default: Date.now,
   },
+  hidden: {
+    type: Boolean,
+    default: false,
+  },
   comments: {
     type: Number,
     default: 0,

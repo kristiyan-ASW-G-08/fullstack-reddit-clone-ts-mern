@@ -40,6 +40,8 @@ describe('Post routes', (): void => {
   const communityId = mongoose.Types.ObjectId().toString();
   const secret: any = process.env.SECRET;
   const email = 'testEmail@email.com';
+  const username = 'test2UserName';
+  const password = '1234567891011';
   const token = jwt.sign(
     {
       email,
@@ -48,18 +50,39 @@ describe('Post routes', (): void => {
     secret,
     { expiresIn: '1h' },
   );
-  describe('post /posts', (): void => {
+  describe('post /communities/:communityId/posts', (): void => {
+    let realUserId: string;
+    beforeEach(
+      async (): Promise<void> => {
+        const user = new User({
+          email,
+          username,
+          password,
+        });
+        await user.save();
+        realUserId = user._id;
+      },
+    );
     afterEach(
-      (): void => {
+      async (): Promise<void> => {
+        await User.deleteMany({}).exec();
         mock.restore();
       },
     );
     it('should create a new post', async (): Promise<void> => {
+      const realUserToken = jwt.sign(
+        {
+          email,
+          userId: realUserId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
       const type = 'text';
 
       const response = await request(app)
         .post(`/communities/${communityId}/posts`)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', 'Bearer ' + realUserToken)
         .send({
           title,
           text,
@@ -68,11 +91,19 @@ describe('Post routes', (): void => {
       expect(response.status).toEqual(200);
     });
     it('should create a new link post', async (): Promise<void> => {
+      const realUserToken = jwt.sign(
+        {
+          email,
+          userId: realUserId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
       const type = 'link';
       const linkUrl = 'https://testLink.com';
       const response = await request(app)
         .post(`/communities/${communityId}/posts`)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', 'Bearer ' + realUserToken)
         .send({
           title,
           linkUrl,
@@ -81,6 +112,14 @@ describe('Post routes', (): void => {
       expect(response.status).toEqual(200);
     });
     it('should create a new image post', async (): Promise<void> => {
+      const realUserToken = jwt.sign(
+        {
+          email,
+          userId: realUserId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
       mock({
         'assets/images': {
           'test.jpg': Buffer.from([8, 6, 7, 5, 3, 0, 9]),
@@ -90,7 +129,7 @@ describe('Post routes', (): void => {
       const response = await request(app)
         .post(`/communities/${communityId}/posts`)
         .attach('image', 'assets/images/test.jpg')
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', 'Bearer ' + realUserToken)
         .field({
           title,
           type,

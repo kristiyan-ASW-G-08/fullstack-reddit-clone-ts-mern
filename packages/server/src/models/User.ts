@@ -12,7 +12,7 @@ const UserSchema: Schema = new Schema({
       ref: 'Community',
     },
   ],
-  banned: [
+  bans: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Community',
@@ -60,6 +60,12 @@ const UserSchema: Schema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Comment',
+    },
+  ],
+  reports: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Report',
     },
   ],
 });

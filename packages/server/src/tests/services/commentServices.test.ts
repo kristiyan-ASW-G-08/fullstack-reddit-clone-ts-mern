@@ -2,6 +2,7 @@ import {
   createComment,
   getCommentById,
   getCommentsBySourceId,
+  toggleHiddenComments,
 } from '../../services/commentServices';
 import Comment from '../../models/Comment';
 import Post from '../../models/Post';
@@ -33,6 +34,7 @@ describe('commentServices', (): void => {
   );
   const text = 'testText';
   const onModel = 'Post';
+
   describe('createComment', (): void => {
     const sourceId = mongoose.Types.ObjectId().toString();
     const userId = mongoose.Types.ObjectId().toString();

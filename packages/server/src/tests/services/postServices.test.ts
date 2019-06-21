@@ -4,6 +4,7 @@ import {
   getPosts,
   getPostsByCommunityId,
   getPostsByUserSubscriptions,
+  toggleHiddenPosts,
 } from '../../services/postServices';
 import Post from '../../models/Post';
 import { ErrorREST, Errors } from '../../classes/ErrorREST';
@@ -212,7 +213,6 @@ describe('postServices', (): void => {
         },
       ];
       const sort = 'top';
-      console.log(postsArr);
       await Post.insertMany(postsArr);
       const { posts, postsCount } = await getPostsByCommunityId(
         communityId,
@@ -767,6 +767,98 @@ describe('postServices', (): void => {
       await expect(
         getPostsByCommunityId(communityId, sort, limit, page),
       ).rejects.toThrow(error);
+    });
+  });
+  describe('toggleHiddenPosts', (): void => {
+    const userId = mongoose.Types.ObjectId();
+    let communityId = mongoose.Types.ObjectId().toString();
+    const type = 'text';
+    it(`should change the property hidden of posts  to true`, async (): Promise<
+      void
+    > => {
+      const postsArr = [
+        {
+          title,
+          type,
+          text,
+          upvotes: 100,
+          comments: 40,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          upvotes: 300,
+          comments: 20,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          comments: 30,
+          upvotes: 200,
+          community: communityId,
+          user: userId,
+        },
+      ];
+      await Post.insertMany(postsArr);
+      await toggleHiddenPosts(userId.toString(), true, communityId);
+      const posts = await Post.find({ community: communityId });
+      if (!posts) {
+        return;
+      }
+      expect(posts[0].hidden).toBeTruthy();
+      expect(posts[1].hidden).toBeTruthy();
+      expect(posts[2].hidden).toBeTruthy();
+    });
+    it(`should change the property hidden of posts  to false`, async (): Promise<
+      void
+    > => {
+      const postsArr = [
+        {
+          title,
+          type,
+          text,
+          hidden: true,
+          upvotes: 100,
+          comments: 40,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          hidden: true,
+          upvotes: 300,
+          comments: 20,
+          community: communityId,
+          user: userId,
+        },
+        {
+          title,
+          type,
+          text,
+          hidden: true,
+          comments: 30,
+          upvotes: 200,
+          community: communityId,
+          user: userId,
+        },
+      ];
+      await Post.insertMany(postsArr);
+      await toggleHiddenPosts(userId.toString(), false, communityId);
+      const posts = await Post.find({ community: communityId });
+      if (!posts) {
+        return;
+      }
+      expect(posts[0].hidden).toBeFalsy();
+      expect(posts[1].hidden).toBeFalsy();
+      expect(posts[2].hidden).toBeFalsy();
     });
   });
 });

@@ -9,6 +9,7 @@ import {
   getCommentById,
   getCommentsBySourceId,
 } from '../services/commentServices';
+import { getUserById, isBanned } from '../services/userServices';
 import isAuthorized from '../utilities/isAuthorized';
 export const postCommentFromPost = async (
   req: Request,
@@ -17,10 +18,12 @@ export const postCommentFromPost = async (
 ): Promise<void> => {
   try {
     isEmpty(validationResult(req));
-    const { postId } = req.params;
+    const { userId } = req;
+    const { postId, communityId } = req.params;
     const onModel = 'Post';
     const { text } = req.body;
-    const { userId } = req;
+    const user = await getUserById(userId);
+    isBanned(user.bans, communityId);
     const comment = await createComment(text, userId, postId, onModel);
     res.status(200).json({ data: { comment } });
   } catch (err) {
@@ -34,10 +37,12 @@ export const postCommentFromComment = async (
 ): Promise<void> => {
   try {
     isEmpty(validationResult(req));
-    const { commentId } = req.params;
+    const { userId } = req;
+    const { commentId, communityId } = req.params;
     const onModel = 'Comment';
     const { text } = req.body;
-    const { userId } = req;
+    const user = await getUserById(userId);
+    isBanned(user.bans, communityId);
     const comment = await createComment(text, userId, commentId, onModel);
     res.status(200).json({ data: { comment } });
   } catch (err) {

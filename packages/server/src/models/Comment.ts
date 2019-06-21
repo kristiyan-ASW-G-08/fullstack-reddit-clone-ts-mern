@@ -11,6 +11,10 @@ const CommentSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
+  hidden: {
+    type: Boolean,
+    default: false,
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

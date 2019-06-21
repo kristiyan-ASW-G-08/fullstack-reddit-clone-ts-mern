@@ -135,38 +135,26 @@ const getPosts = async (
   limit: number,
   page: number,
 ): Promise<GetPostsResponse> => {
-  let posts: PostType[];
+  let sortString: string;
   switch (sort) {
     case 'top':
-      posts = await Post.countDocuments()
-        .find()
-        .sort('-upvotes')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-upvotes';
       break;
     case 'new':
-      posts = await Post.find()
-        .countDocuments()
-        .find()
-        .sort('-date')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-date';
       break;
     case 'comments':
-      posts = await Post.countDocuments()
-        .find()
-        .sort('-comments')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-comments';
       break;
     default:
-      posts = await Post.countDocuments()
-        .find()
-        .sort('-upvotes')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-upvotes';
       break;
   }
+  const posts = await Post.countDocuments()
+    .find()
+    .sort(sortString)
+    .skip((page - 1) * limit)
+    .limit(limit);
   if (posts.length < 1) {
     const { status, message } = Errors.NotFound;
     const error = new ErrorREST(status, message);
@@ -181,46 +169,33 @@ const getPostsByCommunityId = async (
   limit: number,
   page: number,
 ): Promise<GetPostsResponse> => {
-  let posts: PostType[];
+  let sortString: string;
   switch (sort) {
     case 'top':
-      posts = await Post.countDocuments()
-        .find({ community: communityId })
-        .sort('-upvotes')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-upvotes';
       break;
     case 'new':
-      posts = await Post.find()
-        .countDocuments()
-        .find({ community: communityId })
-        .sort('-date')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-date';
       break;
     case 'comments':
-      posts = await Post.countDocuments()
-        .find({ community: communityId })
-        .sort('-comments')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-comments';
       break;
     default:
-      posts = await Post.find()
-        .countDocuments()
-        .find({ community: communityId })
-        .sort('-upvotes')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-upvotes';
       break;
   }
+  const posts = await Post.find()
+    .countDocuments()
+    .find({ community: communityId })
+    .sort(sortString)
+    .skip((page - 1) * limit)
+    .limit(limit);
   if (posts.length < 1) {
     const { status, message } = Errors.NotFound;
     const error = new ErrorREST(status, message);
     throw error;
   }
   const postsCount = (await Post.countDocuments()) - page * limit;
-  console.log(posts);
   return { posts, postsCount };
 };
 
@@ -230,47 +205,49 @@ const getPostsByUserSubscriptions = async (
   limit: number,
   page: number,
 ): Promise<GetPostsResponse> => {
-  let posts: PostType[];
+  let sortString: string;
   switch (sort) {
     case 'top':
-      posts = await Post.countDocuments()
-        .find({ community: { $in: subscriptions } })
-        .sort('-upvotes')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-upvotes';
       break;
     case 'new':
-      posts = await Post.find()
-        .countDocuments()
-        .find({ community: { $in: subscriptions } })
-        .sort('-date')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-date';
       break;
     case 'comments':
-      posts = await Post.countDocuments()
-        .find({ community: { $in: subscriptions } })
-        .sort('-comments')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-comments';
       break;
     default:
-      posts = await Post.find()
-        .countDocuments()
-        .find({ community: { $in: subscriptions } })
-        .sort('-upvotes')
-        .skip((page - 1) * limit)
-        .limit(limit);
+      sortString = '-upvotes';
       break;
   }
+  const posts = await Post.find()
+    .countDocuments()
+    .find({ community: { $in: subscriptions } })
+    .sort(sortString)
+    .skip((page - 1) * limit)
+    .limit(limit);
   if (posts.length < 1) {
     const { status, message } = Errors.NotFound;
     const error = new ErrorREST(status, message);
     throw error;
   }
   const postsCount = (await Post.countDocuments()) - page * limit;
-  console.log(posts);
   return { posts, postsCount };
+};
+const toggleHiddenPosts = async (
+  userId: string,
+  hidden: boolean,
+  communityId?: string,
+): Promise<void> => {
+  try {
+    let updateOptions: any = { user: userId };
+    if (communityId) {
+      updateOptions = { user: userId, community: communityId };
+    }
+    await Post.updateMany(updateOptions, { $set: { hidden } });
+  } catch (err) {
+    throw err;
+  }
 };
 export {
   createPost,
@@ -280,4 +257,5 @@ export {
   getPosts,
   getPostsByCommunityId,
   getPostsByUserSubscriptions,
+  toggleHiddenPosts,
 };

@@ -40,6 +40,8 @@ describe('rule routes', (): void => {
   const secret: any = process.env.SECRET;
   const onModel = 'Post';
   const email = 'testEmail@email.com';
+  const username = 'test2UserName';
+  const password = '1234567891011';
   const token = jwt.sign(
     {
       email,
@@ -48,11 +50,37 @@ describe('rule routes', (): void => {
     secret,
     { expiresIn: '1h' },
   );
-  describe('post posts/:postId/comments', (): void => {
+  const communityId = mongoose.Types.ObjectId();
+  describe('post /communities/:communityId/posts/:postId/comments', (): void => {
+    let userId: string;
+    beforeEach(
+      async (): Promise<void> => {
+        const user = new User({
+          email,
+          username,
+          password,
+        });
+        await user.save();
+        userId = user._id;
+      },
+    );
+    afterEach(
+      async (): Promise<void> => {
+        await User.deleteMany({}).exec();
+      },
+    );
     it('should create a new comment', async (): Promise<void> => {
+      const token = jwt.sign(
+        {
+          email,
+          userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
       const postId = mongoose.Types.ObjectId();
       const response = await request(app)
-        .post(`/posts/${postId}/comments`)
+        .post(`/communities/${communityId}/posts/${postId}/comments`)
         .set('Authorization', 'Bearer ' + token)
         .send({
           text,
@@ -60,11 +88,31 @@ describe('rule routes', (): void => {
       expect(response.status).toEqual(200);
     });
   });
-  describe('post comments/:commentId/comments', (): void => {
+  describe('post /communities/:communityId/comments/:commentId/comments', (): void => {
+    let userId: string;
+    beforeEach(
+      async (): Promise<void> => {
+        const user = new User({
+          email,
+          username,
+          password,
+        });
+        await user.save();
+        userId = user._id;
+      },
+    );
     it('should create a new comment', async (): Promise<void> => {
+      const token = jwt.sign(
+        {
+          email,
+          userId: userId,
+        },
+        secret,
+        { expiresIn: '1h' },
+      );
       const commentId = mongoose.Types.ObjectId();
       const response = await request(app)
-        .post(`/comments/${commentId}/comments`)
+        .post(`/communities/${communityId}/comments/${commentId}/comments`)
         .set('Authorization', 'Bearer ' + token)
         .send({
           text,

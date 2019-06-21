@@ -1,4 +1,5 @@
 interface Post {
+  hidden: boolean;
   type: string;
   title: string;
   text?: string;

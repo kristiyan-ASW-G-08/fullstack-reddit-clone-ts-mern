@@ -33,13 +33,13 @@ const commentQueryValidation = [
     .matches(/(new | top | comments)/),
 ];
 router.post(
-  '/posts/:postId/comments',
+  '/communities/:communityId/posts/:postId/comments',
   commentValidationArr,
   isAuth,
   postCommentFromPost,
 );
 router.post(
-  '/comments/:commentId/comments',
+  '/communities/:communityId/comments/:commentId/comments',
   commentValidationArr,
   isAuth,
   postCommentFromComment,

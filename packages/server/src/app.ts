@@ -10,6 +10,7 @@ import communityRoutes from './routes/communityRoutes';
 import ruleRoutes from './routes/ruleRoutes';
 import postRoutes from './routes/postRoutes';
 import commentRoutes from './routes/commentRoutes';
+import reportRoutes from './routes/reportRoutes';
 import multer from 'multer';
 const app: Application = express();
 
@@ -71,6 +72,7 @@ app.use(communityRoutes);
 app.use(ruleRoutes);
 app.use(postRoutes);
 app.use(commentRoutes);
+app.use(reportRoutes);
 
 app.use(
   (error: ErrorREST, req: Request, res: Response, next: NextFunction): void => {

@@ -44,38 +44,26 @@ const getCommentsBySourceId = async (
   page: number,
 ): Promise<GetCommentsResponse> => {
   try {
-    let comments: CommentType[];
+    let sortString: string;
     switch (sort) {
       case 'top':
-        comments = await Comment.countDocuments()
-          .find({ source: sourceId })
-          .sort('-upvotes')
-          .skip((page - 1) * limit)
-          .limit(limit);
+        sortString = '-upvotes';
         break;
       case 'new':
-        comments = await Comment.find({ source: sourceId })
-          .countDocuments()
-          .find()
-          .sort({ date: -1 })
-          .skip((page - 1) * limit)
-          .limit(limit);
+        sortString = '-date';
         break;
       case 'comments':
-        comments = await Comment.countDocuments()
-          .find({ source: sourceId })
-          .sort('-comments')
-          .skip((page - 1) * limit)
-          .limit(limit);
+        sortString = '-comments';
         break;
       default:
-        comments = await Comment.countDocuments()
-          .find({ source: sourceId })
-          .sort('-upvotes')
-          .skip((page - 1) * limit)
-          .limit(limit);
+        sortString = '-upvotes';
         break;
     }
+    const comments = await Comment.countDocuments()
+      .find({ source: sourceId })
+      .sort(sortString)
+      .skip((page - 1) * limit)
+      .limit(limit);
     if (!comments || comments.length === 0) {
       const { status, message } = Errors.NotFound;
       const error = new ErrorREST(status, message);
@@ -87,5 +75,24 @@ const getCommentsBySourceId = async (
     throw err;
   }
 };
-
-export { createComment, getCommentById, getCommentsBySourceId };
+const toggleHiddenComments = async (
+  userId: string,
+  hidden: boolean,
+  communityId?: string,
+): Promise<void> => {
+  try {
+    let updateOptions: any = { user: userId };
+    if (communityId) {
+      updateOptions = { user: userId, community: communityId };
+    }
+    await Comment.updateMany(updateOptions, { $set: { hidden } });
+  } catch (err) {
+    throw err;
+  }
+};
+export {
+  createComment,
+  getCommentById,
+  getCommentsBySourceId,
+  toggleHiddenComments,
+};
