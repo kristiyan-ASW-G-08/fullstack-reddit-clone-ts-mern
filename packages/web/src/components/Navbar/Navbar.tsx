@@ -1,23 +1,29 @@
-import React, { FC } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
 import { Menu } from 'antd';
-import Theme from '../../types/Theme';
+import Dropdown from './Dropdown/Dropdown';
+import SearchBar from './SearchBar/SearchBar';
 const { Item } = Menu;
 interface NavbarProps {
-  theme: string | undefined;
+  theme: 'light' | 'dark' | undefined;
+  toggleTheme: () => void;
 }
-const Navbar: FC<NavbarProps> = ({ theme }) => {
+const Navbar: FC<NavbarProps> = ({ toggleTheme, theme, ...props }) => {
   return (
-    <Menu
-      theme={theme}
-      mode="horizontal"
-      defaultSelectedKeys={['2']}
-      style={{ lineHeight: '64px' }}
-    >
-      <Item key="1">nav 1</Item>
-      <Item key="2">nav 2</Item>
-      <Item key="3">nav 3</Item>
-    </Menu>
+    <>
+      <Menu
+        theme={theme}
+        mode="horizontal"
+        defaultSelectedKeys={['2']}
+        style={{ lineHeight: '64px' }}
+      >
+        <Item>
+          {' '}
+          <SearchBar />
+        </Item>
+
+        <Dropdown toggleTheme={toggleTheme} {...props} />
+      </Menu>
+    </>
   );
 };
 

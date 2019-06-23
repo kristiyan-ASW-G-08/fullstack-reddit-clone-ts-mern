@@ -98,6 +98,7 @@ export const getCommunityNames = async (
 ): Promise<void> => {
   try {
     const { searchTerm } = req.params;
+    console.log(searchTerm, 'Here!!!!!!!!!!');
     const communities = await getCommunityNamesBySearchTerm(searchTerm);
     res.status(200).json({ data: { communities } });
   } catch (err) {

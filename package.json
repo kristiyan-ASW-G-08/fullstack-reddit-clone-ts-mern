@@ -24,6 +24,8 @@
       "packages/*"
     ],
     "nohoist": [
+      "**babel-loader",
+      "**babel-loader**",
       "**/jest",
       "**/jest/**"
     ]

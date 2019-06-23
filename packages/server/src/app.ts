@@ -35,7 +35,7 @@ app.use(
 const fileStorage = multer.diskStorage({
   //@ts-ignore:Problem with multer and typescript
   destination: (req: Request, file, cb): any => {
-    cb(null, 'assets/images');
+    cb(null, 'images');
   },
   filename: (req: Request, file, cb) => {
     cb(
@@ -61,11 +61,8 @@ const fileFilter = (req: Request, file: any, cb: any) => {
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'),
 );
-app.use(
-  '/assets/images',
-  express.static(path.join(__dirname, 'assets/images')),
-);
-app.use('/assets/videos', express.static(path.join(__dirname, 'videos')));
+app.use('/images', express.static(path.join(__dirname, 'assets/images')));
+// app.use('/assets/videos', express.static(path.join(__dirname, 'videos')));
 
 app.use(userRoutes);
 app.use(communityRoutes);

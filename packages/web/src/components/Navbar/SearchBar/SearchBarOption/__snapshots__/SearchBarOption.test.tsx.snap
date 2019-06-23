@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchBarOption/> snapshot 1`] = `
+<div>
+  <div>
+     
+    <span
+      class="ant-avatar ant-avatar-sm ant-avatar-circle ant-avatar-image"
+    >
+      <img
+        alt="testName icon"
+        src="http://localhost:8080/images/test.svg"
+      />
+    </span>
+    <span
+      class="ant-typography"
+      style="padding: 10px;"
+    >
+      testName
+    </span>
+    <span
+      class="ant-typography"
+      style="padding: 10px;"
+    >
+      1000
+       members
+    </span>
+  </div>
+</div>
+`;

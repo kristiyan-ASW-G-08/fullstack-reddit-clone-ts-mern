@@ -84,7 +84,7 @@ const getCommunityNamesBySearchTerm = async (
       {
         $text: { $search: searchTerm },
       },
-      'name subscribers',
+      'name subscribers theme',
     )
       .select({ score: { $meta: 'textScore' } })
       .limit(10)
