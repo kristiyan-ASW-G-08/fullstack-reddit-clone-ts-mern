@@ -10,6 +10,9 @@ describe('<ThemeSwitch />', () => {
   });
   afterEach(cleanup);
 
+  it('snapshot', () => {
+    expect(container).toMatchSnapshot();
+  });
   it('should change input value', async () => {
     expect(toggleTheme).toHaveBeenCalledTimes(1);
   });
