@@ -19,6 +19,7 @@
     "mobx-react-lite": "^1.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "typescript": "3.5.1"
   },
@@ -27,6 +28,7 @@
     "@testing-library/react": "^8.0.1",
     "@testing-library/user-event": "^4.1.0",
     "@types/draft-js": "^0.10.33",
+    "@types/react-router-dom": "^4.3.4",
     "@types/testing-library__user-event": "^4.0.0",
     "babel-jest": "^24.8.0",
     "babel-plugin-import": "^1.12.0",
