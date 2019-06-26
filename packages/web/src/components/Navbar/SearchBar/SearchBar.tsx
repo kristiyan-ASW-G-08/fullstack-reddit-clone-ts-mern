@@ -37,7 +37,7 @@ const SearchBar: React.FC = () => {
   };
   return (
     <AutoComplete
-      style={{ width: '60vw' }}
+      style={{ width: '45vw' }}
       onSelect={selectHandler}
       onSearch={searchHandler}
       placeholder="input here"

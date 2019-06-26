@@ -4,8 +4,15 @@ import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 const { SubMenu, Item } = Menu;
 interface DropdownProps {
   toggleTheme: () => void;
+  loginModalHandler: () => void;
+  signUpModalHandler: () => void;
 }
-const Dropdown: FC<DropdownProps> = ({ toggleTheme, ...props }) => {
+const Dropdown: FC<DropdownProps> = ({
+  toggleTheme,
+  signUpModalHandler,
+  loginModalHandler,
+  ...props
+}) => {
   return (
     <>
       <SubMenu
@@ -20,7 +27,9 @@ const Dropdown: FC<DropdownProps> = ({ toggleTheme, ...props }) => {
       >
         <Item key="5">Option 5</Item>
         <Item key="6">Login</Item>
-        <Item key="7">Sign In</Item>
+        <Item onClick={() => signUpModalHandler()} key="7">
+          Sign In
+        </Item>
         <Item>
           <ThemeSwitch toggleTheme={toggleTheme} />
         </Item>

@@ -1,26 +1,18 @@
-import React from 'react';
+import React, { FC, lazy, Suspense } from 'react';
 import { Modal } from 'antd';
-interface ModalComponentProps {
-  visible: boolean;
-  title: string;
-  resetModalState: () => void;
-}
-const ModalComponent: React.FC<ModalComponentProps> = ({
-  title,
-  resetModalState,
-  visible,
-  children,
-}) => {
+import ModalState from '../../types/ModalState';
+import Loader from '../Loader';
+import { observer } from 'mobx-react-lite';
+// interface ModalComponentProps {
+//   modalState: ModalState;
+//   resetModalState: () => void;
+// }
+const ModalComponent: FC = observer(({ children }) => {
   return (
-    <Modal
-      title={title}
-      visible={visible}
-      onCancel={resetModalState}
-      footer={[]}
-    >
-      <p>{children}</p>
+    <Modal title={'Title'} visible={true} onCancel={() => {}} footer={[]}>
+      {children}
     </Modal>
   );
-};
+});
 
 export default ModalComponent;

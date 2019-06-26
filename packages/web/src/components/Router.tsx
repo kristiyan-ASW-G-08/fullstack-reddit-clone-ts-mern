@@ -5,10 +5,14 @@ import Navbar from './Navbar/Navbar';
 import Modal from './Modal/Modal';
 import { observer } from 'mobx-react-lite';
 import RootStoreContext from '../stores/RootStore/RootStore';
+import { Modal as ModalC } from 'antd';
+const SignUpFormModal = React.lazy(() =>
+  import('./SignUpForm/SignUpFormModal'),
+);
+
 const Router: FC = observer(
   (): JSX.Element => {
     const { authStore, themeStore, modalStore } = useContext(RootStoreContext);
-    const { isAuth } = authStore.authState;
     const loginModalHandler = () => {};
     const signUpModalHandler = () => {};
     return (
@@ -21,7 +25,15 @@ const Router: FC = observer(
             loginModalHandler={() => loginModalHandler()}
             signUpModalHandler={() => signUpModalHandler()}
           />
-          {/* <Modal /> */}
+          <Route
+            path="/signUp"
+            render={(props): JSX.Element => (
+              <Suspense fallback={<Loader />}>
+                <SignUpFormModal />
+              </Suspense>
+            )}
+          />
+          <Route />
           <Switch />
         </>
       </BrowserRouter>

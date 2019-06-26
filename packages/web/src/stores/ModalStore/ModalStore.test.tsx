@@ -1,9 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import ModalStore from './ModalStore';
 import defaultModalState from './defaultModalState';
-const TestComponent: FunctionComponent = () => (
-  <div className="test-component">Test</div>
-);
+
 describe('ModalStore', (): void => {
   const modalStore = new ModalStore();
   const title = 'Title';
@@ -11,9 +9,8 @@ describe('ModalStore', (): void => {
     expect(modalStore.modalState).toEqual(defaultModalState);
   });
   it('setModalState', (): void => {
-    modalStore.setModalState(TestComponent, title);
+    modalStore.setModalState(title);
     expect(modalStore.modalState.title).toEqual(title);
-    expect(modalStore.modalState.Component).toEqual(TestComponent);
   });
   it('resetAuthState', (): void => {
     modalStore.resetModalState();
