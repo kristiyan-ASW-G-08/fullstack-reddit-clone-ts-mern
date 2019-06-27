@@ -15,7 +15,7 @@ import {
 const router = express.Router();
 
 router.post(
-  '/users',
+  'git',
   [
     body('username', 'Username should be at least 4  characters long.')
       .isLength({ min: 4 })

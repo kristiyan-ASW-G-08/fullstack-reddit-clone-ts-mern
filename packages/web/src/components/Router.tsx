@@ -6,15 +6,10 @@ import Modal from './Modal/Modal';
 import { observer } from 'mobx-react-lite';
 import RootStoreContext from '../stores/RootStore/RootStore';
 import { Modal as ModalC } from 'antd';
-const SignUpFormModal = React.lazy(() =>
-  import('./SignUpForm/SignUpFormModal'),
-);
-
+import ModalsContainer from './ModalsContainer/ModalsContainer';
 const Router: FC = observer(
   (): JSX.Element => {
     const { authStore, themeStore, modalStore } = useContext(RootStoreContext);
-    const loginModalHandler = () => {};
-    const signUpModalHandler = () => {};
     return (
       <BrowserRouter>
         <>
@@ -22,17 +17,10 @@ const Router: FC = observer(
             authState={authStore.authState}
             theme={themeStore.theme}
             toggleTheme={() => themeStore.toggleTheme()}
-            loginModalHandler={() => loginModalHandler()}
-            signUpModalHandler={() => signUpModalHandler()}
+            loginModalHandler={() => modalStore.setModalState('login')}
+            signUpModalHandler={() => modalStore.setModalState('signUp')}
           />
-          <Route
-            path="/signUp"
-            render={(props): JSX.Element => (
-              <Suspense fallback={<Loader />}>
-                <SignUpFormModal />
-              </Suspense>
-            )}
-          />
+          <ModalsContainer modalState={modalStore.modalState} />
           <Route />
           <Switch />
         </>

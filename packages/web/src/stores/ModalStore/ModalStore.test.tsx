@@ -4,13 +4,13 @@ import defaultModalState from './defaultModalState';
 
 describe('ModalStore', (): void => {
   const modalStore = new ModalStore();
-  const title = 'Title';
   it('should be default', (): void => {
     expect(modalStore.modalState).toEqual(defaultModalState);
   });
   it('setModalState', (): void => {
-    modalStore.setModalState(title);
-    expect(modalStore.modalState.title).toEqual(title);
+    const type = 'signUp';
+    modalStore.setModalState(type);
+    expect(modalStore.modalState.type).toEqual(type);
   });
   it('resetAuthState', (): void => {
     modalStore.resetModalState();
