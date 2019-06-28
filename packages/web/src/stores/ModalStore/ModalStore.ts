@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { createContext } from 'react';
 import { observable, action } from 'mobx';
 import ModalState from '../../types/ModalState';

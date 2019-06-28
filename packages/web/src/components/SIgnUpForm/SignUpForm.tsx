@@ -11,6 +11,7 @@ import { FormComponentProps } from 'antd/lib/form/Form';
 import axios from 'axios';
 import ValidationError from '@rddt/common/types/ValidationError';
 import RootStoreContext from '../../stores/RootStore/RootStore';
+import openNotification from '../../utilities/openNotification';
 interface SignUpFormProps extends FormComponentProps {
   setConfirmLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -31,19 +32,24 @@ const SignUpForm: FC<SignUpFormProps> = ({ form, setConfirmLoading }) => {
         const request = await axios.post('http://localhost:8080/users', values);
         setConfirmLoading(false);
         if (request.status === 204) {
+          const title = 'Successful registration';
+          const description = 'Verify your email to login.';
+          openNotification('success', title, description);
           modalStore.resetModalState();
         }
       } catch (err) {
         setConfirmLoading(false);
-        const { data } = err.response.data;
-        data.map((validationErr: ValidationError) => {
-          form.setFields({
-            [validationErr.param]: {
-              value: validationErr.value,
-              errors: [new Error(validationErr.msg)],
-            },
+        if (err.response.data.data) {
+          const { data } = err.response.data;
+          data.map((validationErr: ValidationError) => {
+            form.setFields({
+              [validationErr.param]: {
+                value: validationErr.value,
+                errors: [new Error(validationErr.msg)],
+              },
+            });
           });
-        });
+        }
       }
     });
   };

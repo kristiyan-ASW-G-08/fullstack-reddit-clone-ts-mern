@@ -11,7 +11,7 @@ const sendConfirmationEmail = (userId: string, email: string): void => {
     { expiresIn: '1h' },
   );
   const appEmail: any = process.env.EMAIL;
-  const url = `http://localhost:3000/auth/confirmation/${token}`;
+  const url = `http://localhost:3000/confirmation/${token}`;
   const mailOptions: MailOptions = {
     from: appEmail,
     to: email,
