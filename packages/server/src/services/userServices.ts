@@ -1,6 +1,6 @@
 import User from '../models/User';
 import UserType from '../types/User';
-import ValidationError from '../types/ValidationError';
+import ValidationError from '@rddt/common/types/ValidationError';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import bcrypt from 'bcryptjs';
 import comparePasswords from '../utilities/comparePasswords';

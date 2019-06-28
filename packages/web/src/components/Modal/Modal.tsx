@@ -1,19 +1,31 @@
-import React, { FC } from 'react';
-import { Modal as AntModal } from 'antd';
+import React, { FC, cloneElement, useState } from 'react';
+import { Modal as AntModal, Button } from 'antd';
 interface ModalProps {
   title: string;
-  visible: boolean;
   cancelHandler: () => void;
 }
-const Modal: FC<ModalProps> = ({ title, visible, cancelHandler, children }) => {
+const Modal: FC<ModalProps> = ({ title, cancelHandler, children }) => {
+  const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   return (
     <AntModal
       title={title}
-      visible={visible}
+      visible={true}
       onCancel={cancelHandler}
-      footer={[]}
+      confirmLoading={confirmLoading}
+      footer={[
+        <Button
+          key="back"
+          loading={confirmLoading}
+          onClick={cancelHandler}
+          type="danger"
+        >
+          Cancel
+        </Button>,
+      ]}
     >
-      {children}
+      {cloneElement(children as React.ReactElement<any>, {
+        setConfirmLoading,
+      })}
     </AntModal>
   );
 };

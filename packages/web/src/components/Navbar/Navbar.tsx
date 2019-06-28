@@ -1,30 +1,22 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext } from 'react';
 import { Menu, Avatar } from 'antd';
 import Dropdown from './Dropdown/Dropdown';
-import AuthState from '../../types/AuthState';
-import ModalState from '../../types/ModalState';
 import SearchBar from './SearchBar/SearchBar';
+import RootStoreContext from '../../stores/RootStore/RootStore';
 import Logo from '../../assets/icon.svg';
+import { observer } from 'mobx-react-lite';
 const { Item } = Menu;
-interface NavbarProps {
-  authState: AuthState;
-  theme: 'light' | 'dark' | undefined;
-  toggleTheme: () => void;
-  loginModalHandler: () => void;
-  signUpModalHandler: () => void;
-}
-const Navbar: FC<NavbarProps> = ({
-  authState,
-  toggleTheme,
-  theme,
-  signUpModalHandler,
-  loginModalHandler,
-  ...props
-}) => {
+
+const Navbar: FC = observer(({ ...props }) => {
+  const { authStore, themeStore, modalStore } = useContext(RootStoreContext);
+  const { isAuth } = authStore.authState;
+  const toggleTheme = () => themeStore.toggleTheme();
+  const loginModalHandler = () => modalStore.setModalState('login');
+  const signUpModalHandler = () => modalStore.setModalState('signUp');
   return (
     <>
       <Menu
-        theme={theme}
+        theme={themeStore.theme}
         mode="horizontal"
         defaultSelectedKeys={['2']}
         style={{ lineHeight: '64px', textAlign: 'center' }}
@@ -38,12 +30,13 @@ const Navbar: FC<NavbarProps> = ({
         <Dropdown
           toggleTheme={toggleTheme}
           {...props}
+          isAuth={isAuth}
           loginModalHandler={() => loginModalHandler()}
           signUpModalHandler={() => signUpModalHandler()}
         />
       </Menu>
     </>
   );
-};
+});
 
 export default Navbar;

@@ -2,7 +2,7 @@ import Post from '../models/Post';
 import PostType from '../types/Post';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
-import ValidationError from '../types/ValidationError';
+import ValidationError from '@rddt/common/types/ValidationError';
 import { Request } from 'express';
 import mongoose from 'mongoose';
 const createPost = async (

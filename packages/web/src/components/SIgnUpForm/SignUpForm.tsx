@@ -1,31 +1,63 @@
-import React, { FC, SyntheticEvent } from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import React, {
+  FC,
+  SyntheticEvent,
+  useState,
+  useContext,
+  Dispatch,
+  SetStateAction,
+} from 'react';
+import { Form, Icon, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import axios from 'axios';
-const SignUpForm: FC<FormComponentProps> = ({ form }) => {
+import ValidationError from '@rddt/common/types/ValidationError';
+import RootStoreContext from '../../stores/RootStore/RootStore';
+interface SignUpFormProps extends FormComponentProps {
+  setConfirmLoading: Dispatch<SetStateAction<boolean>>;
+}
+const { Item } = Form;
+const SignUpForm: FC<SignUpFormProps> = ({ form, setConfirmLoading }) => {
+  const [currentPassword, setCurrentPassword] = useState<string>();
+  const { modalStore } = useContext(RootStoreContext);
   const inputStyle = { color: 'rgba(0,0,0,.25)' };
-  const handleSubmit = (e: SyntheticEvent) => {
+  const resetHandler = (e: SyntheticEvent) => {
+    e.preventDefault();
+    form.resetFields();
+  };
+  const submitHandler = (e: SyntheticEvent) => {
     e.preventDefault();
     form.validateFields(async (err, values) => {
-      console.log(values);
       try {
+        setConfirmLoading(true);
         const request = await axios.post('http://localhost:8080/users', values);
-        console.log(request);
+        setConfirmLoading(false);
+        if (request.status === 204) {
+          modalStore.resetModalState();
+        }
       } catch (err) {
-        console.log(err.data);
+        setConfirmLoading(false);
+        const { data } = err.response.data;
+        data.map((validationErr: ValidationError) => {
+          form.setFields({
+            [validationErr.param]: {
+              value: validationErr.value,
+              errors: [new Error(validationErr.msg)],
+            },
+          });
+        });
       }
     });
   };
   const { getFieldDecorator } = form;
   return (
-    <Form onSubmit={handleSubmit} className="login-form">
-      <Form.Item>
+    <Form onSubmit={submitHandler} className="login-form">
+      <Item>
         {getFieldDecorator('username', {
           rules: [
             {
               required: true,
               message: 'Please input your username!',
               min: 4,
+              type: 'string',
             },
           ],
         })(
@@ -34,11 +66,16 @@ const SignUpForm: FC<FormComponentProps> = ({ form }) => {
             placeholder="Username"
           />,
         )}
-      </Form.Item>
-      <Form.Item>
+      </Item>
+      <Item>
         {getFieldDecorator('email', {
           rules: [
-            { required: true, message: 'Please input your email!', min: 4 },
+            {
+              required: true,
+              message: 'Please input your email!',
+              min: 4,
+              type: 'string',
+            },
           ],
         })(
           <Input
@@ -46,21 +83,49 @@ const SignUpForm: FC<FormComponentProps> = ({ form }) => {
             placeholder="Email"
           />,
         )}
-      </Form.Item>
-      <Form.Item>
+      </Item>
+      <Item>
         {getFieldDecorator('password', {
-          rules: [{ required: true, message: 'Please input your Password!' }],
+          rules: [
+            {
+              required: true,
+              message: 'Please input your Password!',
+              type: 'string',
+            },
+          ],
         })(
           <Input.Password
             prefix={<Icon type="lock" style={inputStyle} />}
             type="password"
             placeholder="Password"
+            onChange={e => {
+              setCurrentPassword(e.target.value);
+            }}
           />,
         )}
-      </Form.Item>
-      <Form.Item>
+      </Item>
+      <Item>
         {getFieldDecorator('matchPassword', {
-          rules: [{ required: true, message: 'Please input your Password!' }],
+          rules: [
+            {
+              required: true,
+              message: 'Please input your Password!',
+              type: 'string',
+              validator: (rule, value, callback: any) => {
+                if (value !== currentPassword) {
+                  form.setFields({
+                    matchPassword: {
+                      value: value,
+                      errors: [new Error('Passwords do not match!')],
+                    },
+                  });
+                  callback();
+                } else {
+                  callback();
+                }
+              },
+            },
+          ],
         })(
           <Input.Password
             prefix={<Icon type="lock" style={inputStyle} />}
@@ -68,12 +133,15 @@ const SignUpForm: FC<FormComponentProps> = ({ form }) => {
             placeholder="Password"
           />,
         )}
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
+      </Item>
+      <Item>
+        <Button type="primary" htmlType="submit" block>
+          Sign Up
         </Button>
-      </Form.Item>
+        <Button htmlType="submit" onClick={resetHandler} block type="danger">
+          Reset
+        </Button>
+      </Item>
     </Form>
   );
 };

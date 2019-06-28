@@ -1,18 +1,19 @@
-import React, { FC, lazy, Suspense } from 'react';
+import React, { FC, lazy, Suspense, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import ModalState from '../../types/ModalState';
 import Loader from '../Loader';
+import RootStoreContext from '../../stores/RootStore/RootStore';
 const SignUpFormModal = lazy(() => import('../SignUpForm/SignUpFormModal'));
-interface ModalContainerProps {
-  modalState: ModalState;
-}
-const ModalsContainer: FC<ModalContainerProps> = observer(({ modalState }) => {
+const ModalsContainer: FC = observer(() => {
+  const { modalStore } = useContext(RootStoreContext);
+  const { modalState } = modalStore;
   const modals: any = {
-    signUp: <SignUpFormModal />,
+    signUp: (
+      <SignUpFormModal resetModalState={() => modalStore.resetModalState()} />
+    ),
   };
   return (
     <>
-      {modalState.visible ? (
+      {modalState.visible && modals[modalState.type] ? (
         <Suspense fallback={<Loader />}> {modals[modalState.type]}</Suspense>
       ) : null}
     </>

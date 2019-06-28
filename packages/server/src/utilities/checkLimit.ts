@@ -1,5 +1,5 @@
 import { ErrorREST, Errors } from '../classes/ErrorREST';
-import ValidationError from '../types/ValidationError';
+import ValidationError from '@rddt/common/types/ValidationError';
 const checkLimit = (limit: number): void => {
   try {
     if (limit > 50 || limit < 1) {

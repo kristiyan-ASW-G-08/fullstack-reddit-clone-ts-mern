@@ -17,5 +17,5 @@
     "noEmit": true,
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./src", "./types"]
+  "include": ["./src", "./types", "../common/types/ValidationError.ts"]
 }

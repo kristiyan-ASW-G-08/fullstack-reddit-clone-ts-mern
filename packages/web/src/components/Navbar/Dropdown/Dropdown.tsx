@@ -4,11 +4,13 @@ import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 const { SubMenu, Item } = Menu;
 interface DropdownProps {
   toggleTheme: () => void;
+  isAuth: boolean;
   loginModalHandler: () => void;
   signUpModalHandler: () => void;
 }
 const Dropdown: FC<DropdownProps> = ({
   toggleTheme,
+  isAuth,
   signUpModalHandler,
   loginModalHandler,
   ...props

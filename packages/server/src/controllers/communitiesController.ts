@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
-import ValidationError from '../types/ValidationError';
+import ValidationError from '@rddt/common/types/ValidationError';
 import passErrorToNext from '../utilities/passErrorToNext';
 import { ErrorREST, Errors } from '../classes/ErrorREST';
 import {
