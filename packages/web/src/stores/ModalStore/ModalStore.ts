@@ -4,14 +4,12 @@ import ModalState from '../../types/ModalState';
 import defaultModalState from './defaultModalState';
 class ModalStore {
   @observable public modalState: ModalState = {
-    visible: false,
     type: '',
   };
   @action public setModalState(
-    type: 'signUp' | 'login' | 'message' | '',
+    type: 'signUp' | 'login' | 'community' | '',
   ): void {
     this.modalState.type = type;
-    this.modalState.visible = true;
   }
   @action public resetModalState(): void {
     this.modalState = defaultModalState;

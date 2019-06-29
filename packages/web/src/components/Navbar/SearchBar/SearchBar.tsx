@@ -13,6 +13,7 @@ const SearchBar: React.FC = () => {
           `http://localhost:8080/communities/${e}/names`,
         );
         const { data } = response.data;
+        console.log(response);
         if (data.communities) {
           console.log(data.communities);
           setCommunities(communities => data.communities);
@@ -40,7 +41,7 @@ const SearchBar: React.FC = () => {
       style={{ width: '45vw' }}
       onSelect={selectHandler}
       onSearch={searchHandler}
-      placeholder="input here"
+      placeholder="Search"
     >
       {autoCompleteChildren}
     </AutoComplete>

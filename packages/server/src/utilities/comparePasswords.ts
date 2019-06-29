@@ -8,12 +8,14 @@ const comparePasswords = async (
   try {
     const passwordMatch = await bcrypt.compare(password, userPassword);
     if (!passwordMatch) {
-      const errorData: ValidationError = {
-        location: 'body',
-        param: 'password',
-        msg: 'Password does not match!',
-        value: password,
-      };
+      const errorData: ValidationError[] = [
+        {
+          location: 'body',
+          param: 'password',
+          msg: 'Password does not match!',
+          value: password,
+        },
+      ];
       const { status, message } = Errors.Unauthorized;
       const error = new ErrorREST(status, message, errorData);
       throw error;

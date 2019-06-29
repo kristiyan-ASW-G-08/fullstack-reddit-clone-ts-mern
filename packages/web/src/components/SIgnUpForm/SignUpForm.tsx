@@ -55,7 +55,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ form, setConfirmLoading }) => {
   };
   const { getFieldDecorator } = form;
   return (
-    <Form onSubmit={submitHandler} className="login-form">
+    <Form onSubmit={submitHandler}>
       <Item>
         {getFieldDecorator('username', {
           rules: [

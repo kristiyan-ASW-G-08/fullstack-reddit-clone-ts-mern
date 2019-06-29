@@ -13,6 +13,7 @@ const Navbar: FC = observer(({ ...props }) => {
   const toggleTheme = () => themeStore.toggleTheme();
   const loginModalHandler = () => modalStore.setModalState('login');
   const signUpModalHandler = () => modalStore.setModalState('signUp');
+  const communityModalHandler = () => modalStore.setModalState('community');
   console.log(isAuth);
   return (
     <>
@@ -32,8 +33,10 @@ const Navbar: FC = observer(({ ...props }) => {
           toggleTheme={toggleTheme}
           {...props}
           isAuth={isAuth}
-          loginModalHandler={() => loginModalHandler()}
-          signUpModalHandler={() => signUpModalHandler()}
+          loginModalHandler={loginModalHandler}
+          signUpModalHandler={signUpModalHandler}
+          logOutHandler={() => authStore.resetAuthState()}
+          communityModalHandler={communityModalHandler}
         />
       </Menu>
     </>

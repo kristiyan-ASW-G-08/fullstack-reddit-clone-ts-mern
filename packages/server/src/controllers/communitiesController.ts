@@ -27,7 +27,7 @@ export const postCommunity = async (
     const { userId } = req;
     console.log(req.userId, 'UserId');
     const communityId = await createCommunity(name, description, userId);
-    res.status(200).json({ communityId });
+    res.status(200).json({ data: { communityId } });
   } catch (err) {
     passErrorToNext(err, next);
   }
@@ -64,12 +64,14 @@ export const patchCommunityTheme = async (
     isAuthorized(community.user.toString(), userId);
     if (patchType === 'icon') {
       if (!req.file) {
-        const errorData: ValidationError = {
-          location: 'body',
-          param: 'image',
-          msg: 'Submit an image.',
-          value: 'image',
-        };
+        const errorData: ValidationError[] = [
+          {
+            location: 'body',
+            param: 'image',
+            msg: 'Submit an image.',
+            value: 'image',
+          },
+        ];
         const { status, message } = Errors.BadRequest;
         const error = new ErrorREST(status, message, errorData);
         throw error;
@@ -98,7 +100,6 @@ export const getCommunityNames = async (
 ): Promise<void> => {
   try {
     const { searchTerm } = req.params;
-    console.log(searchTerm, 'Here!!!!!!!!!!');
     const communities = await getCommunityNamesBySearchTerm(searchTerm);
     res.status(200).json({ data: { communities } });
   } catch (err) {

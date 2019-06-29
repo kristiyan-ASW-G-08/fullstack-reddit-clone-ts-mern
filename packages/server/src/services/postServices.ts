@@ -4,7 +4,6 @@ import { ErrorREST, Errors } from '../classes/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import ValidationError from '@rddt/common/types/ValidationError';
 import { Request } from 'express';
-import mongoose from 'mongoose';
 const createPost = async (
   type: string,
   title: string,
@@ -83,12 +82,14 @@ const getPostContent = (type: string, req: Request): string => {
       break;
     case 'image':
       if (!req.file) {
-        const errorData: ValidationError = {
-          location: 'body',
-          param: 'image',
-          msg: 'Submit an image.',
-          value: 'image',
-        };
+        const errorData: ValidationError[] = [
+          {
+            location: 'body',
+            param: 'image',
+            msg: 'Submit an image.',
+            value: 'image',
+          },
+        ];
         const { status, message } = Errors.BadRequest;
         const error = new ErrorREST(status, message, errorData);
         throw error;

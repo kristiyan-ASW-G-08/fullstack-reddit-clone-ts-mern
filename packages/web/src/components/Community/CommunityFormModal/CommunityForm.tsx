@@ -10,12 +10,13 @@ import { Form, Icon, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import axios from 'axios';
 import ValidationError from '@rddt/common/types/ValidationError';
-import RootStoreContext from '../../stores/RootStore/RootStore';
-interface LoginFormProps extends FormComponentProps {
+import RootStoreContext from '../../../stores/RootStore/RootStore';
+interface CommunityFormProps extends FormComponentProps {
   setConfirmLoading: Dispatch<SetStateAction<boolean>>;
 }
 const { Item } = Form;
-const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
+const { TextArea } = Input;
+const CommunityForm: FC<CommunityFormProps> = ({ form, setConfirmLoading }) => {
   const { modalStore, authStore } = useContext(RootStoreContext);
   const inputStyle = { color: 'rgba(0,0,0,.25)' };
   const resetHandler = (e: SyntheticEvent) => {
@@ -27,20 +28,23 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
     form.validateFields(async (err, values) => {
       try {
         setConfirmLoading(true);
+        const { token } = authStore.authState;
         const request = await axios.post(
-          'http://localhost:8080/users/token',
+          'http://localhost:8080/communities',
           values,
+          {
+            headers: { Authorization: 'bearer ' + token },
+          },
         );
         setConfirmLoading(false);
         if (request.status === 200) {
           const { data } = request.data;
           console.log(data);
-          data['isAuth'] = true;
-          authStore.setAuthState(data);
           modalStore.resetModalState();
         }
       } catch (err) {
         setConfirmLoading(false);
+        console.log(err);
         if (err.response.data.data) {
           const { data } = err.response.data;
           console.log(data);
@@ -60,43 +64,35 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
   return (
     <Form onSubmit={submitHandler}>
       <Item>
-        {getFieldDecorator('email', {
+        {getFieldDecorator('name', {
           rules: [
             {
               required: true,
-              message: 'Please input your email!',
+              message: 'Enter community name!',
               min: 4,
+              max: 40,
               type: 'string',
             },
           ],
-        })(
-          <Input
-            prefix={<Icon type="mail" style={inputStyle} />}
-            placeholder="Email"
-          />,
-        )}
+        })(<Input placeholder="Name" type="text" />)}
       </Item>
       <Item>
-        {getFieldDecorator('password', {
+        {getFieldDecorator('description', {
           rules: [
             {
               required: true,
-              message: 'Please input your Password!',
+              message: 'Enter community description!',
               type: 'string',
+              min: 20,
+              max: 100,
             },
           ],
-        })(
-          <Input.Password
-            prefix={<Icon type="lock" style={inputStyle} />}
-            type="password"
-            placeholder="Password"
-          />,
-        )}
+        })(<TextArea rows={5} placeholder="Description" />)}
       </Item>
 
       <Item>
         <Button type="primary" htmlType="submit" block>
-          Login
+          Create New Community
         </Button>
         <Button htmlType="submit" onClick={resetHandler} block type="danger">
           Reset
@@ -106,6 +102,8 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
   );
 };
 
-const WrappedLoginForm = Form.create({ name: 'loginForm' })(LoginForm);
+const WrappedCommunityForm = Form.create({ name: 'communityForm' })(
+  CommunityForm,
+);
 
-export default WrappedLoginForm;
+export default WrappedCommunityForm;
