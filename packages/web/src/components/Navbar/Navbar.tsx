@@ -13,6 +13,7 @@ const Navbar: FC = observer(({ ...props }) => {
   const toggleTheme = () => themeStore.toggleTheme();
   const loginModalHandler = () => modalStore.setModalState('login');
   const signUpModalHandler = () => modalStore.setModalState('signUp');
+  console.log(isAuth);
   return (
     <>
       <Menu

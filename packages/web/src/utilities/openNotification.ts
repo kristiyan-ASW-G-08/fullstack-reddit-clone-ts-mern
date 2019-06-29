@@ -2,7 +2,7 @@ import { notification } from 'antd';
 const openNotification = (
   type: 'success' | 'info' | 'warning' | 'error' | '',
   title: string,
-  description: string,
+  description?: string,
 ) => {
   //@ts-ignore
   notification[type]({
