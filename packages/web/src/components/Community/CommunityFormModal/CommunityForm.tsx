@@ -10,7 +10,7 @@ import { Form, Icon, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import axios from 'axios';
 import ValidationError from '@rddt/common/types/ValidationError';
-import RootStoreContext from '../../../stores/RootStore/RootStore';
+import RootStoreContext from 'stores/RootStore/RootStore';
 interface CommunityFormProps extends FormComponentProps {
   setConfirmLoading: Dispatch<SetStateAction<boolean>>;
 }

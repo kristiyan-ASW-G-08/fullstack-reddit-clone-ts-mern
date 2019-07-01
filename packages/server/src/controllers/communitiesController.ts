@@ -117,9 +117,7 @@ export const getCommunity = async (
     const community = await getCommunityById(communityId);
     const links = {
       self: `http://localhost:8000/communities/${communityId}`,
-      related: {
-        href: 'http://localhost:8000/posts',
-      },
+      related: { posts: 'http://localhost:8000/posts' },
     };
     res.status(200).json({ data: { community }, links });
   } catch (err) {

@@ -10,7 +10,7 @@ import { Form, Icon, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import axios from 'axios';
 import ValidationError from '@rddt/common/types/ValidationError';
-import RootStoreContext from '../../stores/RootStore/RootStore';
+import RootStoreContext from 'stores/RootStore/RootStore';
 interface LoginFormProps extends FormComponentProps {
   setConfirmLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -71,6 +71,7 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
           ],
         })(
           <Input
+            data-testid="email"
             prefix={<Icon type="mail" style={inputStyle} />}
             placeholder="Email"
           />,
@@ -87,6 +88,7 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
           ],
         })(
           <Input.Password
+            data-testid="password"
             prefix={<Icon type="lock" style={inputStyle} />}
             type="password"
             placeholder="Password"

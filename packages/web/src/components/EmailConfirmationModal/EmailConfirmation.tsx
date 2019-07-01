@@ -1,7 +1,7 @@
 import React, { FC, Dispatch, SetStateAction } from 'react';
 import { Typography, Button } from 'antd';
 import axios from 'axios';
-import openNotification from '../../utilities/openNotification';
+import openNotification from 'utilities/openNotification';
 const { Title } = Typography;
 interface EmailConfirmationProps {
   setConfirmLoading?: Dispatch<SetStateAction<boolean>>;

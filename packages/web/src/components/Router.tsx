@@ -1,10 +1,15 @@
 import React, { FC, lazy, Suspense, useContext } from 'react';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
-import Loader from './Loader';
-import Navbar from './Navbar/Navbar';
+import Loader from 'components/Loader';
+import Navbar from 'components/Navbar/Navbar';
 import { observer } from 'mobx-react-lite';
-import ModalsContainer from './ModalsContainer/ModalsContainer';
-import EmailConfirmationModal from './EmailConfirmationModal/EmailConfirmationModal';
+import ModalsContainer from 'components/ModalsContainer/ModalsContainer';
+const EmailConfirmationModal = lazy(() =>
+  import('components/EmailConfirmationModal/EmailConfirmationModal'),
+);
+const CommunityPage = lazy(() =>
+  import('components/Community/CommunityPage/CommunityPage'),
+);
 const Router: FC = observer(
   (): JSX.Element => {
     return (
@@ -19,6 +24,15 @@ const Router: FC = observer(
               render={(props): JSX.Element => (
                 <Suspense fallback={<Loader />}>
                   <EmailConfirmationModal {...props} />
+                </Suspense>
+              )}
+            />
+            <Route
+              exact
+              path="/community/:communityId"
+              render={(props): JSX.Element => (
+                <Suspense fallback={<Loader />}>
+                  <CommunityPage {...props} />
                 </Suspense>
               )}
             />

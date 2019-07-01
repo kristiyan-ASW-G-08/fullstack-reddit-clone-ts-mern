@@ -2,8 +2,8 @@ import React, { FC, useContext } from 'react';
 import { Menu, Avatar } from 'antd';
 import Dropdown from './Dropdown/Dropdown';
 import SearchBar from './SearchBar/SearchBar';
-import RootStoreContext from '../../stores/RootStore/RootStore';
-import Logo from '../../assets/icon.svg';
+import RootStoreContext from 'stores/RootStore/RootStore';
+import Logo from 'assets/icon.svg';
 import { observer } from 'mobx-react-lite';
 const { Item } = Menu;
 

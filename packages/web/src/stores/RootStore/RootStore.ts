@@ -1,8 +1,8 @@
 import { create } from 'mobx-persist';
 import { createContext } from 'react';
-import AuthStore from '../AuthStore/AuthStore';
-import ThemeStore from '../ThemeStore/ThemeStore';
-import ModalStore from '../ModalStore/ModalStore';
+import AuthStore from 'stores/AuthStore/AuthStore';
+import ThemeStore from 'stores/ThemeStore/ThemeStore';
+import ModalStore from 'stores/ModalStore/ModalStore';
 const hydrate = create({
   storage: localStorage,
   jsonify: true,

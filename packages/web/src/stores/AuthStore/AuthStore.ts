@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import { observable, action } from 'mobx';
 import { persist, create } from 'mobx-persist';
-import AuthState from '../../types/AuthState';
+import AuthState from 'types/AuthState';
 import defaultAuthState from './defaultAuthState';
 
 class AuthStore {

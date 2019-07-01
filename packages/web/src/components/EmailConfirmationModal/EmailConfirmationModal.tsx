@@ -3,7 +3,6 @@ import Modal from '../Modal/Modal';
 import { Typography, Button } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EmailConfirmation from './EmailConfirmation';
-const { Title } = Typography;
 interface MatchParams {
   token: string;
 }

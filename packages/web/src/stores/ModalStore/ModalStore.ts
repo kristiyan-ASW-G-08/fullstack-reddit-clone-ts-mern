@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { observable, action } from 'mobx';
-import ModalState from '../../types/ModalState';
+import ModalState from 'types/ModalState';
 import defaultModalState from './defaultModalState';
 class ModalStore {
   @observable public modalState: ModalState = {
