@@ -1,9 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, Suspense, lazy } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Community from '@rddt/common/types/Community';
 import axios from 'axios';
-import CommunityDetauls from './CommunityDetails/CommunityDetails';
-import { request } from 'http';
+import Loader from 'components/Loader';
+const CommunityDetails = lazy(() =>
+  import('./CommunityDetails/CommunityDetails'),
+);
 interface MatchParams {
   communityId: string;
 }
@@ -26,6 +28,16 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({
       });
   }, [communityId]);
   console.log(communityId);
-  return <div />;
+  return (
+    <>
+      {community ? (
+        <Suspense fallback={<Loader />}>
+          <CommunityDetails community={community} />
+        </Suspense>
+      ) : (
+        ''
+      )}
+    </>
+  );
 };
 export default withRouter(CommunityPage);

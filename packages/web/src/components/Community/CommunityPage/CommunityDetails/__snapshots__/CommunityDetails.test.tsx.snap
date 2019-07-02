@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CommunityDetails/> snapshot 1`] = `
+<div>
+  <div
+    class="ant-card ant-card-bordered"
+    style="width: 100%; text-align: center;"
+  >
+    <div
+      class="ant-card-head"
+      style="color: rgb(255, 255, 255); padding: 0px;"
+    >
+      <div
+        class="ant-card-head-wrapper"
+      >
+        <div
+          class="ant-card-head-title"
+        >
+          Community Details
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-card-body"
+    >
+      <div />
+      <span
+        class="ant-avatar ant-avatar-lg ant-avatar-circle ant-avatar-image"
+      >
+        <img
+          alt="testName icon"
+          src="http://localhost:8080/images/test.svg"
+        />
+      </span>
+      <h3
+        class="ant-typography"
+      >
+        testName
+      </h3>
+      <span
+        class="ant-typography"
+      >
+        1000 members
+      </span>
+      <br />
+      <span
+        class="ant-typography"
+      >
+        testDescription
+      </span>
+      <div
+        style="margin-top: 1rem;"
+      >
+        <button
+          class="ant-btn ant-btn-primary ant-btn-block"
+          style="margin-bottom: 0.5rem; font-weight: bold; color: rgb(255, 255, 255);"
+          type="button"
+        >
+          <span>
+            JOIN
+          </span>
+        </button>
+        <button
+          class="ant-btn ant-btn-primary ant-btn-block"
+          style="font-weight: bold; color: rgb(255, 255, 255);"
+          type="button"
+        >
+          <span>
+            CREATE POST
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
