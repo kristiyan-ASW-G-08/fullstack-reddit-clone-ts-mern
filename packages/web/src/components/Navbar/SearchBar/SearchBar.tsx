@@ -13,10 +13,8 @@ const SearchBar: React.FC = () => {
           `http://localhost:8080/communities/${e}/names`,
         );
         const { data } = response.data;
-        console.log(response);
         if (data.communities) {
-          console.log(data.communities);
-          setCommunities(communities => data.communities);
+          setCommunities(data.communities);
         }
       }
     } catch (err) {
@@ -32,8 +30,6 @@ const SearchBar: React.FC = () => {
     ));
   }
   const selectHandler = (e: any) => {
-    console.log(e);
-
     return '';
   };
   return (

@@ -119,13 +119,5 @@ describe('ruleServices', (): void => {
       expect(communityRules).toHaveLength(2);
       expect(secondCommunityRules).toHaveLength(1);
     });
-
-    it(`shouldn't throw an error if no rules are found found`, async (): Promise<
-      void
-    > => {
-      const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message, null);
-      await expect(getRulesByCommunityId(communityId)).rejects.toThrow(error);
-    });
   });
 });

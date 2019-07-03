@@ -156,11 +156,6 @@ const getPosts = async (
     .sort(sortString)
     .skip((page - 1) * limit)
     .limit(limit);
-  if (posts.length < 1) {
-    const { status, message } = Errors.NotFound;
-    const error = new ErrorREST(status, message);
-    throw error;
-  }
   const postsCount = (await Post.countDocuments()) - page * limit;
   return { posts, postsCount };
 };
@@ -191,11 +186,6 @@ const getPostsByCommunityId = async (
     .sort(sortString)
     .skip((page - 1) * limit)
     .limit(limit);
-  if (posts.length < 1) {
-    const { status, message } = Errors.NotFound;
-    const error = new ErrorREST(status, message);
-    throw error;
-  }
   const postsCount = (await Post.countDocuments()) - page * limit;
   return { posts, postsCount };
 };
@@ -227,11 +217,6 @@ const getPostsByUserSubscriptions = async (
     .sort(sortString)
     .skip((page - 1) * limit)
     .limit(limit);
-  if (posts.length < 1) {
-    const { status, message } = Errors.NotFound;
-    const error = new ErrorREST(status, message);
-    throw error;
-  }
   const postsCount = (await Post.countDocuments()) - page * limit;
   return { posts, postsCount };
 };

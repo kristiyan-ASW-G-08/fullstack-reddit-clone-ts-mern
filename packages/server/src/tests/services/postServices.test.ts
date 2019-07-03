@@ -338,53 +338,7 @@ describe('postServices', (): void => {
       expect(posts[1].title).toMatch('second');
       expect(posts[2].title).toMatch('third');
     });
-    it(`shouldn't throw an error if no posts are found`, async (): Promise<
-      void
-    > => {
-      const postsArr = [
-        {
-          title: 'first',
-          type,
-          text,
-          upvotes: 100,
-          comments: 40,
-          community: communityId,
-          user: userId,
-        },
-        {
-          title: 'second',
-          type,
-          text,
-          upvotes: 300,
-          comments: 20,
-          community: communityId,
-          user: userId,
-        },
-        {
-          title: 'third',
-          type,
-          text,
-          comments: 30,
-          upvotes: 200,
-          community: communityId,
-          user: userId,
-        },
-        {
-          title,
-          type,
-          text,
-          community: secondCommunityId,
-          user: userId,
-        },
-      ];
-      const sort = 'top';
-      const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message, null);
-      await expect(
-        getPostsByCommunityId(communityId, sort, limit, page),
-      ).rejects.toThrow(error);
-    });
-  });
+    
 
   describe('getPosts', (): void => {
     let userId: string;
@@ -574,17 +528,7 @@ describe('postServices', (): void => {
       expect(posts[1].title).toMatch('second');
       expect(posts[2].title).toMatch('third');
     });
-    it(`shouldn't throw an error if no posts are found`, async (): Promise<
-      void
-    > => {
-      const sort = 'top';
-      const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message, null);
-      await expect(
-        getPostsByCommunityId(communityId, sort, limit, page),
-      ).rejects.toThrow(error);
-    });
-  });
+
   describe('getPostsByUserSubscriptions', (): void => {
     const userId = mongoose.Types.ObjectId();
     let communityId = mongoose.Types.ObjectId().toString();
@@ -758,17 +702,7 @@ describe('postServices', (): void => {
       expect(posts[1].title).toMatch('second');
       expect(posts[2].title).toMatch('third');
     });
-    it(`shouldn't throw an error if no posts are found`, async (): Promise<
-      void
-    > => {
-      const sort = 'top';
-      const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message, null);
-      await expect(
-        getPostsByCommunityId(communityId, sort, limit, page),
-      ).rejects.toThrow(error);
-    });
-  });
+
   describe('toggleHiddenPosts', (): void => {
     const userId = mongoose.Types.ObjectId();
     let communityId = mongoose.Types.ObjectId().toString();

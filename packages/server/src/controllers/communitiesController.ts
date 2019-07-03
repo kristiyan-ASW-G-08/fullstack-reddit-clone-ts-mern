@@ -16,6 +16,7 @@ import {
   editCommunityInfo,
 } from '../services/communityServices';
 import deleteFile from '../utilities/deleteFile';
+import getUrl from '../utilities/getUrl';
 export const postCommunity = async (
   req: Request,
   res: Response,
@@ -115,9 +116,36 @@ export const getCommunity = async (
   try {
     const { communityId } = req.params;
     const community = await getCommunityById(communityId);
+    const url = getUrl(req.protocol, req.get('host'));
     const links = {
-      self: `http://localhost:8000/communities/${communityId}`,
-      related: { posts: 'http://localhost:8000/posts' },
+      self: `${url}/communities/${communityId}`,
+      related: {
+        posts: {
+          links: {
+            create: {
+              method: 'POST',
+              title: 'create',
+              href: `${url}/communities/${communityId}/posts`,
+            },
+            new: {
+              method: 'GET',
+              title: 'new',
+              href: `${url}/communities/${communityId}/posts?sort=new&page=1`,
+            },
+            top: {
+              method: 'GET',
+              title: 'top',
+              href: `${url}/communities/${communityId}/posts?sort=top&page=1`,
+            },
+            comments: {
+              method: 'GET',
+              title: 'comments',
+              href: `${url}/communities/${communityId}/posts?sort=comments&page=1`,
+            },
+          },
+        },
+        rules: `${url}/communities/${communityId}/rules`,
+      },
     };
     res.status(200).json({ data: { community }, links });
   } catch (err) {

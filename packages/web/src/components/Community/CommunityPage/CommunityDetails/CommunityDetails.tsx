@@ -6,7 +6,6 @@ interface CommunityDetailsProps {
   community: Community;
 }
 const CommunityDetails: FC<CommunityDetailsProps> = ({ community }) => {
-  console.log(community);
   const { name, description, subscribers, theme } = community;
   const buttonStyle: CSSProperties = {
     fontWeight: 'bold',

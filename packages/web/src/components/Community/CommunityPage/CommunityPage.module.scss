@@ -1,0 +1,20 @@
+.grid {
+  width: 100vw;
+  display: grid;
+  grid:
+    ' sidebar '
+    'main '/1fr;
+  grid-gap: 3rem;
+  @media screen and (min-width: 769px) {
+    padding: 1rem;
+    grid: ' . main sidebar .'/1fr 4fr 1fr 1fr;
+  }
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+.mainSection {
+  grid-area: main;
+  background: red;
+}

@@ -42,11 +42,6 @@ const getRulesByCommunityId = async (
 ): Promise<RuleType[]> => {
   try {
     const rules = await Rule.find({ community: communityId });
-    if (!rules || rules.length === 0) {
-      const { status, message } = Errors.NotFound;
-      const error = new ErrorREST(status, message);
-      throw error;
-    }
     return rules;
   } catch (err) {
     throw err;
