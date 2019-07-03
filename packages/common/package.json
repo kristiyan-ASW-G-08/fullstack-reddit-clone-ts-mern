@@ -1,6 +1,6 @@
 {
   "name": "@rddt/common",
-  "version": "1.0.26",
+  "version": "1.0.32",
   "main": "index.js",
   "author": "Kristiyan Todorov",
   "license": "MIT",
