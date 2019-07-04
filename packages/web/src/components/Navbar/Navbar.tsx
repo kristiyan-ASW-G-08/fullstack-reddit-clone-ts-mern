@@ -14,7 +14,6 @@ const Navbar: FC = observer(({ ...props }) => {
   const loginModalHandler = () => modalStore.setModalState('login');
   const signUpModalHandler = () => modalStore.setModalState('signUp');
   const communityModalHandler = () => modalStore.setModalState('community');
-  console.log(isAuth);
   return (
     <>
       <Menu

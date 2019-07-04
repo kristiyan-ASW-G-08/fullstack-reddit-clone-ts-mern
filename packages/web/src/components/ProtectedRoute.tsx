@@ -1,41 +1,33 @@
 import React, { FC, Suspense, useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import Loader from './Loader';
+import { observer } from 'mobx-react-lite';
+import RootStoreContext from 'stores/RootStore/RootStore';
 interface ProtectedRouteProps {
-  Component: FC;
+  Component: React.LazyExoticComponent<React.FunctionComponent<any>>;
   path: string;
-  isAuth: boolean;
 }
-const ProtectedRoute: FC<ProtectedRouteProps> = ({
-  Component,
-  isAuth,
-  ...rest
-}): JSX.Element => {
-  return (
-    <Route
-      {...rest}
-      render={(props): JSX.Element => {
-        if (isAuth) {
-          return (
-            <Suspense fallback={<Loader />}>
-              <Component />
-            </Suspense>
-          );
-        } else {
-          return (
-            <Redirect
-              to={{
-                pathname: '/login',
-                state: {
-                  from: props.location,
-                },
-              }}
-            />
-          );
-        }
-      }}
-    />
-  );
-};
+const ProtectedRoute: FC<ProtectedRouteProps> = observer(
+  ({ Component, ...rest }): JSX.Element => {
+    const { authStore, modalStore } = useContext(RootStoreContext);
+    const { isAuth } = authStore.authState;
+    return (
+      <Route
+        {...rest}
+        render={props => {
+          if (isAuth) {
+            return (
+              <Suspense fallback={<Loader />}>
+                <Component {...props} />
+              </Suspense>
+            );
+          } else {
+            modalStore.setModalState('login');
+          }
+        }}
+      />
+    );
+  },
+);
 
 export default ProtectedRoute;

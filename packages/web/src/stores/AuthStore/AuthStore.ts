@@ -10,7 +10,6 @@ class AuthStore {
     this.authState = newAuthState;
   }
   @action public resetAuthState(): void {
-    console.log(this);
     this.authState = defaultAuthState;
   }
 }

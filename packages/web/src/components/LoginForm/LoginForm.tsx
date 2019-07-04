@@ -34,8 +34,12 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
         setConfirmLoading(false);
         if (request.status === 200) {
           const { data } = request.data;
-          console.log(data);
           data['isAuth'] = true;
+          const remainingMilliseconds = 60 * 60 * 1000;
+          const expiryDate = new Date(
+            new Date().getTime() + remainingMilliseconds,
+          );
+          data['expiryDate'] = expiryDate;
           authStore.setAuthState(data);
           modalStore.resetModalState();
         }

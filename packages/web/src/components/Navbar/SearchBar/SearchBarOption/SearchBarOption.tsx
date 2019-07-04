@@ -10,7 +10,7 @@ interface SearchBarOptionProps {
 const SearchBarOption: React.FC<SearchBarOptionProps> = ({ community }) => {
   const { name, subscribers, _id, theme } = community.data;
   return (
-    <Link to={`/community/${_id}`}>
+    <Link to={`/communities/${_id}`}>
       <Avatar
         size="small"
         src={`http://localhost:8080/images/${theme.icon}`}

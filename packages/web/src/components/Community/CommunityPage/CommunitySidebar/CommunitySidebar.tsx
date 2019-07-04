@@ -10,21 +10,17 @@ const CommunitySidebar: FC<CommunitySidebarProps> = ({ community }) => {
   useEffect(() => {});
   return (
     <>
-      {window.innerWidth < 769 ? (
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="Details" key="1">
-            <CommunityDetails community={community} />
-          </TabPane>
-          <TabPane tab="Tab 2" key="2">
-            Content of Tab Pane 2
-          </TabPane>
-          <TabPane tab="Tab 3" key="3">
-            Content of Tab Pane 3
-          </TabPane>
-        </Tabs>
-      ) : (
-        ''
-      )}
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Details" key="1">
+          <CommunityDetails community={community} />
+        </TabPane>
+        <TabPane tab="Tab 2" key="2">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Tab 3" key="3">
+          Content of Tab Pane 3
+        </TabPane>
+      </Tabs>
     </>
   );
 };

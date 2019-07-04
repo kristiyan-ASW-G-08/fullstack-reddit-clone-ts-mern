@@ -4,12 +4,14 @@ import Loader from 'components/Loader';
 import Navbar from 'components/Navbar/Navbar';
 import { observer } from 'mobx-react-lite';
 import ModalsContainer from 'components/ModalsContainer/ModalsContainer';
+import ProtectedRoute from './ProtectedRoute';
 const EmailConfirmationModal = lazy(() =>
   import('components/EmailConfirmationModal/EmailConfirmationModal'),
 );
 const CommunityPage = lazy(() =>
   import('components/Community/CommunityPage/CommunityPage'),
 );
+const ModTools = lazy(() => import('components/Community/ModTools/ModTools'));
 const Router: FC = observer(
   (): JSX.Element => {
     return (
@@ -29,12 +31,16 @@ const Router: FC = observer(
             />
             <Route
               exact
-              path="/community/:communityId"
+              path="/communities/:communityId"
               render={(props): JSX.Element => (
                 <Suspense fallback={<Loader />}>
                   <CommunityPage {...props} />
                 </Suspense>
               )}
+            />
+            <ProtectedRoute
+              path={'/communities/:communityId/tools'}
+              Component={ModTools}
             />
           </Switch>
         </>
