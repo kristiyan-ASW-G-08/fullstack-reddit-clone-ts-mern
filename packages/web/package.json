@@ -1,11 +1,11 @@
 {
   "name": "@rddt/web",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "author": "Kristiyan Todorov",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@rddt/common": "^1.0.32",
+    "@rddt/common": "^1.0.34",
     "@types/jest": "24.0.13",
     "@types/node": "12.0.4",
     "@types/react": "16.8.19",
