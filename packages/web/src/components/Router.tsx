@@ -5,6 +5,7 @@ import Navbar from 'components/Navbar/Navbar';
 import { observer } from 'mobx-react-lite';
 import ModalsContainer from 'components/ModalsContainer/ModalsContainer';
 import ProtectedRoute from './ProtectedRoute';
+import RootStoreContext from 'stores/RootStore/RootStore';
 const EmailConfirmationModal = lazy(() =>
   import('components/EmailConfirmationModal/EmailConfirmationModal'),
 );
@@ -14,6 +15,12 @@ const CommunityPage = lazy(() =>
 const ModTools = lazy(() => import('components/Community/ModTools/ModTools'));
 const Router: FC = observer(
   (): JSX.Element => {
+    const { expiryDate } = useContext(RootStoreContext).authStore.authState;
+    if (expiryDate) {
+      if (new Date(expiryDate) <= new Date()) {
+        localStorage.removeItem('authStore');
+      }
+    }
     return (
       <BrowserRouter>
         <>
@@ -39,7 +46,7 @@ const Router: FC = observer(
               )}
             />
             <ProtectedRoute
-              path={'/communities/:communityId/tools'}
+              path={'/communities/:communityId/mod'}
               Component={ModTools}
             />
           </Switch>

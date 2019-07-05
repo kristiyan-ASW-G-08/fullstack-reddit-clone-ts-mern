@@ -5,5 +5,6 @@ interface Rule {
   date: string;
   user: string;
   community: string;
+  _id: string;
 }
 export default Rule;

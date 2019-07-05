@@ -22,14 +22,14 @@ export const postRule = async (
     const { name, description, scope } = req.body;
     const community = await getCommunityById(communityId);
     isAuthorized(community.user.toString(), userId);
-    const ruleId = await createRule(
+    const rule = await createRule(
       name,
       description,
       scope,
       communityId,
       userId,
     );
-    res.status(200).json({ data: { ruleId } });
+    res.status(200).json({ data: { rule } });
   } catch (err) {
     passErrorToNext(err, next);
   }

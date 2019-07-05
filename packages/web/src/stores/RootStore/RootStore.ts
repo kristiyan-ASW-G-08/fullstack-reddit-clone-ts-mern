@@ -9,21 +9,12 @@ const hydrate = create({
   jsonify: true,
 });
 export class RootStore {
-  public authStore = new AuthStore();
+  @observable public authStore = new AuthStore();
   public themeStore = new ThemeStore();
   public modalStore = new ModalStore();
   public constructor() {
     hydrate('authStore', this.authStore);
     hydrate('themeStore', this.themeStore);
-
-    const lsAuthStore = localStorage.getItem('authStore');
-    const { authState } = JSON.parse(lsAuthStore || '');
-    if (authState) {
-      const { expiryDate } = authState;
-      if (new Date(expiryDate) <= new Date()) {
-        this.authStore.resetAuthState();
-      }
-    }
   }
 }
 

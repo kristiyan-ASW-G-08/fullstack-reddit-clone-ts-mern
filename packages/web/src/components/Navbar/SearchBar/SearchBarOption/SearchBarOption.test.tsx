@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import SearchBarOption from './SearchBarOption';
 describe('<SearchBarOption/>', () => {
   const community = {
@@ -22,6 +23,7 @@ describe('<SearchBarOption/>', () => {
   };
   const { container, getByText, getByAltText } = render(
     <SearchBarOption community={community} />,
+    { wrapper: BrowserRouter },
   );
   const { name, subscribers } = community.data;
   const { icon } = community.data.theme;

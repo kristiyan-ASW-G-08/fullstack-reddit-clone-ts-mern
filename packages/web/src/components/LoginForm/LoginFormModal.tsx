@@ -8,7 +8,7 @@ interface LoginFormModalProps {
 const LoginFormModal: FC<LoginFormModalProps> = observer(
   ({ resetModalState }) => {
     return (
-      <Modal title={'Log In'} cancelHandler={resetModalState}>
+      <Modal title={'Log In'} cancelHandler={resetModalState} visible={true}>
         <LoginForm />
       </Modal>
     );

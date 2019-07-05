@@ -7,7 +7,7 @@ class ModalStore {
     type: '',
   };
   @action public setModalState(
-    type: 'signUp' | 'login' | 'community' | '',
+    type: 'signUp' | 'login' | 'community' | 'rule' | '',
   ): void {
     this.modalState.type = type;
   }

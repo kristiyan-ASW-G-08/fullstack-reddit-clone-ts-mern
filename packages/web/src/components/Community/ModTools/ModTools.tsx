@@ -1,20 +1,27 @@
-import React, { FC, CSSProperties, useEffect } from 'react';
+import React, { FC, CSSProperties, useEffect, useState } from 'react';
 import Community from '@rddt/common/types/Community';
+import Rule from '@rddt/common/types/Rule';
 import { RouteComponentProps } from 'react-router-dom';
 import { Tabs } from 'antd';
+import RulesPane from '../CommunityRules/RulesPane';
+import axios from 'axios';
 const { TabPane } = Tabs;
 interface MatchParams {
   communityId: string;
 }
 const ModTools: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   const { communityId } = match.params;
-  console.log(communityId);
+
   return (
     <>
       {' '}
-      <Tabs defaultActiveKey="1" tabPosition={'left'} style={{ height: 220 }}>
-        <TabPane tab={`1`} key={'1'}>
-          Content of tab 1
+      <Tabs
+        defaultActiveKey="1"
+        style={{ height: '90vh' }}
+        tabBarStyle={{ textAlign: 'center' }}
+      >
+        <TabPane tab={`Rules`} key={'1'}>
+          <RulesPane communityId={communityId} />
         </TabPane>
         <TabPane tab={`2`} key={'2'}>
           Content of tab 1

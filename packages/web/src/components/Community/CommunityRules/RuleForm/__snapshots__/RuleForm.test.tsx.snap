@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleForm /> snapshot 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-horizontal"
+  >
+    <div
+      class="ant-row ant-form-item"
+    >
+      <div
+        class="ant-col ant-form-item-control-wrapper"
+      >
+        <div
+          class="ant-form-item-control has-success"
+        >
+          <span
+            class="ant-form-item-children"
+          >
+            <input
+              class="ant-input"
+              data-__field="[object Object]"
+              data-__meta="[object Object]"
+              id="ruleForm_name"
+              placeholder="Name"
+              type="text"
+              value="testValue"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-form-item"
+    >
+      <div
+        class="ant-col ant-form-item-control-wrapper"
+      >
+        <div
+          class="ant-form-item-control has-success"
+        >
+          <span
+            class="ant-form-item-children"
+          >
+            <textarea
+              class="ant-input"
+              data-__field="[object Object]"
+              data-__meta="[object Object]"
+              id="ruleForm_description"
+              placeholder="Description"
+              rows="5"
+            >
+              testDescription
+            </textarea>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-form-item"
+    >
+      <div
+        class="ant-col ant-form-item-control-wrapper"
+      >
+        <div
+          class="ant-form-item-control"
+        >
+          <span
+            class="ant-form-item-children"
+          >
+            <div
+              class="ant-radio-group ant-radio-group-outline"
+              id="ruleForm_scope"
+            >
+              <label
+                class="ant-radio-wrapper"
+              >
+                <span
+                  class="ant-radio"
+                >
+                  <input
+                    class="ant-radio-input"
+                    type="radio"
+                    value="Posts & comments"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Posts and comments
+                </span>
+              </label>
+              <label
+                class="ant-radio-wrapper"
+              >
+                <span
+                  class="ant-radio"
+                >
+                  <input
+                    class="ant-radio-input"
+                    type="radio"
+                    value="Posts only"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Posts only
+                </span>
+              </label>
+              <label
+                class="ant-radio-wrapper"
+              >
+                <span
+                  class="ant-radio"
+                >
+                  <input
+                    class="ant-radio-input"
+                    type="radio"
+                    value="Comments only"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Comments only
+                </span>
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-form-item"
+    >
+      <div
+        class="ant-col ant-form-item-control-wrapper"
+      >
+        <div
+          class="ant-form-item-control"
+        >
+          <span
+            class="ant-form-item-children"
+          >
+            <button
+              ant-click-animating-without-extra-node="false"
+              class="ant-btn ant-btn-primary ant-btn-block"
+              type="submit"
+            >
+              <span>
+                Add Rule
+              </span>
+            </button>
+            <button
+              class="ant-btn ant-btn-danger ant-btn-block"
+              type="submit"
+            >
+              <span>
+                Reset
+              </span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

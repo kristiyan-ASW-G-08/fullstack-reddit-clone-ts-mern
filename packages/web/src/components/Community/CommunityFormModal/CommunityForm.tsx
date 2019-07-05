@@ -39,15 +39,12 @@ const CommunityForm: FC<CommunityFormProps> = ({ form, setConfirmLoading }) => {
         setConfirmLoading(false);
         if (request.status === 200) {
           const { data } = request.data;
-          console.log(data);
           modalStore.resetModalState();
         }
       } catch (err) {
         setConfirmLoading(false);
-        console.log(err);
         if (err.response.data.data) {
           const { data } = err.response.data;
-          console.log(data);
           data.map((validationErr: ValidationError) => {
             form.setFields({
               [validationErr.param]: {

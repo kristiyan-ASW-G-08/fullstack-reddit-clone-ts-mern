@@ -1,5 +1,5 @@
 import React, { FC, Suspense, useContext } from 'react';
-import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Loader from './Loader';
 import { observer } from 'mobx-react-lite';
 import RootStoreContext from 'stores/RootStore/RootStore';
@@ -16,6 +16,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = observer(
         {...rest}
         render={props => {
           if (isAuth) {
+            modalStore.resetModalState();
             return (
               <Suspense fallback={<Loader />}>
                 <Component {...props} />

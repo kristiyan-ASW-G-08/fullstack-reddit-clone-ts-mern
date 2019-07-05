@@ -1,6 +1,6 @@
 import React, { FC, CSSProperties, useContext } from 'react';
 import Community from '@rddt/common/types/Community';
-import { Card, Typography, Avatar, Button } from 'antd';
+import { Card, Typography, Avatar, Button, Icon } from 'antd';
 import RootStoreContext from 'stores/RootStore/RootStore';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
@@ -20,13 +20,26 @@ const CommunityDetails: FC<CommunityDetailsProps> = observer(
     };
     return (
       <Card
-        title={`Community Details ${
-          userId === community.user ? (
-            <Link to={`/communities/${_id}/mod`}>Mod Tools</Link>
-          ) : (
-            ''
-          )
-        }`}
+        title={
+          <>
+            Community Details{'   '}
+            {userId === community.user ? (
+              <Link
+                style={{ color: '#ffffff', marginLeft: '0.3rem' }}
+                to={`/communities/${_id}/mod`}
+              >
+                <Icon
+                  type="setting"
+                  theme="filled"
+                  style={{ padding: '0.2rem' }}
+                />
+                Mod Tools
+              </Link>
+            ) : (
+              ''
+            )}
+          </>
+        }
         headStyle={{
           background: `${theme.colors.base}`,
           color: '#ffffff',

@@ -2,8 +2,9 @@
 
 exports[`<SearchBarOption/> snapshot 1`] = `
 <div>
-  <div>
-     
+  <a
+    href="/communities/testId"
+  >
     <span
       class="ant-avatar ant-avatar-sm ant-avatar-circle ant-avatar-image"
     >
@@ -25,6 +26,6 @@ exports[`<SearchBarOption/> snapshot 1`] = `
       1000
        members
     </span>
-  </div>
+  </a>
 </div>
 `;

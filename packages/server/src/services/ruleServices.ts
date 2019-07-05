@@ -7,7 +7,7 @@ const createRule = async (
   scope: string,
   communityId: string,
   userId: string,
-): Promise<string> => {
+): Promise<RuleType> => {
   try {
     const rule = new Rule({
       name,
@@ -16,9 +16,8 @@ const createRule = async (
       community: communityId,
       user: userId,
     });
-    const ruleId = rule._id.toString();
     await rule.save();
-    return ruleId;
+    return rule;
   } catch (err) {
     throw err;
   }

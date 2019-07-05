@@ -16,7 +16,11 @@ const EmailConfirmationModal: FC<RouteComponentProps<MatchParams>> = ({
   };
   const { token } = match.params;
   return (
-    <Modal title={'Email Confirmation'} cancelHandler={cancelHandler}>
+    <Modal
+      title={'Email Confirmation'}
+      cancelHandler={cancelHandler}
+      visible={true}
+    >
       <EmailConfirmation closeModalHandler={cancelHandler} token={token} />
     </Modal>
   );

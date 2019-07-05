@@ -8,7 +8,11 @@ interface CommunityFormModalProps {
 const CommunityFormModal: FC<CommunityFormModalProps> = observer(
   ({ resetModalState }) => {
     return (
-      <Modal title={'Create New Community'} cancelHandler={resetModalState}>
+      <Modal
+        title={'Create New Community'}
+        cancelHandler={resetModalState}
+        visible={true}
+      >
         <CommunityForm />
       </Modal>
     );

@@ -8,7 +8,7 @@ interface SignUpFormModalProps {
 const SignUpFormModal: FC<SignUpFormModalProps> = observer(
   ({ resetModalState }) => {
     return (
-      <Modal title={'Sign Up'} cancelHandler={resetModalState}>
+      <Modal title={'Sign Up'} cancelHandler={resetModalState} visible={true}>
         <SignUpForm />
       </Modal>
     );
