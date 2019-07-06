@@ -4,6 +4,7 @@ const authenticatedAuthState: AuthState = {
   token: 'testToken',
   expiryDate: 'date',
   user: {
+    avatar: 'avatar',
     userId: '10',
     username: 'testUser',
     email: 'testEmail@mail.com',

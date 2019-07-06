@@ -1,10 +1,12 @@
 import React, { FC, ReactNode } from 'react';
-import { Menu, Icon, Switch, Button } from 'antd';
+import { Menu, Icon, Switch, Button, Avatar, Typography } from 'antd';
+import AuthState from 'types/AuthState';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 const { SubMenu, Item } = Menu;
+const { Text } = Typography;
 interface DropdownProps {
   toggleTheme: () => void;
-  isAuth: boolean;
+  authState: AuthState;
   loginModalHandler: () => void;
   signUpModalHandler: () => void;
   logOutHandler: () => void;
@@ -12,23 +14,36 @@ interface DropdownProps {
 }
 const Dropdown: FC<DropdownProps> = ({
   toggleTheme,
-  isAuth,
+  authState,
   signUpModalHandler,
   loginModalHandler,
   communityModalHandler,
   logOutHandler,
   ...props
 }) => {
+  const { isAuth, user } = authState;
   return (
     <>
       <SubMenu
         {...props}
         key="sub1"
         title={
-          <span>
-            <Icon type="user" />
-            <Icon type="caret-down" />
-          </span>
+          isAuth ? (
+            <div>
+              <Avatar
+                style={{ marginRight: '0.5rem' }}
+                size="small"
+                icon="user"
+                src={`http://localhost:8080/images/${user.avatar}`}
+              />
+              <Icon type="caret-down" />
+            </div>
+          ) : (
+            <span>
+              <Icon type="user" />
+              <Icon type="caret-down" />
+            </span>
+          )
         }
       >
         {isAuth

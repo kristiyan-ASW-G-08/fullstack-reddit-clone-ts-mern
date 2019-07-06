@@ -10,9 +10,10 @@ const createPost = async (
   content: string,
   communityId: string,
   userId: string,
-): Promise<string> => {
+): Promise<PostType> => {
   try {
     let post: PostType;
+    console.log(content, type);
     switch (type) {
       case 'text':
         post = new Post({
@@ -49,10 +50,16 @@ const createPost = async (
           community: communityId,
           user: userId,
         });
+        break;
     }
-    const postId = post._id.toString();
     await post.save();
-    return postId;
+    const populatedPost = await post
+      .populate([
+        { path: 'user', select: 'username' },
+        { path: 'community', select: 'name description subscribers theme' },
+      ])
+      .execPopulate();
+    return populatedPost;
   } catch (err) {
     throw err;
   }
@@ -73,6 +80,8 @@ const getPostById = async (postId: string): Promise<PostType> => {
 };
 const getPostContent = (type: string, req: Request): string => {
   let content: string;
+  console.log(type, 'getPostContent');
+  console.log(req.body);
   switch (type) {
     case 'text':
       content = req.body.text;
@@ -94,10 +103,15 @@ const getPostContent = (type: string, req: Request): string => {
         const error = new ErrorREST(status, message, errorData);
         throw error;
       }
+      console.log(req.file.path, 'Image Path');
       content = req.file.path;
+      break;
     default:
+      console.log('Default');
       content = req.body.text;
+      break;
   }
+  console.log(content, 'Content');
   return content;
 };
 

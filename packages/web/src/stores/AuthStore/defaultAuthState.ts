@@ -4,6 +4,7 @@ const defaultAuthState: AuthState = {
   token: '',
   expiryDate: '',
   user: {
+    avatar: '',
     userId: '',
     username: '',
     email: '',

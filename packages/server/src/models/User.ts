@@ -5,7 +5,7 @@ const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, min: 12 },
   confirmed: { type: Boolean, default: false },
-  avatar: { type: String, default: '/default/avatar.svg' },
+  avatar: { type: String, default: 'icon.svg' },
   communities: [
     {
       type: Schema.Types.ObjectId,

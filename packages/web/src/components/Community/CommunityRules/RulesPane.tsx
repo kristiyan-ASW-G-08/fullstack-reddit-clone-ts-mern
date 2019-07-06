@@ -87,7 +87,7 @@ const RulePane: FC<RulePaneProps> = ({ communityId }) => {
   return (
     <>
       <Modal
-        title={`${formType} Rule`}
+        title={`${formType} Post`}
         visible={visible}
         cancelHandler={cancelHandler}
       >
@@ -115,7 +115,7 @@ const RulePane: FC<RulePaneProps> = ({ communityId }) => {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Collapse defaultActiveKey={['1']} style={{ width: '70%' }}>
             {rules.map(rule => (
-              <Collapse.Panel header={rule.name} key="1">
+              <Collapse.Panel header={rule.name} key={rule._id}>
                 <Rule
                   key={rule._id}
                   rule={rule}

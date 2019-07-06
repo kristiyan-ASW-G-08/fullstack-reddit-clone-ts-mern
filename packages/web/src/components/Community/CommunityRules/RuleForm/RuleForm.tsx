@@ -41,6 +41,7 @@ const RuleForm: FC<RuleFormProps> = ({
           editRuleHandler(values);
         }
         setConfirmLoading(false);
+        form.resetFields();
         cancelHandler();
       } catch (err) {
         setConfirmLoading(false);

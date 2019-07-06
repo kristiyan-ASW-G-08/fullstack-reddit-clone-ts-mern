@@ -9,7 +9,6 @@ const { Item } = Menu;
 
 const Navbar: FC = observer(({ ...props }) => {
   const { authStore, themeStore, modalStore } = useContext(RootStoreContext);
-  const { isAuth } = authStore.authState;
   const toggleTheme = () => themeStore.toggleTheme();
   const loginModalHandler = () => modalStore.setModalState('login');
   const signUpModalHandler = () => modalStore.setModalState('signUp');
@@ -31,7 +30,7 @@ const Navbar: FC = observer(({ ...props }) => {
         <Dropdown
           toggleTheme={toggleTheme}
           {...props}
-          isAuth={isAuth}
+          authState={authStore.authState}
           loginModalHandler={loginModalHandler}
           signUpModalHandler={signUpModalHandler}
           logOutHandler={() => authStore.resetAuthState()}

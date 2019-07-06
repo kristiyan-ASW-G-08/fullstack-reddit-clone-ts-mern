@@ -15,7 +15,7 @@ const postBodyValidation = [
     .isLength({ min: 1, max: 100 })
     .isString()
     .trim(),
-  body('text', 'Text should be at between 1 and 10000 characters long.')
+  body('text', 'Text should be between 1 and 10000 characters long.')
     .optional()
     .isLength({ min: 1, max: 10000 })
     .isString()

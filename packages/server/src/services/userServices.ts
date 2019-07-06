@@ -78,8 +78,9 @@ const authenticateUser = async (
     await comparePasswords(password, user.password);
     await checkUserConfirmation(user);
     const token = signLoginToken(user);
-    const { email, username, _id } = user;
+    const { email, username, _id, avatar } = user;
     const userData = {
+      avatar,
       email,
       username,
       userId: _id.toString(),
