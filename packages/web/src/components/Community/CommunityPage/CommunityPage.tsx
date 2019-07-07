@@ -16,18 +16,14 @@ const { TabPane } = Tabs;
 interface MatchParams {
   communityId: string;
 }
-interface PostLinks {
-  create: Link;
-  new: Link;
-  top: Link;
-  comments: Link;
-}
+
 const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   const { authStore } = useContext(RootStoreContext);
   const [community, setCommunity] = useState<Community>();
   const [rules, setRules] = useState<Rule[]>();
   const [posts, setPosts] = useState<PopulatedPost[]>();
   const { communityId } = match.params;
+  const { token, isAuth } = authStore.authState;
   const getRelated = async () => {
     await Promise.all<AxiosResponse[]>([
       axios.get(`http://localhost:8080/communities/${communityId}/rules`),
@@ -60,6 +56,19 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
       setPosts([...editedPosts]);
     }
   };
+  const deletePostHandler = async (postId: string) => {
+    try {
+      const request = await axios.delete(
+        `http://localhost:8080/posts/${postId}`,
+        {
+          headers: { Authorization: 'bearer ' + token },
+        },
+      );
+      removePostComponentHandler(postId);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {community ? (
@@ -70,7 +79,6 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
                 <TabPane tab="Details" key="1">
                   <CommunityDetails
                     addPostComponentHandler={addPostComponentHandler}
-                    removePostComponentHandler={removePostComponentHandler}
                     community={community}
                     authState={authStore.authState}
                   />
@@ -82,7 +90,15 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
               {rules ? '' : ''}
             </aside>{' '}
             <section className={styles.mainSection}>
-              {posts ? <PostsContainer posts={posts} /> : ''}
+              {posts ? (
+                <PostsContainer
+                  posts={posts}
+                  deletePostHandler={deletePostHandler}
+                  authState={authStore.authState}
+                />
+              ) : (
+                ''
+              )}
             </section>
           </div>
         </Suspense>

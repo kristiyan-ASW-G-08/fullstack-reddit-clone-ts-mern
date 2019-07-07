@@ -12,6 +12,9 @@ const EmailConfirmationModal = lazy(() =>
 const CommunityPage = lazy(() =>
   import('components/Community/CommunityPage/CommunityPage'),
 );
+const PostFormPage = lazy(() =>
+  import('components/Post/PostForm/PostFormPage'),
+);
 const ModTools = lazy(() => import('components/Community/ModTools/ModTools'));
 const Router: FC = observer(
   (): JSX.Element => {
@@ -48,6 +51,10 @@ const Router: FC = observer(
             <ProtectedRoute
               path={'/communities/:communityId/mod'}
               Component={ModTools}
+            />
+            <ProtectedRoute
+              path={'/communities/:communityId/posts'}
+              Component={PostFormPage}
             />
           </Switch>
         </>

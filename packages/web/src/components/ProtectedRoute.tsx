@@ -4,7 +4,9 @@ import Loader from './Loader';
 import { observer } from 'mobx-react-lite';
 import RootStoreContext from 'stores/RootStore/RootStore';
 interface ProtectedRouteProps {
-  Component: React.LazyExoticComponent<React.FunctionComponent<any>>;
+  Component:
+    | React.LazyExoticComponent<React.FunctionComponent<any>>
+    | React.LazyExoticComponent<React.ComponentType<any>>;
   path: string;
 }
 const ProtectedRoute: FC<ProtectedRouteProps> = observer(

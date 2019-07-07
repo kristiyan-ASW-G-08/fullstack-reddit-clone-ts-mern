@@ -9,8 +9,8 @@ import { FormComponentProps } from 'antd/lib/form/Form';
 import ValidationError from '@rddt/common/types/ValidationError';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import PostFormValues from 'types/PostFormValues';
+import styles from './PostForm.module.scss';
 import { Form, Icon, Input, Button, Tabs, Select, Upload } from 'antd';
-const { Option } = Select;
 const { TabPane } = Tabs;
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -93,7 +93,7 @@ const PostForm: FC<PostFormProps> = ({
   };
   const { getFieldDecorator } = form;
   return (
-    <Form onSubmit={submitHandler}>
+    <Form onSubmit={submitHandler} className={styles.postForm}>
       <Item>
         {getFieldDecorator('title', {
           initialValue: editPost && type === 'Edit' ? editPost.title : '',

@@ -1,11 +1,14 @@
 import React, { FC } from 'react';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import { Card, Icon, Avatar, Typography, Dropdown, Menu } from 'antd';
+import AuthState from 'types/AuthState';
 
 const { Meta } = Card;
 const { Text } = Typography;
 interface PostProps {
   post: PopulatedPost;
+  deletePostHandler: (postId: string) => Promise<void>;
+  authState: AuthState;
 }
 const shareMenu = (
   <Menu>
@@ -18,9 +21,20 @@ const ShareDropdown = () => (
     <Icon type="share-alt" /> Share
   </Dropdown>
 );
-const Post: FC<PostProps> = ({ post }) => {
+const Post: FC<PostProps> = ({ post, deletePostHandler, authState }) => {
+  const { isAuth, token, user } = authState;
   console.log(post);
-
+  const actions = [
+    <Icon type="caret-up" />,
+    <span>{post.upvotes - post.downvotes}</span>,
+    <Icon type="caret-down" />,
+  ];
+  if (isAuth && user.userId === post.user._id) {
+    const DeleteButton = () => (
+      <Icon onClick={() => deletePostHandler(post._id)} type="delete" />
+    );
+    actions.push(<DeleteButton />);
+  }
   return (
     <Card
       style={{ width: '100%', marginBottom: '1rem' }}
@@ -31,11 +45,7 @@ const Post: FC<PostProps> = ({ post }) => {
           ''
         )
       }
-      actions={[
-        <Icon type="caret-up" />,
-        <span>{post.upvotes - post.downvotes}</span>,
-        <Icon type="caret-down" />,
-      ]}
+      actions={actions}
     >
       <Meta
         avatar={
