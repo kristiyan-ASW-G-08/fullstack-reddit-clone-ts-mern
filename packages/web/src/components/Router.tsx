@@ -20,7 +20,8 @@ const Router: FC = observer(
   (): JSX.Element => {
     const { expiryDate } = useContext(RootStoreContext).authStore.authState;
     if (expiryDate) {
-      if (new Date(expiryDate) <= new Date()) {
+      console.log('nani');
+      if (new Date(expiryDate).getTime() <= new Date().getTime()) {
         localStorage.removeItem('authStore');
       }
     }

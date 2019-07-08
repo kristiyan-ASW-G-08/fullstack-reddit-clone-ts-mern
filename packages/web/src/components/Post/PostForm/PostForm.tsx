@@ -54,7 +54,6 @@ const PostForm: FC<PostFormProps> = ({
         } else if (postType === 'link') {
           postValues['linkUrl'] = linkUrl;
         }
-        setConfirmLoading(true);
         if (type === 'Add') {
           console.log(postValues);
           if (postType !== 'image') {
@@ -72,11 +71,9 @@ const PostForm: FC<PostFormProps> = ({
         } else if (type === 'Edit' && editPost) {
           editPostHandler(postValues);
         }
-        setConfirmLoading(false);
         form.resetFields();
         cancelHandler();
       } catch (err) {
-        setConfirmLoading(false);
         if (err.response.data.data) {
           const { data } = err.response.data;
           data.map((validationErr: ValidationError) => {

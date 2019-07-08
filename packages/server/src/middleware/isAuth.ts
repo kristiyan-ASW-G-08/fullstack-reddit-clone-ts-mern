@@ -6,10 +6,12 @@ const isAuth = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.get('Authorization');
   const { status, message } = Errors.Unauthorized;
   const error = new ErrorREST(status, message, null);
+  console.log(authHeader);
   if (!authHeader) {
     throw error;
   }
   const token = authHeader.split(' ')[1];
+
   let decodedToken: any;
   try {
     decodedToken = verify(token, secret);

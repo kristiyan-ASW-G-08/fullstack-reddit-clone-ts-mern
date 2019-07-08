@@ -1,14 +1,16 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import PostFormValues from 'types/PostFormValues';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import RootStoreContext from 'stores/RootStore/RootStore';
 import PostForm from './PostForm';
+
 interface MatchProps {
   communityId?: string;
   postId?: string;
 }
+
 const PostFormPage: FC<RouteComponentProps<MatchProps>> = ({
   match,
   history,
@@ -16,6 +18,12 @@ const PostFormPage: FC<RouteComponentProps<MatchProps>> = ({
   const { token } = useContext(RootStoreContext).authStore.authState;
   const [formType, setFormType] = useState<'Add' | 'Edit'>('Add');
   const [editPost, setEditPost] = useState<PopulatedPost>();
+  useEffect(() => {
+    if (history.location.state && history.location.state.post) {
+      setEditPost(history.location.state.post);
+      setFormType('Edit');
+    }
+  }, []);
   const addImagePostHandler = async (formData: any) => {
     try {
       console.log(formData, 'Axios');
@@ -69,9 +77,7 @@ const PostFormPage: FC<RouteComponentProps<MatchProps>> = ({
     }
   };
   const cancelHandler = () => {};
-  console.log(match, history);
   const { communityId } = match.params;
-  console.log(match.params);
   return (
     <div
       style={{
