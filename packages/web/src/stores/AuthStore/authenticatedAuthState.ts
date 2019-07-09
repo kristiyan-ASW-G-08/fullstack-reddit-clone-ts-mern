@@ -14,6 +14,7 @@ const authenticatedAuthState: AuthState = {
     downvotedPosts: [],
     upvotedComments: [],
     downvotedComments: [],
+    communities: [],
   },
 };
 

@@ -1,4 +1,10 @@
-import React, { FC, CSSProperties, useContext, useState } from 'react';
+import React, {
+  FC,
+  CSSProperties,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import Community from '@rddt/common/types/Community';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import { Card, Typography, Avatar, Button, Icon } from 'antd';
@@ -16,6 +22,7 @@ interface CommunityDetailsProps {
 }
 const CommunityDetails: FC<CommunityDetailsProps> = observer(
   ({ community, authState, addPostComponentHandler }) => {
+    const [hasJoined, setHasJoined] = useState<boolean>(false);
     const { authStore, modalStore } = useContext(RootStoreContext);
     const { userId } = authStore.authState.user;
     const { name, description, subscribers, theme, _id } = community;
@@ -25,7 +32,43 @@ const CommunityDetails: FC<CommunityDetailsProps> = observer(
       background: theme.colors.base,
       color: '#ffffff',
     };
-    const { isAuth } = authState;
+    const { isAuth, token, user } = authState;
+    useEffect(() => {
+      const hasJoinedCheck = user.communities.includes(community._id);
+      setHasJoined(hasJoinedCheck);
+    }, [community]);
+
+    const joinHandler = async () => {
+      try {
+        if (isAuth) {
+          const request = await axios.patch(
+            `http://localhost:8080/users/communities/${community._id}`,
+            {},
+            {
+              headers: { Authorization: 'bearer ' + token },
+            },
+          );
+          console.log(request);
+          const { communities } = request.data.data;
+          const editedUser = { ...user };
+          editedUser.communities = communities;
+          authStore.setAuthState({
+            expiryDate: authState.expiryDate,
+            isAuth,
+            token,
+            user: editedUser,
+          });
+          console.log(communities);
+          const hasJoinedCheck = communities.includes(community._id);
+          setHasJoined(hasJoinedCheck);
+          authStore.setAuthState(authState);
+        } else {
+          modalStore.setModalState('login');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
     return (
       <>
         <Card
@@ -68,11 +111,12 @@ const CommunityDetails: FC<CommunityDetailsProps> = observer(
           <Text>{`${description}`}</Text>
           <div style={{ marginTop: '1rem' }}>
             <Button
+              onClick={joinHandler}
               type="primary"
               style={{ marginBottom: '0.5rem', ...buttonStyle }}
               block
             >
-              JOIN
+              {hasJoined ? 'JOINED' : 'JOIN'}
             </Button>
             <Link to={`/communities/${community._id}/posts`}>
               <Button type="primary" style={{ ...buttonStyle }} block>

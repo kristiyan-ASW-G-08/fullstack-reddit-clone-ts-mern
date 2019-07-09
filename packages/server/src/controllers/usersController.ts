@@ -175,8 +175,8 @@ export const subscribeToCommunity = async (
     const { communityId } = req.params;
     const { userId } = req;
     const user = await getUserById(userId);
-    await subscribe(user, communityId);
-    res.sendStatus(204);
+    const communities = await subscribe(user, communityId);
+    res.status(200).json({ data: { communities } });
   } catch (err) {
     passErrorToNext(err, next);
   }

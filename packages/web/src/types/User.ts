@@ -9,4 +9,5 @@ export default interface User {
   downvotedPosts: string[];
   upvotedComments: string[];
   downvotedComments: string[];
+  communities: string[];
 }

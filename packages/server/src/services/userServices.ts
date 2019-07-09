@@ -11,6 +11,7 @@ import removeFromArr from '../utilities/removeFromArr';
 import includesObjectId from '../utilities/includesObjectId';
 import Comment from '../types/Comment';
 import Post from '../types/Post';
+import { getCommunityById } from './communityServices';
 const createUser = async (
   email: string,
   username: string,
@@ -89,6 +90,7 @@ const authenticateUser = async (
       downvotedPosts,
       upvotedComments,
       downvotedComments,
+      communities,
     } = user;
     const userData = {
       avatar,
@@ -101,6 +103,7 @@ const authenticateUser = async (
       downvotedPosts,
       upvotedComments,
       downvotedComments,
+      communities,
     };
     return { token, userData };
   } catch (err) {
@@ -228,14 +231,19 @@ const downvoteComment = async (
 const subscribe = async (
   user: UserType,
   communityId: string,
-): Promise<void> => {
+): Promise<string[]> => {
   try {
+    const community = await getCommunityById(communityId);
     if (includesObjectId(user.communities, communityId)) {
       user.communities = removeFromArr(user.communities, communityId);
+      community.subscribers--;
     } else {
       user.communities.push(communityId);
+      community.subscribers++;
     }
+    await community.save();
     await user.save();
+    return user.communities;
   } catch (err) {
     throw err;
   }

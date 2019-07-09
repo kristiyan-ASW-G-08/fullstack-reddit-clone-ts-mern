@@ -14,6 +14,7 @@ const defaultAuthState: AuthState = {
     downvotedPosts: [],
     upvotedComments: [],
     downvotedComments: [],
+    communities: [],
   },
 };
 
