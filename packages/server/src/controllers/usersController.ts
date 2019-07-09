@@ -78,7 +78,7 @@ export const savePost = async (
       user.savedPosts = removeFromArr(user.savedPosts, postId);
     }
     await user.save();
-    res.sendStatus(204);
+    res.status(200).json({ data: { savedPosts: user.savedPosts } });
   } catch (err) {
     passErrorToNext(err, next);
   }
@@ -116,13 +116,29 @@ export const voteForPost = async (
     const { userId } = req;
     const user = await getUserById(userId);
     const post = await getPostById(postId);
+    const data: { upvotedPosts: string[]; downvotedPosts: string[] } = {
+      upvotedPosts: [],
+      downvotedPosts: [],
+    };
     if (type === 'upvote') {
-      await upvotePost(user, postId, post);
+      const { upvotedPosts, downvotedPosts } = await upvotePost(
+        user,
+        postId,
+        post,
+      );
+      data.upvotedPosts = upvotedPosts;
+      data.downvotedPosts = downvotedPosts;
     } else if (type === 'downvote') {
-      await downvotePost(user, postId, post);
+      const { upvotedPosts, downvotedPosts } = await downvotePost(
+        user,
+        postId,
+        post,
+      );
+      data.upvotedPosts = upvotedPosts;
+      data.downvotedPosts = downvotedPosts;
     }
 
-    res.sendStatus(204);
+    res.status(200).json({ data });
   } catch (err) {
     passErrorToNext(err, next);
   }

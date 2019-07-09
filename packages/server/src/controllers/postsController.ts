@@ -28,7 +28,7 @@ export const postPost = async (
     const user = await getUserById(userId);
     isBanned(user.bans, communityId);
     const content = getPostContent(type, req);
-    const post = await createPost(type, title, content, communityId, userId);git 
+    const post = await createPost(type, title, content, communityId, userId);
     res.status(200).json({
       data: { post },
     });

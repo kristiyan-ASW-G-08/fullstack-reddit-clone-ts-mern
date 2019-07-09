@@ -8,6 +8,12 @@ const authenticatedAuthState: AuthState = {
     userId: '10',
     username: 'testUser',
     email: 'testEmail@mail.com',
+    savedPosts: [],
+    savedComments: [],
+    upvotedPosts: [],
+    downvotedPosts: [],
+    upvotedComments: [],
+    downvotedComments: [],
   },
 };
 

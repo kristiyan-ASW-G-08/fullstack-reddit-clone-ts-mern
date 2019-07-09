@@ -8,6 +8,12 @@ const defaultAuthState: AuthState = {
     userId: '',
     username: '',
     email: '',
+    savedPosts: [],
+    savedComments: [],
+    upvotedPosts: [],
+    downvotedPosts: [],
+    upvotedComments: [],
+    downvotedComments: [],
   },
 };
 

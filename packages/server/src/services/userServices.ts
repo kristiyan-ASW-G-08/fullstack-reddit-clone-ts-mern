@@ -78,12 +78,29 @@ const authenticateUser = async (
     await comparePasswords(password, user.password);
     await checkUserConfirmation(user);
     const token = signLoginToken(user);
-    const { email, username, _id, avatar } = user;
+    const {
+      email,
+      username,
+      _id,
+      avatar,
+      savedPosts,
+      savedComments,
+      upvotedPosts,
+      downvotedPosts,
+      upvotedComments,
+      downvotedComments,
+    } = user;
     const userData = {
       avatar,
       email,
       username,
       userId: _id.toString(),
+      savedPosts,
+      savedComments,
+      upvotedPosts,
+      downvotedPosts,
+      upvotedComments,
+      downvotedComments,
     };
     return { token, userData };
   } catch (err) {
@@ -101,11 +118,15 @@ const confirmUser = async (token: string): Promise<void> => {
   }
 };
 
+interface PostVoteResponse {
+  upvotedPosts: string[];
+  downvotedPosts: string[];
+}
 const upvotePost = async (
   user: UserType,
   postId: string,
   post: Post,
-): Promise<void> => {
+): Promise<PostVoteResponse> => {
   try {
     if (includesObjectId(user.upvotedPosts, postId)) {
       user.upvotedPosts = removeFromArr(user.upvotedPosts, postId);
@@ -121,6 +142,8 @@ const upvotePost = async (
     }
     await post.save();
     await user.save();
+    const { upvotedPosts, downvotedPosts } = user;
+    return { upvotedPosts, downvotedPosts };
   } catch (err) {
     throw err;
   }
@@ -130,7 +153,7 @@ const downvotePost = async (
   user: UserType,
   postId: string,
   post: Post,
-): Promise<void> => {
+): Promise<PostVoteResponse> => {
   try {
     if (includesObjectId(user.downvotedPosts, postId)) {
       user.downvotedPosts = removeFromArr(user.downvotedPosts, postId);
@@ -146,6 +169,8 @@ const downvotePost = async (
     }
     await post.save();
     await user.save();
+    const { upvotedPosts, downvotedPosts } = user;
+    return { upvotedPosts, downvotedPosts };
   } catch (err) {
     throw err;
   }

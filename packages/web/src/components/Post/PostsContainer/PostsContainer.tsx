@@ -24,7 +24,6 @@ const PostsContainer: FC<PostsContainerProps> = ({
             key={post._id}
             post={post}
             deletePostHandler={deletePostHandler}
-            authState={authState}
           />
         ))
       )}

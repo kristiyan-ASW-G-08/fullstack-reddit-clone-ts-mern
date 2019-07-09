@@ -1,46 +1,116 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import SharePopover from './SharePopover';
-import { Card, Icon, Avatar, Typography, Dropdown, Menu } from 'antd';
+import { Card, Icon, Avatar, Typography, Dropdown, Menu, Tooltip } from 'antd';
 import AuthState from 'types/AuthState';
+import { observer } from 'mobx-react-lite';
 import axios from 'axios';
+import RootStoreContext from 'stores/RootStore/RootStore';
 import { Link } from 'react-router-dom';
 const { Meta } = Card;
 const { Text } = Typography;
 interface PostProps {
   post: PopulatedPost;
   deletePostHandler: (postId: string) => Promise<void>;
-  authState: AuthState;
 }
-const Post: FC<PostProps> = ({ post, deletePostHandler, authState }) => {
+const Post: FC<PostProps> = observer(({ post, deletePostHandler }) => {
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
+  const [isDownvoted, setIsDownvoted] = useState<boolean>(false);
+  const { authStore } = useContext(RootStoreContext);
+  const { authState } = authStore;
   const { isAuth, token, user } = authState;
-  console.log(post);
+  useEffect(() => {
+    const isSavedCheck = user.savedPosts.includes(post._id);
+    const isUpvotedCheck = user.upvotedPosts.includes(post._id);
+    const isDownvotedCheck = user.downvotedPosts.includes(post._id);
+    setIsUpvoted(isUpvotedCheck);
+    setIsDownvoted(isDownvotedCheck);
+    setIsSaved(isSavedCheck);
+  }, [user.savedPosts, post._id]);
   const savePostHandler = async () => {
-    console.log(token);
-    const request = await axios.patch(
-      `http://localhost:8080/users/posts/${post._id}/save`,
-      {},
-      {
-        headers: { Authorization: 'bearer ' + token },
-      },
-    );
-    console.log(request);
     try {
+      const request = await axios.patch(
+        `http://localhost:8080/users/posts/${post._id}/save`,
+        {},
+        {
+          headers: { Authorization: 'bearer ' + token },
+        },
+      );
+      const { savedPosts } = request.data.data;
+      const editedUser = { ...user };
+      editedUser.savedPosts = savedPosts;
+      authStore.setAuthState({
+        expiryDate: authState.expiryDate,
+        isAuth,
+        token,
+        user: editedUser,
+      });
+      const isSavedCheck = savedPosts.includes(post._id);
+      setIsSaved(isSavedCheck);
     } catch (err) {
       console.log(err);
     }
   };
-  const actions = [
-    <Icon type="caret-up" />,
+  const voteHandler = async (type: string) => {
+    try {
+      const request = await axios.patch(
+        `http://localhost:8080/users/posts/${post._id}/vote?type=${type}`,
+        {},
+        {
+          headers: { Authorization: 'bearer ' + token },
+        },
+      );
+      const { upvotedPosts, downvotedPosts } = request.data.data;
+      const editedUser = { ...user };
+      editedUser.upvotedPosts = upvotedPosts;
+      editedUser.downvotedPosts = downvotedPosts;
+      authStore.setAuthState({
+        expiryDate: authState.expiryDate,
+        isAuth,
+        token,
+        user: editedUser,
+      });
+      const isUpvotedCheck = upvotedPosts.includes(post._id);
+      const isDownvotedCheck = downvotedPosts.includes(post._id);
+      setIsUpvoted(isUpvotedCheck);
+      setIsDownvoted(isDownvotedCheck);
+      console.log(request);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  let actions = [
     <span>{post.upvotes - post.downvotes}</span>,
-    <Icon type="caret-down" />,
     <SharePopover title={post.title} postId={post._id} />,
   ];
   if (isAuth && user.userId === post.user._id) {
+    const UpvoteButton = () => (
+      <Icon
+        type="caret-up"
+        onClick={() => voteHandler('upvote')}
+        style={{ color: `${isUpvoted ? '#1890ff' : ''}` }}
+      />
+    );
+    const DownvoteButton = () => (
+      <Icon
+        type="caret-down"
+        onClick={() => voteHandler('downvote')}
+        style={{ color: `${isDownvoted ? '#faad14' : ''}` }}
+      />
+    );
     const DeleteButton = () => (
       <Icon onClick={() => deletePostHandler(post._id)} type="delete" />
     );
-    const SaveButton = () => <Icon type="save" onClick={savePostHandler} />;
+    const SaveButton = () => (
+      <Tooltip title={isSaved ? 'Saved' : 'Not Saved'}>
+        <Icon
+          type="save"
+          onClick={savePostHandler}
+          style={{ color: `${isSaved ? '#1890ff' : ''}` }}
+        />
+      </Tooltip>
+    );
     const EditButton = () => (
       <Link
         to={{
@@ -53,7 +123,15 @@ const Post: FC<PostProps> = ({ post, deletePostHandler, authState }) => {
         <Icon type="edit" />
       </Link>
     );
-    actions.push(<DeleteButton />, <EditButton />, <SaveButton />);
+    actions = [
+      <UpvoteButton />,
+      <span>{post.upvotes - post.downvotes}</span>,
+      <DownvoteButton />,
+      <SharePopover title={post.title} postId={post._id} />,
+      <DeleteButton />,
+      <EditButton />,
+      <SaveButton />,
+    ];
   }
   return (
     <Card
@@ -97,5 +175,5 @@ const Post: FC<PostProps> = ({ post, deletePostHandler, authState }) => {
       )}
     </Card>
   );
-};
+});
 export default Post;
