@@ -9,7 +9,7 @@ const SharePopover: FC<SharePopoverProps> = ({ title, postId }) => {
   const postUrl = `http://localhost:3000/posts/${postId}`;
   const clipboardCopyHandler = () => {
     navigator.clipboard.writeText(postUrl).then(writeData => {
-      openNotification('info', 'Link url copied to clipboard');
+      openNotification('info', 'Link  copied to clipboard');
     });
   };
 
@@ -31,7 +31,9 @@ const SharePopover: FC<SharePopoverProps> = ({ title, postId }) => {
       >
         Reddit
       </a>
-      <p onClick={clipboardCopyHandler}>Copy Link</p>
+      <p style={{ cursor: 'pointer' }} onClick={clipboardCopyHandler}>
+        Copy Link
+      </p>
     </div>
   );
   return (

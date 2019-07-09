@@ -11,8 +11,9 @@ import PostsContainer from 'components/Post/PostsContainer/PostsContainer';
 import CommunityDetails from './CommunityDetails/CommunityDetails';
 import RulesContainer from './RulesContainer/RulesContainer';
 import RootStoreContext from 'stores/RootStore/RootStore';
-import { Tabs } from 'antd';
+import { Tabs, Select } from 'antd';
 const { TabPane } = Tabs;
+const { Option } = Select;
 interface MatchParams {
   communityId: string;
 }
@@ -27,7 +28,9 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   const getRelated = async () => {
     await Promise.all<AxiosResponse[]>([
       axios.get(`http://localhost:8080/communities/${communityId}/rules`),
-      axios.get(`http://localhost:8080/communities/${communityId}/posts`),
+      axios.get(
+        `http://localhost:8080/communities/${communityId}/posts?sort=new`,
+      ),
     ]).then(([rulesResponse, postsResponse]: any) => {
       setRules(rulesResponse.data.data.rules);
       setPosts(postsResponse.data.data.posts);
@@ -44,6 +47,19 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
         console.log(err);
       });
   }, [communityId]);
+  const sortPostsHandler = async (sortType: string) => {
+    try {
+      console.log(sortType);
+      const request = await axios.get(
+        `http://localhost:8080/communities/${communityId}/posts?sort=${sortType}`,
+      );
+      console.log(request.data.data);
+      const { posts } = request.data.data;
+      setPosts(posts);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const addPostComponentHandler = (post: PopulatedPost) => {
     if (posts) {
       const editedPosts = posts.filter(oldPost => oldPost._id !== post._id);
@@ -56,19 +72,7 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
       setPosts([...editedPosts]);
     }
   };
-  const deletePostHandler = async (postId: string) => {
-    try {
-      const request = await axios.delete(
-        `http://localhost:8080/posts/${postId}`,
-        {
-          headers: { Authorization: 'bearer ' + token },
-        },
-      );
-      removePostComponentHandler(postId);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   return (
     <>
       {community ? (
@@ -90,10 +94,19 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
               {rules ? '' : ''}
             </aside>{' '}
             <section className={styles.mainSection}>
+              <Select
+                style={{ marginBottom: '1rem' }}
+                defaultValue="new"
+                onChange={sortPostsHandler}
+              >
+                <Option value="new">New</Option>
+                <Option value="top">Top</Option>
+                <Option value="comment">Comments</Option>
+              </Select>
               {posts ? (
                 <PostsContainer
                   posts={posts}
-                  deletePostHandler={deletePostHandler}
+                  removePostComponentHandler={removePostComponentHandler}
                   authState={authStore.authState}
                 />
               ) : (

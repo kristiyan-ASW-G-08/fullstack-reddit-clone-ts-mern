@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import ModalsContainer from 'components/ModalsContainer/ModalsContainer';
 import ProtectedRoute from './ProtectedRoute';
 import RootStoreContext from 'stores/RootStore/RootStore';
+import Home from 'components/Home/Home';
 const EmailConfirmationModal = lazy(() =>
   import('components/EmailConfirmationModal/EmailConfirmationModal'),
 );
@@ -31,6 +32,7 @@ const Router: FC = observer(
           <Navbar />
           <ModalsContainer />
           <Switch>
+            <Route exact path="/" component={Home} />
             <Route
               exact
               path="/confirmation/:token"

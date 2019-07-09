@@ -3,17 +3,30 @@ import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import AuthState from 'types/AuthState';
 import { Empty } from 'antd';
 import Post from '../Post/Post';
+import axios from 'axios';
 interface PostsContainerProps {
   posts: PopulatedPost[];
-  deletePostHandler: (postId: string) => Promise<void>;
   authState: AuthState;
+  removePostComponentHandler: (postId: string) => void;
 }
 const PostsContainer: FC<PostsContainerProps> = ({
   posts,
-  deletePostHandler,
   authState,
+  removePostComponentHandler,
 }) => {
-  console.log(posts);
+  const deletePostHandler = async (postId: string) => {
+    try {
+      const request = await axios.delete(
+        `http://localhost:8080/posts/${postId}`,
+        {
+          headers: { Authorization: 'bearer ' + authState.token },
+        },
+      );
+      removePostComponentHandler(postId);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       {posts.length === 0 ? (
