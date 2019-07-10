@@ -108,6 +108,7 @@ const CommunityPage: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
                   posts={posts}
                   removePostComponentHandler={removePostComponentHandler}
                   authState={authStore.authState}
+                  emptyMessage={'No posts yet'}
                 />
               ) : (
                 ''

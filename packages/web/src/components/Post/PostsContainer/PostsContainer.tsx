@@ -7,12 +7,14 @@ import axios from 'axios';
 interface PostsContainerProps {
   posts: PopulatedPost[];
   authState: AuthState;
+  emptyMessage: string;
   removePostComponentHandler: (postId: string) => void;
 }
 const PostsContainer: FC<PostsContainerProps> = ({
   posts,
   authState,
   removePostComponentHandler,
+  emptyMessage,
 }) => {
   const deletePostHandler = async (postId: string) => {
     try {
@@ -30,7 +32,7 @@ const PostsContainer: FC<PostsContainerProps> = ({
   return (
     <div>
       {posts.length === 0 ? (
-        <Empty description={<span>No Posts yet</span>} />
+        <Empty description={<span>{emptyMessage}</span>} />
       ) : (
         posts.map(post => (
           <Post
