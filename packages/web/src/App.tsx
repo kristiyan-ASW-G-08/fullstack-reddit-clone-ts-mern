@@ -1,9 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { FC, useEffect, useContext } from 'react';
 import './App.css';
 import RootStoreContext from 'stores/RootStore/RootStore';
 import Router from './components/Router';
 import { observer } from 'mobx-react-lite';
-const App: React.FC = observer(() => {
+const App: FC = observer(() => {
   const { authStore } = useContext(RootStoreContext);
   useEffect(() => {
     const { expiryDate } = authStore.authState;
@@ -12,7 +12,7 @@ const App: React.FC = observer(() => {
         authStore.resetAuthState();
       }
     }
-  }, []);
+  }, [authStore.authState.expiryDate]);
   return <Router />;
 });
 

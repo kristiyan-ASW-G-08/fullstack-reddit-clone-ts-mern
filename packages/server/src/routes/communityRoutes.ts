@@ -41,7 +41,28 @@ router.post(
 );
 
 router.patch('/communities/:communityId', isAuth, patchCommunity);
-router.patch('/communities/:communityId/themes', isAuth, patchCommunityTheme);
+router.patch(
+  '/communities/:communityId/themes/colors',
+  isAuth,
+  [
+    body('base')
+      .isHexColor()
+      .isString()
+      .trim(),
+    body('highlight')
+      .isHexColor()
+      .isString()
+      .trim(),
+  ],
+  isAuth,
+  patchCommunityThemeColors,
+);
+router.patch(
+  '/communities/:communityId/themes/icons',
+  isAuth,
+  isAuth,
+  patchCommunityThemeIcon,
+);
 router.get('/communities/:communityId', getCommunity);
 router.get('/communities/:searchTerm/names', getCommunityNames);
 export default router;

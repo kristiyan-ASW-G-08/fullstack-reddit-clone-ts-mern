@@ -5,16 +5,26 @@ import styles from './Home.module.scss';
 import { Select, Tabs } from 'antd';
 import Loader from 'components/Loader';
 import PopularTabPane from './PopularTabPane';
+import SideBar from './SideBar';
 const UserFeedTabPane = lazy(() => import('./UserFeedTabPane'));
 const { Option } = Select;
 const { TabPane } = Tabs;
 
 const Home: FC = observer(() => {
-  const { authStore } = useContext(RootStoreContext);
+  const { authStore, modalStore } = useContext(RootStoreContext);
   const { isAuth, token } = authStore.authState;
+  const openCommunityFormHandler = () => {
+    if (isAuth) {
+      modalStore.setModalState('community');
+    } else {
+      modalStore.setModalState('login');
+    }
+  };
   return (
     <div className={styles.grid}>
-      <aside className={styles.sidebar} />
+      <aside className={styles.sidebar}>
+        <SideBar openCommunityFormHandler={openCommunityFormHandler} />
+      </aside>
       <section className={styles.mainSection}>
         <>
           <Tabs defaultActiveKey="1" tabBarStyle={{ textAlign: 'center' }}>
@@ -27,7 +37,7 @@ const Home: FC = observer(() => {
             ) : (
               ''
             )}
-            <TabPane tab={`Popular`} key={'2'}>
+            <TabPane tab={`Popular`} key={`${isAuth ? '2' : '1'}`}>
               <PopularTabPane />
             </TabPane>
           </Tabs>

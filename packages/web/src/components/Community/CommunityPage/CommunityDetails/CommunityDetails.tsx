@@ -70,62 +70,60 @@ const CommunityDetails: FC<CommunityDetailsProps> = observer(
       }
     };
     return (
-      <>
-        <Card
-          title={
-            <>
-              Community Details{'   '}
-              {userId === community.user ? (
-                <Link
-                  style={{ color: '#ffffff', marginLeft: '0.3rem' }}
-                  to={`/communities/${_id}/mod`}
-                >
-                  <Icon
-                    type="setting"
-                    theme="filled"
-                    style={{ padding: '0.2rem' }}
-                  />
-                  Mod Tools
-                </Link>
-              ) : (
-                ''
-              )}
-            </>
-          }
-          headStyle={{
-            background: `${theme.colors.base}`,
-            color: '#ffffff',
-            padding: '0',
-          }}
-          style={{ width: '100%', textAlign: 'center' }}
-        >
-          <div />
-          <Avatar
-            size="large"
-            src={`http://localhost:8080/images/${theme.icon}`}
-            alt={`${name} icon`}
-          />
-          <Title level={3}>{name}</Title>
-          <Text>{`${subscribers} members`}</Text>
-          <br />
-          <Text>{`${description}`}</Text>
-          <div style={{ marginTop: '1rem' }}>
-            <Button
-              onClick={joinHandler}
-              type="primary"
-              style={{ marginBottom: '0.5rem', ...buttonStyle }}
-              block
-            >
-              {hasJoined ? 'JOINED' : 'JOIN'}
+      <Card
+        title={
+          <>
+            Home{'   '}
+            {userId === community.user ? (
+              <Link
+                style={{ color: '#ffffff', marginLeft: '0.3rem' }}
+                to={`/communities/${_id}/mod`}
+              >
+                <Icon
+                  type="setting"
+                  theme="filled"
+                  style={{ padding: '0.2rem' }}
+                />
+                Mod Tools
+              </Link>
+            ) : (
+              ''
+            )}
+          </>
+        }
+        headStyle={{
+          background: `${theme.colors.base}`,
+          color: '#ffffff',
+          padding: '0',
+        }}
+        style={{ width: '100%', textAlign: 'center' }}
+      >
+        <div />
+        <Avatar
+          size="large"
+          src={`http://localhost:8080/images/${theme.icon}`}
+          alt={`${name} icon`}
+        />
+        <Title level={3}>{name}</Title>
+        <Text>{`${subscribers} members`}</Text>
+        <br />
+        <Text>{`${description}`}</Text>
+        <div style={{ marginTop: '1rem' }}>
+          <Button
+            onClick={joinHandler}
+            type="primary"
+            style={{ marginBottom: '0.5rem', ...buttonStyle }}
+            block
+          >
+            {hasJoined ? 'JOINED' : 'JOIN'}
+          </Button>
+          <Link to={`/communities/${community._id}/posts`}>
+            <Button type="primary" style={{ ...buttonStyle }} block>
+              CREATE POST
             </Button>
-            <Link to={`/communities/${community._id}/posts`}>
-              <Button type="primary" style={{ ...buttonStyle }} block>
-                CREATE POST
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      </>
+          </Link>
+        </div>
+      </Card>
     );
   },
 );

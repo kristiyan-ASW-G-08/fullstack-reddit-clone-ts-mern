@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { observable, action } from 'mobx';
 import { persist } from 'mobx-persist';
 class ThemeStore {
-  @persist @observable public theme: 'light' | 'dark' | undefined = 'light';
+  @persist @observable public theme: 'light' | 'dark' = 'light';
 
   @action public toggleTheme(): void {
     console.log(this.theme);

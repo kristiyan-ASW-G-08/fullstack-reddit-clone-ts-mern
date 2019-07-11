@@ -3,8 +3,7 @@ import Community from '@rddt/common/types/Community';
 import Rule from '@rddt/common/types/Rule';
 import { RouteComponentProps } from 'react-router-dom';
 import { Tabs } from 'antd';
-import RulesPane from '../CommunityRules/RulesPane';
-import axios from 'axios';
+import RulesPane from './RulesPane/RulesPane';
 const { TabPane } = Tabs;
 interface MatchParams {
   communityId: string;
@@ -21,13 +20,7 @@ const ModTools: FC<RouteComponentProps<MatchParams>> = ({ match }) => {
       <TabPane tab={`Rules`} key={'1'}>
         <RulesPane communityId={communityId} />
       </TabPane>
-      <TabPane tab={`2`} key={'2'}>
-        Content of tab 1
-      </TabPane>
-      <TabPane tab={`3`} key={'3'}>
-        Content of tab 1
-      </TabPane>
-      <TabPane tab={`4`} key={'4'}>
+      <TabPane tab={`Customization`} key={'2'}>
         Content of tab 1
       </TabPane>
     </Tabs>

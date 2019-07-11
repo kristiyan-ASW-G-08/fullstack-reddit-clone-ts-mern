@@ -1,8 +1,7 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import SharePopover from './SharePopover';
-import { Card, Icon, Avatar, Typography, Dropdown, Menu, Tooltip } from 'antd';
-import AuthState from 'types/AuthState';
+import { Card, Icon, Avatar, Typography, Tooltip } from 'antd';
 import { observer } from 'mobx-react-lite';
 import axios from 'axios';
 import RootStoreContext from 'stores/RootStore/RootStore';
@@ -123,6 +122,7 @@ const Post: FC<PostProps> = observer(({ post, deletePostHandler }) => {
         <Icon type="edit" />
       </Link>
     );
+
     actions = [
       <UpvoteButton />,
       <span>{post.upvotes - post.downvotes}</span>,
@@ -135,7 +135,7 @@ const Post: FC<PostProps> = observer(({ post, deletePostHandler }) => {
   }
   return (
     <Card
-      style={{ width: '100%', marginBottom: '1rem' }}
+      bodyStyle={{ width: '100%', marginBottom: '1rem' }}
       cover={
         post.type === 'image' ? (
           <img alt="" src={`http://localhost:8080/${post.image}`} />
@@ -147,14 +147,18 @@ const Post: FC<PostProps> = observer(({ post, deletePostHandler }) => {
     >
       <Meta
         avatar={
-          <Avatar
-            src={`http://localhost:8080/images/${post.community.theme.icon}`}
-          />
+          <Link to={`/communities/${post.community._id}`}>
+            <Avatar
+              src={`http://localhost:8080/images/${post.community.theme.icon}`}
+            />
+          </Link>
         }
-        title={`${post.title}`}
-        description={`r/${post.community.name} • Posted by u/${
-          post.user.username
-        }`}
+        title={<span>{post.title}</span>}
+        description={
+          <span>
+            r/{post.community.name} • Posted by u/${post.user.username}
+          </span>
+        }
       />
       {post.text ? (
         <Text style={{ marginTop: '1rem', display: 'block' }}>{post.text}</Text>
