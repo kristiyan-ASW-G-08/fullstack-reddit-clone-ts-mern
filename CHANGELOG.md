@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.42](https://github.com/krisScript/fullstack-reddit-clone-ts-mern/compare/v1.0.41...v1.0.42) (2019-07-11)
+
+**Note:** Version bump only for package rddt
+
+
+
+
+
 ## [1.0.41](https://github.com/krisScript/fullstack-reddit-clone-ts-mern/compare/v1.0.40...v1.0.41) (2019-07-10)
 
 **Note:** Version bump only for package rddt
