@@ -5,7 +5,8 @@ import isAuth from '../middleware/isAuth';
 import {
   postCommunity,
   patchCommunity,
-  patchCommunityTheme,
+  patchCommunityThemeIcon,
+  patchCommunityThemeColors,
   getCommunity,
   getCommunityNames,
 } from '../controllers/communitiesController';
