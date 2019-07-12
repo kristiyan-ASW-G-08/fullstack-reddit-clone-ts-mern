@@ -14,6 +14,7 @@ import openNotification from 'utilities/openNotification';
 import RootStoreContext from 'stores/RootStore/RootStore';
 import Community from '@rddt/common/types/Community';
 import { SketchPicker } from 'react-color';
+import styles from './form.module.scss';
 interface ColorsFormProps extends FormComponentProps {
   community: Community;
 }
@@ -56,15 +57,7 @@ const ColorsForm: FC<ColorsFormProps> = ({ form, community }) => {
     }
   };
   return (
-    <Form
-      onSubmit={submitHandler}
-      style={{
-        display: 'flex',
-        width: '100vw',
-        alignItems: 'center',
-        flexFlow: 'column',
-      }}
-    >
+    <Form className={styles.form} onSubmit={submitHandler}>
       <Item label={<span>Base</span>}>
         {' '}
         <SketchPicker

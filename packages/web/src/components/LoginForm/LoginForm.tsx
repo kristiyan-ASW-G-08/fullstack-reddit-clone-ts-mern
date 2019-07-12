@@ -45,18 +45,19 @@ const LoginForm: FC<LoginFormProps> = ({ form, setConfirmLoading }) => {
         }
       } catch (err) {
         setConfirmLoading(false);
-        if (err.response.data.data) {
-          const { data } = err.response.data;
-          console.log(data);
-          data.map((validationErr: ValidationError) => {
-            form.setFields({
-              [validationErr.param]: {
-                value: validationErr.value,
-                errors: [new Error(validationErr.msg)],
-              },
-            });
-          });
-        }
+        console.log(err);
+        // if (err.response.data) {
+        //   const { data } = err.response.data;
+        //   console.log(data);
+        //   data.map((validationErr: ValidationError) => {
+        //     form.setFields({
+        //       [validationErr.param]: {
+        //         value: validationErr.value,
+        //         errors: [new Error(validationErr.msg)],
+        //       },
+        //     });
+        //   });
+        // }
       }
     });
   };

@@ -20,6 +20,7 @@ const PopularTabPane: FC = observer(() => {
       .catch(err => {
         console.log(err);
       });
+    return function cleanup() {};
   }, []);
   const removePostComponentHandler = (postId: String) => {
     if (posts) {

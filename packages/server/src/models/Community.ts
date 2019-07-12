@@ -13,7 +13,7 @@ const CommunitySchema: Schema = new Schema({
     default: 0,
   },
   theme: {
-    icon: { type: String, default: 'icon.svg' },
+    icon: { type: String, default: 'images/icon.svg' },
     colors: {
       base: { type: String, default: '#1890ff' },
       highlight: { type: String, default: '#1890ff' },

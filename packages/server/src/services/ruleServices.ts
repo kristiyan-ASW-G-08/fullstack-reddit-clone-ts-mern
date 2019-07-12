@@ -22,7 +22,6 @@ const createRule = async (
     throw err;
   }
 };
-
 const getRuleById = async (ruleId: string): Promise<RuleType> => {
   try {
     const rule = await Rule.findById(ruleId);

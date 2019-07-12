@@ -101,7 +101,7 @@ const CommunityDetails: FC<CommunityDetailsProps> = observer(
         <div />
         <Avatar
           size="large"
-          src={`http://localhost:8080/images/${theme.icon}`}
+          src={`http://localhost:8080${theme.icon}`}
           alt={`${name} icon`}
         />
         <Title level={3}>{name}</Title>

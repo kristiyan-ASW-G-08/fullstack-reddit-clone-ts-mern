@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState, Suspense, lazy } from 'react';
-import ColorsForm from './ColorsForm';
 import Community from '@rddt/common/types/Community';
 import axios from 'axios';
 import Loader from 'components/Loader';
+const ColorsForm = lazy(() => import('./ColorsForm'));
+const IconForm = lazy(() => import('./IconForm'));
 interface CustomizationPaneProps {
   communityId: string;
 }
@@ -25,6 +26,7 @@ const CustomizationPane: FC<CustomizationPaneProps> = ({ communityId }) => {
       {community ? (
         <Suspense fallback={<Loader />}>
           <ColorsForm community={community} />
+          <IconForm community={community} />
         </Suspense>
       ) : (
         ''

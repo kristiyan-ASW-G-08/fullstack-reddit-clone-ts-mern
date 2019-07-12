@@ -61,7 +61,6 @@ router.patch(
 router.patch(
   '/communities/:communityId/themes/icons',
   isAuth,
-  isAuth,
   patchCommunityThemeIcon,
 );
 router.get('/communities/:communityId', getCommunity);

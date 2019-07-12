@@ -13,6 +13,7 @@ interface PostProps {
   deletePostHandler: (postId: string) => Promise<void>;
 }
 const Post: FC<PostProps> = observer(({ post, deletePostHandler }) => {
+  console.log(post);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
   const [isDownvoted, setIsDownvoted] = useState<boolean>(false);
@@ -149,7 +150,7 @@ const Post: FC<PostProps> = observer(({ post, deletePostHandler }) => {
         avatar={
           <Link to={`/communities/${post.community._id}`}>
             <Avatar
-              src={`http://localhost:8080/images/${post.community.theme.icon}`}
+              src={`http://localhost:8080/${post.community.theme.icon}`}
             />
           </Link>
         }
