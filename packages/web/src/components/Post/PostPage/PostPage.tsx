@@ -1,7 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, lazy, Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import PopulatedPost from '@rddt/common/types/PopulatedPost';
 import axios from 'axios';
+import Loader from 'components/Loader';
+const Post = lazy(() => import('../Post/Post'));
 interface MatchProps {
   postId: string;
 }
@@ -17,7 +19,18 @@ const PostPage: FC<RouteComponentProps<MatchProps>> = ({ match }) => {
       })
       .catch(err => console.log(err));
   }, [postId]);
-  return <div />;
+  const deletePostHandler = async () => {};
+  return (
+    <>
+      {post ? (
+        <Suspense fallback={<Loader />}>
+          <Post post={post} deletePostHandler={deletePostHandler} />
+        </Suspense>
+      ) : (
+        ''
+      )}
+    </>
+  );
 };
 
 export default PostPage;
