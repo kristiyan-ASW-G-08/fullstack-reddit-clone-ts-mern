@@ -32,7 +32,9 @@ class ErrorREST extends Error {
   public constructor(status: number, message: string, data?: any) {
     super();
     Object.setPrototypeOf(this, ErrorREST.prototype);
-    (this.status = status), (this.message = message), (this.data = data);
+    this.status = status;
+    this.message = message;
+    this.data = data;
   }
 }
 
