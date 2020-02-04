@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator/check';
-import isAuth from '../middleware/isAuth';
+import isAuth from '../middleware/authenticationHandler';
 import {
   postRule,
   patchRule,

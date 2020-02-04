@@ -1,4 +1,4 @@
-import isAuth from '../../middleware/isAuth';
+import isAuth from '../../middleware/authenticationHandler';
 import httpMocks from 'node-mocks-http';
 import jwt from 'jsonwebtoken';
 describe('isAuth', (): void => {
