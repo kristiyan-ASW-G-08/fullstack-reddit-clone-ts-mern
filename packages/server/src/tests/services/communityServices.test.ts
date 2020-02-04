@@ -6,8 +6,8 @@ import {
   getCommunityById,
   getCommunityNamesBySearchTerm,
 } from '../../services/communityServices';
-import Community from '../../models/Community';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import Community from '../../communities/Community';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 describe('userServices', (): void => {

@@ -7,7 +7,7 @@ import {
   patchComment,
   deleteComment,
   getComments,
-} from '../controllers/commentsController';
+} from './commentsController';
 const router = express.Router();
 const commentValidationArr = [
   body('text', 'Text should be at between 1 and 10000 characters long.')

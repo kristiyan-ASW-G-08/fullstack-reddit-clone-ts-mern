@@ -1,7 +1,7 @@
-import User from '../models/User';
+import User from '../users/User';
 import UserType from '../types/User';
 import ValidationError from '@rddt/common/types/ValidationError';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 import bcrypt from 'bcryptjs';
 import comparePasswords from '../utilities/comparePasswords';
 import checkUserConfirmation from '../utilities/checkUserConfirmation';

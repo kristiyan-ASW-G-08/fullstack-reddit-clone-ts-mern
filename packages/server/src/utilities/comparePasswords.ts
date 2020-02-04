@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 import ValidationError from '@rddt/common/types/ValidationError';
 const comparePasswords = async (
   password: string,

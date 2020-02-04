@@ -9,9 +9,9 @@ import React, {
 import { Form, Icon, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import axios from 'axios';
-import ValidationError from '@rddt/common/types/ValidationError';
+import ValidationError from '@ rddt/common/types/ValidationError';
 import RootStoreContext from 'stores/RootStore/RootStore';
-interface LoginFormProps extends FormComponentProps {
+interface LoginFormProps extendsFormComponentProps {
   setConfirmLoading: Dispatch<SetStateAction<boolean>>;
 }
 const { Item } = Form;

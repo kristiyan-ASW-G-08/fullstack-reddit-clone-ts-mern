@@ -1,5 +1,5 @@
 import isAuthorized from '../../utilities/isAuthorized';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 describe('isAuthorized', (): void => {
   const authorizedUserId = 'authorizedUserId';
   const userId = 'userId';

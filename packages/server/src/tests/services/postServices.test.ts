@@ -6,12 +6,12 @@ import {
   getPostsByUserSubscriptions,
   toggleHiddenPosts,
 } from '../../services/postServices';
-import Post from '../../models/Post';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import Post from '../../posts/Post';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose, { mongo } from 'mongoose';
 import { mongoURI } from '../../config/db';
-import User from '../../models/User';
-import Community from '../../models/Community';
+import User from '../../users/User';
+import Community from '../../communities/Community';
 
 describe('postServices', (): void => {
   beforeAll(

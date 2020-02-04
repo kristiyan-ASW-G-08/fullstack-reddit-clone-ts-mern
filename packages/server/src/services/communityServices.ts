@@ -1,7 +1,7 @@
-import Community from '../models/Community';
+import Community from '../communities/Community';
 import CommunityType from '../types/Community';
 import SearchTermResult from '@rddt/common/types/SearchTermResult';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import Colors from '@rddt/common/types/Colors';
 const createCommunity = async (

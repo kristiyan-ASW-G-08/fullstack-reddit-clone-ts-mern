@@ -1,4 +1,4 @@
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 const isAuthorized = (authorizedUserId: string, userId: string): void => {
   if (authorizedUserId.toString() !== userId.toString()) {
     const { status, message } = Errors.Unauthorized;

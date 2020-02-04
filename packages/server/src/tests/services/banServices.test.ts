@@ -3,8 +3,8 @@ import {
   getBanById,
   getBansByCommunityId,
 } from '../../services/banServices';
-import Ban from '../../models/Ban';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import Ban from '../../reports/Ban';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 describe('banServices', (): void => {

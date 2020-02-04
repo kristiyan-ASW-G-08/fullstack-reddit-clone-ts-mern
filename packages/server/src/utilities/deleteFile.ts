@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 const deleteFile = (fileUrl: string): void => {
   try {
     if (fileUrl) {

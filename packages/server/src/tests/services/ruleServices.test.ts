@@ -3,8 +3,8 @@ import {
   getRuleById,
   getRulesByCommunityId,
 } from '../../services/ruleServices';
-import Rule from '../../models/Rule';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import Rule from '../../rules/Rule';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 describe('ruleServices', (): void => {

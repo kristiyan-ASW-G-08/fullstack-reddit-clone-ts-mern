@@ -1,6 +1,6 @@
 import express from 'express';
 import { body, query } from 'express-validator/check';
-import User from '../models/User';
+import User from './User';
 import isAuth from '../middleware/isAuth';
 import {
   login,
@@ -11,7 +11,7 @@ import {
   voteForPost,
   voteForComment,
   subscribeToCommunity,
-} from '../controllers/usersController';
+} from './usersController';
 const router = express.Router();
 
 router.post(

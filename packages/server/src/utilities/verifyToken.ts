@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 const verifyToken = (token: string) => {
   const secret: any = process.env.SECRET;
   const { userId }: any = jwt.verify(

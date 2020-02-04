@@ -4,10 +4,10 @@ import {
   getCommentsBySourceId,
   toggleHiddenComments,
 } from '../../services/commentServices';
-import Comment from '../../models/Comment';
-import Post from '../../models/Post';
-import User from '../../models/User';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import Comment from '../../comments/Comment';
+import Post from '../../posts/Post';
+import User from '../../users/User';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator/check';
-import Community from '../models/Community';
+import Community from './Community';
 import isAuth from '../middleware/isAuth';
 import {
   postCommunity,
@@ -9,7 +9,7 @@ import {
   patchCommunityThemeColors,
   getCommunity,
   getCommunityNames,
-} from '../controllers/communitiesController';
+} from './communitiesController';
 const router = express.Router();
 
 router.post(

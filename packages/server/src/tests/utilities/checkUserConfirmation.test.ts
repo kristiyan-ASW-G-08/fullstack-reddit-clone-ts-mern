@@ -1,6 +1,6 @@
 import checkUserConfirmation from '../../utilities/checkUserConfirmation';
-import User from '../../models/User';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import User from '../../users/User';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 mongoose.connect(mongoURI, { useNewUrlParser: true });

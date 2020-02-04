@@ -1,6 +1,6 @@
 import comparePasswords from '../../utilities/comparePasswords';
 import bcrypt from 'bcryptjs';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 describe('comparePasswords', (): void => {
   let password: string;
   let hashedPassword: string;

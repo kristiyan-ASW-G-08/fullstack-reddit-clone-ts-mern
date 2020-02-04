@@ -1,6 +1,6 @@
-import Rule from '../models/Rule';
+import Rule from '../rules/Rule';
 import RuleType from '../types/Rule';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 const createRule = async (
   name: string,
   description: string,

@@ -6,7 +6,7 @@ import {
   patchRule,
   deleteRule,
   getRules,
-} from '../controllers/rulesController';
+} from './rulesController';
 const router = express.Router();
 const ruleValidation = [
   body('name', 'Name should be between 1 and 100 characters long.')

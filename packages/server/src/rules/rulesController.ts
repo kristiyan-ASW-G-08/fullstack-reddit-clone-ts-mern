@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import passErrorToNext from '../utilities/passErrorToNext';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 import {
   createRule,
   getRuleById,

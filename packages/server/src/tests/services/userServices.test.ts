@@ -9,14 +9,14 @@ import {
   authenticateUser,
   subscribe,
 } from '../../services/userServices';
-import User from '../../models/User';
+import User from '../../users/User';
 import UserType from '../../types/User';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 import bcrypt from 'bcryptjs';
-import Post from '../../models/Post';
-import Comment from '../../models/Comment';
+import Post from '../../posts/Post';
+import Comment from '../../comments/Comment';
 describe('userServices', (): void => {
   beforeAll(
     async (): Promise<void> => {

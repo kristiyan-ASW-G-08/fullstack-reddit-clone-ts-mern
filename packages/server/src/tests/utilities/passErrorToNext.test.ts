@@ -1,5 +1,5 @@
 import passErrorToNext from '../../utilities/passErrorToNext';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 describe('passErrorToNext', (): void => {
   it(`should call next once`, (): void => {
     const nextMock = jest.fn();

@@ -1,4 +1,4 @@
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 import ValidationError from '@rddt/common/types/ValidationError';
 import UserType from '../types/User';
 const checkUserConfirmation = async (user: UserType): Promise<void> => {

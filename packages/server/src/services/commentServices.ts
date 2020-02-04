@@ -1,6 +1,6 @@
-import Comment from '../models/Comment';
+import Comment from '../comments/Comment';
 import CommentType from '../types/Comment';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 const createComment = async (
   text: string,
   userId: string,

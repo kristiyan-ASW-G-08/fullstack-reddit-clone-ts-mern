@@ -1,6 +1,6 @@
-import Community from '../../models/Community';
-import Report from '../../models/Report';
-import User from '../../models/User';
+import Community from '../../communities/Community';
+import Report from '../../reports/Report';
+import User from '../../users/User';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';

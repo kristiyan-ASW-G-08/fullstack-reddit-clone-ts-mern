@@ -3,8 +3,8 @@ import {
   getReportById,
   getReportsByCommunityId,
 } from '../../services/reportServices';
-import Report from '../../models/Report';
-import { ErrorREST, Errors } from '../../classes/ErrorREST';
+import Report from '../../reports/Report';
+import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 describe('reportServices', (): void => {

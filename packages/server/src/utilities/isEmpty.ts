@@ -1,4 +1,4 @@
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 const isEmpty = (validationResult: any): void => {
   const errors = validationResult;
   if (!errors.isEmpty()) {

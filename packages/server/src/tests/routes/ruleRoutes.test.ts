@@ -1,5 +1,5 @@
-import Community from '../../models/Community';
-import Rule from '../../models/Rule';
+import Community from '../../communities/Community';
+import Rule from '../../rules/Rule';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
@@ -42,7 +42,6 @@ describe('rule routes', (): void => {
   const userId = mongoose.Types.ObjectId();
   const secret: any = process.env.SECRET;
   const email = 'testEmail@email.com';
-
   const token = jwt.sign(
     {
       email,

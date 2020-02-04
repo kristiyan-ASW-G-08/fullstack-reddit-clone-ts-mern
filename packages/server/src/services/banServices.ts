@@ -1,6 +1,6 @@
-import Ban from '../models/Ban';
+import Ban from '../reports/Ban';
 import BanType from '../types/Ban';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 const createBan = async (
   userId: string,
   bannedUserId: string,

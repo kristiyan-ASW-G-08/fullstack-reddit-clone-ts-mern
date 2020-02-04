@@ -1,6 +1,6 @@
-import Post from '../models/Post';
+import Post from '../posts/Post';
 import PostType from '../types/Post';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from '../utilities/ErrorREST';
 import isAuthorized from '../utilities/isAuthorized';
 import ValidationError from '@rddt/common/types/ValidationError';
 import { Request } from 'express';

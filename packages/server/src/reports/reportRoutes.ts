@@ -6,7 +6,7 @@ import {
   reportComment,
   deleteReport,
   getReports,
-} from '../controllers/reportsController';
+} from './reportsController';
 const router = express.Router();
 const reportValidation = [
   body('reason', 'Reason is not valid.')

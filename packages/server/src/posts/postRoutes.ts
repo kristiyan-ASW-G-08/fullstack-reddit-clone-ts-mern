@@ -8,7 +8,7 @@ import {
   getPostsByCommunity,
   getPostsFromAll,
   getSubscriptionPosts,
-} from '../controllers/postsController';
+} from './postsController';
 const router = express.Router();
 const postBodyValidation = [
   body('title', 'Title should be between 1 and 100 characters long.')

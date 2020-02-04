@@ -1,5 +1,5 @@
 import { NextFunction } from 'express';
-import { ErrorREST, Errors } from '../classes/ErrorREST';
+import { ErrorREST, Errors } from './ErrorREST';
 const passErrorToNext = (err: any, next: NextFunction): void => {
   let error = err;
   if (!err.status) {

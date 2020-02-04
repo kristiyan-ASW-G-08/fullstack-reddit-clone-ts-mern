@@ -1,11 +1,11 @@
-import Post from '../../models/Post';
+import Post from '../../posts/Post';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
 import app from '../../app';
 import jwt from 'jsonwebtoken';
 import mock from 'mock-fs';
-import User from '../../models/User';
+import User from '../../users/User';
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 const port = 8080;
 describe('Post routes', (): void => {

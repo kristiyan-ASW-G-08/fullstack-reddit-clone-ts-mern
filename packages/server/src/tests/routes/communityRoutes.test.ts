@@ -1,4 +1,4 @@
-import Community from '../../models/Community';
+import Community from '../../communities/Community';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';
