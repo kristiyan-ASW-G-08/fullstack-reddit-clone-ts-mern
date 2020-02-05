@@ -1,5 +1,5 @@
 import Community from '../../communities/Community';
-import Rule from '../../rules/Rule';
+import Rule from '../Rule';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';

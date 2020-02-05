@@ -1,6 +1,6 @@
 import Post from '../../posts/Post';
 import User from '../../users/User';
-import Comment from '../../comments/Comment';
+import Comment from '../Comment';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';

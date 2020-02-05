@@ -1,4 +1,4 @@
-import User from '../../users/User';
+import User from '../User';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';

@@ -1,4 +1,4 @@
-import Post from '../../posts/Post';
+import Post from '../Post';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { mongoURI } from '../../config/db';

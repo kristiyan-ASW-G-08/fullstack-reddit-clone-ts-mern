@@ -1,7 +1,19 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": { "*": ["types/*"] },
+    "paths": {
+      "@src/*": ["src/*"],
+      "@posts/*": ["src/posts/*"],
+      "@users/*": ["src/users/*"],
+      "@rules/*": ["src/rules/*"],
+      "@comments/*": ["src/comments/*"],
+      "@reports/*": ["src/reports/*"],
+      "@communities/*": ["src/communities/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@customTypes/*": ["src/types/*"],
+      "@utilities/*": ["src/utilities/*"],
+      "@customMiddleware/*": ["src/middleware/*"]
+    },
     "target": "es6",
     "lib": ["esnext"],
     "allowJs": true,

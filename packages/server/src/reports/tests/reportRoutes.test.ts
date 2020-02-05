@@ -1,5 +1,5 @@
 import Community from '../../communities/Community';
-import Report from '../../reports/Report';
+import Report from '../Report';
 import User from '../../users/User';
 import request from 'supertest';
 import mongoose from 'mongoose';
