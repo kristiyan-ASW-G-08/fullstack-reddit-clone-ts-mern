@@ -1,9 +1,9 @@
-import { ErrorREST, Errors } from './ErrorREST';
+import { RESTError, errors } from '@utilities/RESTError';
+
 const isAuthorized = (authorizedUserId: string, userId: string): void => {
-  if (authorizedUserId.toString() !== userId.toString()) {
-    const { status, message } = Errors.Unauthorized;
-    const error = new ErrorREST(status, message);
-    throw error;
+  if (authorizedUserId !== userId) {
+    const { status, message } = errors.Unauthorized;
+    throw new RESTError(status, message);
   }
 };
 export default isAuthorized;

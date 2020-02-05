@@ -1,4 +1,4 @@
-import checkUserConfirmation from '../../utilities/checkUserConfirmation';
+import checkUserConfirmation from '../../utilities/hasConfirmedEmail';
 import User from '../../users/User';
 import { ErrorREST, Errors } from '../../utilities/ErrorREST';
 import mongoose from 'mongoose';

@@ -3,7 +3,6 @@ import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import passErrorToNext from '../utilities/passErrorToNext';
 import { ErrorREST, Errors } from '../utilities/ErrorREST';
-import checkLimit from '../utilities/checkLimit';
 import {
   createComment,
   getCommentById,

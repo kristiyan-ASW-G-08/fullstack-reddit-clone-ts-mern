@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator/check';
 import isEmpty from '../utilities/isEmpty';
 import sendConfirmationEmail from '../utilities/sendConfirmationEmail';
-import includesObjectId from '../utilities/includesObjectId';
+import includesObjectId from '../utilities/includesId';
 import passErrorToNext from '../utilities/passErrorToNext';
 import removeFromArr from '../utilities/removeFromArr';
 import {

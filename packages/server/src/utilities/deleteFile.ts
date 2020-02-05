@@ -1,21 +1,13 @@
 import fs from 'fs';
-import { ErrorREST, Errors } from './ErrorREST';
-const deleteFile = (fileUrl: string): void => {
+import { RESTError, errors } from '@utilities/RESTError';
+import getFilePath from '@utilities/getFilePath';
+
+const deleteFile = async (filePath: string): Promise<void> => {
   try {
-    if (fileUrl) {
-      fs.unlink(
-        fileUrl,
-        (err): void => {
-          if (err) {
-            const { status, message } = Errors.NotFound;
-            const error = new ErrorREST(status, message, err);
-            throw error;
-          }
-        },
-      );
-    }
+    await fs.promises.unlink(getFilePath(filePath));
   } catch (err) {
-    throw err;
+    const { status, message } = errors.NotFound;
+    throw new RESTError(status, message);
   }
 };
 export default deleteFile;
